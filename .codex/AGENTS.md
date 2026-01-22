@@ -27,7 +27,6 @@
 ## Commit & Pull Request Guidelines
 - There is only one commit in history, so no established message convention yet.
 - Use clear, imperative commit messages (e.g., `Add calendar sync mock fixtures`).
-- PRs should include: a short description, relevant Xcode scheme changes, and screenshots or recordings for UI changes.
 
 ## Security & Configuration Tips
 - Calendar access requires entitlements in `LostInTranslations/LostInTranslations.entitlements` (per README).
