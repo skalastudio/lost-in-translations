@@ -9,7 +9,7 @@ else
 fi
 
 if command -v swift-format >/dev/null 2>&1; then
-  swift-format lint --recursive UnifiedCalendarSync/
+  swift-format lint --recursive LostInTranslations/
 else
   echo "swift-format not installed. Install with: brew install swift-format" >&2
   exit 1

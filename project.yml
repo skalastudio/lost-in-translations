@@ -1,0 +1,35 @@
+name: LostInTranslations
+options:
+  bundleIdPrefix: com.lostintranslations
+settings:
+  base:
+    MACOSX_DEPLOYMENT_TARGET: 14.0
+    SWIFT_VERSION: 6.2
+packages: {}
+targets:
+  LostInTranslations:
+    type: application
+    platform: macOS
+    deploymentTarget: 14.0
+    sources:
+      - path: LostInTranslations
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.lostintranslations.app
+    info:
+      path: LostInTranslations/Info.plist
+      properties:
+        CFBundleDisplayName: "Lost In Translations"
+        LSUIElement: true
+        NSHumanReadableCopyright: "Copyright © 2025"
+    scheme:
+      testTargets:
+        - LostInTranslationsTests
+  LostInTranslationsTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: 14.0
+    sources:
+      - path: LostInTranslationsTests
+    dependencies:
+      - target: LostInTranslations

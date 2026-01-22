@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-bundle_id="com.skala.unifiedcalendarsync.app"
+bundle_id="com.lostintranslations.app"
 remove_container=false
 force_remove=false
 show_help=false

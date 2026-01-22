@@ -1,4 +1,4 @@
-# <Project Name>
+# Lost in Translations
 _add info_
 
 ## Features
@@ -6,7 +6,7 @@ _add info_
 
 ## Requirements
 
-- macOS 26.0 or later
+- macOS 14.0 or later
 - Xcode 26.0 or later with Swift 6.2
 
 ## Setup Instructions
@@ -19,27 +19,23 @@ _add info_
 
 1. Open the project in Xcode:
    ```bash
-   open <Project Name>.xcodeproj
+   open LostInTranslations.xcodeproj
    ```
 
 2. Select your development team in the project settings:
    - Click on the project in the navigator
-   - Select the "<Prohect Name>" target
+   - Select the LostInTranslations target
    - Go to "Signing & Capabilities"
    - Select your team from the dropdown
 
 3. Build and run the project (Cmd + R)
 
-4. Grant calendar access when prompted
-
 Optional CLI testing:
-
 ```bash
 ./scripts/test.sh
 ```
 
 Optional reset (first-run testing):
-
 ```bash
 ./scripts/user-defaults-reset.sh
 # Use --full-reset to remove the sandbox container (prompts for confirmation).
@@ -60,20 +56,14 @@ This app demonstrates modern Swift 6.2 best practices:
 - **Default MainActor Isolation**: Project-wide configuration (`SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`)
 - **Sendable Conformance**: All data types crossing actor boundaries properly marked (including nested enums)
 - **Structured Concurrency**: Task-based async patterns, no DispatchQueue or completion handlers
-- **Modern Async/Await**: Native async patterns for EventKit operations
 - **LocalizedError**: User-facing error messages with proper descriptions
 - **UserNotifications Framework**: Modern notification API replacing deprecated NSUserNotification
 
 
 ## Permissions
 
-The app requires:
-- **Calendar Access**: To read calendars and write to the unified calendar
-- App Sandbox with calendar entitlement
-
 Entitlements and prompts live here:
-- `UnifiedCalendarSync/UnifiedCalendarSync.entitlements` controls the Calendar entitlement.
-- `UnifiedCalendarSync/Info.plist` contains `NSCalendarsUsageDescription` (update if messaging changes).
+- `LostInTranslations/LostInTranslations.entitlements` controls the Calendar entitlement.
 
 ## App Store Release Checklist
 
@@ -83,10 +73,8 @@ Entitlements and prompts live here:
 ```bash
 ./scripts/test.sh
 # or
-xcodebuild test -project <ProjectName>.xcodeproj -scheme "Unified Calendar Sync" -destination 'platform=macOS'
+xcodebuild test -project LostInTranslations.xcodeproj -scheme "LostInTranslations" -destination 'platform=macOS'
 ```
-
-**Note**: EventKit integration is verified manually during app runs because system permissions cannot be exercised reliably in unit tests.
 
 ## Privacy
 
@@ -99,11 +87,3 @@ This app respects your privacy:
 
 ## Code Quality
 See `.ai/reviews/` for detailed code review reports.
-
-## Future Enhancements
-
-## License
-
-This project is provided as-is for personal use.
-
-## Support

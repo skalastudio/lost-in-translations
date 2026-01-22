@@ -1,0 +1,381 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A9A2E43287E4F0A038C5355 /* LostInTranslationsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68754D2B610B0D5406C81807 /* LostInTranslationsApp.swift */; };
+		2B4D1AB857431F2E85C3EAEC /* LostInTranslationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C88337D57522BD01DFB1EAB /* LostInTranslationsTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		065ABB2972F7EEF56A08B27B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F32E29CA204D8A4970DB8BF2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3032858A124BC411CD8546F3;
+			remoteInfo = LostInTranslations;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		02EF98D995CC85E3B0BD5670 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		538912C73120B40DE7E27F16 /* LostInTranslations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LostInTranslations.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		68754D2B610B0D5406C81807 /* LostInTranslationsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LostInTranslationsApp.swift; sourceTree = "<group>"; };
+		8C88337D57522BD01DFB1EAB /* LostInTranslationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LostInTranslationsTests.swift; sourceTree = "<group>"; };
+		9F692615877CAFAEF915D322 /* LostInTranslationsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LostInTranslationsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1BC4AC6E48290F0CFF9FD07B /* LostInTranslations */ = {
+			isa = PBXGroup;
+			children = (
+				02EF98D995CC85E3B0BD5670 /* Info.plist */,
+				68754D2B610B0D5406C81807 /* LostInTranslationsApp.swift */,
+			);
+			path = LostInTranslations;
+			sourceTree = "<group>";
+		};
+		98D62A9E6C51EF39FC7C8C8B /* LostInTranslationsTests */ = {
+			isa = PBXGroup;
+			children = (
+				8C88337D57522BD01DFB1EAB /* LostInTranslationsTests.swift */,
+			);
+			path = LostInTranslationsTests;
+			sourceTree = "<group>";
+		};
+		A0E9C4EA9A7712172035F40A = {
+			isa = PBXGroup;
+			children = (
+				1BC4AC6E48290F0CFF9FD07B /* LostInTranslations */,
+				98D62A9E6C51EF39FC7C8C8B /* LostInTranslationsTests */,
+				F968902898A7A226BF76D628 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F968902898A7A226BF76D628 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				538912C73120B40DE7E27F16 /* LostInTranslations.app */,
+				9F692615877CAFAEF915D322 /* LostInTranslationsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3032858A124BC411CD8546F3 /* LostInTranslations */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C25667758D17A96DD44E95FE /* Build configuration list for PBXNativeTarget "LostInTranslations" */;
+			buildPhases = (
+				5BFBE15C73B112B59FB7C616 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LostInTranslations;
+			packageProductDependencies = (
+			);
+			productName = LostInTranslations;
+			productReference = 538912C73120B40DE7E27F16 /* LostInTranslations.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8BCE66A25F1BDA2809D8D097 /* LostInTranslationsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 250CB0350E8CCED0AE1524D6 /* Build configuration list for PBXNativeTarget "LostInTranslationsTests" */;
+			buildPhases = (
+				CDA3BEDB34AEF76026AC01AA /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				18597EA2E3A34511D1BF78C9 /* PBXTargetDependency */,
+			);
+			name = LostInTranslationsTests;
+			packageProductDependencies = (
+			);
+			productName = LostInTranslationsTests;
+			productReference = 9F692615877CAFAEF915D322 /* LostInTranslationsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F32E29CA204D8A4970DB8BF2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = F5B8DA679E11A08B89C127F7 /* Build configuration list for PBXProject "LostInTranslations" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = A0E9C4EA9A7712172035F40A;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3032858A124BC411CD8546F3 /* LostInTranslations */,
+				8BCE66A25F1BDA2809D8D097 /* LostInTranslationsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5BFBE15C73B112B59FB7C616 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A9A2E43287E4F0A038C5355 /* LostInTranslationsApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDA3BEDB34AEF76026AC01AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B4D1AB857431F2E85C3EAEC /* LostInTranslationsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		18597EA2E3A34511D1BF78C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3032858A124BC411CD8546F3 /* LostInTranslations */;
+			targetProxy = 065ABB2972F7EEF56A08B27B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		704D3E24951A0256C6454FA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = LostInTranslations/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lostintranslations.app;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		8B704AD5022FBD29AA5F95E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.2;
+			};
+			name = Release;
+		};
+		9A5128DAF47023B6A14B149A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lostintranslations.LostInTranslationsTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LostInTranslations.app/Contents/MacOS/LostInTranslations";
+			};
+			name = Debug;
+		};
+		A5A4DDD5809F455FD2138730 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lostintranslations.LostInTranslationsTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LostInTranslations.app/Contents/MacOS/LostInTranslations";
+			};
+			name = Release;
+		};
+		A950F3B23E128512119D8CB6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = LostInTranslations/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lostintranslations.app;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		FD6EC8B2D55C068FF99D88C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.2;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		250CB0350E8CCED0AE1524D6 /* Build configuration list for PBXNativeTarget "LostInTranslationsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A5128DAF47023B6A14B149A /* Debug */,
+				A5A4DDD5809F455FD2138730 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C25667758D17A96DD44E95FE /* Build configuration list for PBXNativeTarget "LostInTranslations" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				704D3E24951A0256C6454FA5 /* Debug */,
+				A950F3B23E128512119D8CB6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F5B8DA679E11A08B89C127F7 /* Build configuration list for PBXProject "LostInTranslations" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD6EC8B2D55C068FF99D88C7 /* Debug */,
+				8B704AD5022FBD29AA5F95E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F32E29CA204D8A4970DB8BF2 /* Project object */;
+}
