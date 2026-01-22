@@ -53,12 +53,26 @@ struct OpenAIClient: ProviderClient {
             let (data, response) = try await URLSession.shared.data(for: request)
             guard let http = response as? HTTPURLResponse else { throw ProviderError.invalidResponse }
             guard (200..<300).contains(http.statusCode) else {
-                throw ProviderError.serviceError("OpenAI error: HTTP \(http.statusCode).")
+                let message = parseOpenAIError(from: data) ?? "OpenAI error: HTTP \(http.statusCode)."
+                throw ProviderError.serviceError(message)
             }
             return data
         } catch {
             throw ProviderError.network(error)
         }
+    }
+
+    private func parseOpenAIError(from data: Data) -> String? {
+        guard let errorResponse = try? JSONDecoder().decode(OpenAIErrorResponse.self, from: data) else {
+            return nil
+        }
+        if let code = errorResponse.error.code, let type = errorResponse.error.type {
+            return "OpenAI error: \(errorResponse.error.message) (\(type), \(code))"
+        }
+        if let type = errorResponse.error.type {
+            return "OpenAI error: \(errorResponse.error.message) (\(type))"
+        }
+        return "OpenAI error: \(errorResponse.error.message)"
     }
 }
 
@@ -178,6 +192,16 @@ private struct OpenAIChatChoice: Decodable {
 
 private struct OpenAIChatChoiceMessage: Decodable {
     let content: String
+}
+
+private struct OpenAIErrorResponse: Decodable {
+    let error: OpenAIErrorBody
+}
+
+private struct OpenAIErrorBody: Decodable {
+    let message: String
+    let type: String?
+    let code: String?
 }
 
 private struct ClaudeRequest: Encodable {

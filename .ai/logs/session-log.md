@@ -201,3 +201,10 @@ now on the build we have this error: /Volumes/MoonLD1/IndieDev/repos/lost-in-tra
 
 **Response:**
 Changed picker setters to use DispatchQueue.main.async to defer state changes beyond the view update cycle, reformatted, and rebuilt successfully.
+## 2026-01-22T23:03:33Z — GPT-5 Codex
+
+**Prompt:**
+apply the number 2
+
+**Response:**
+Implemented OpenAI error-body parsing to surface specific error messages (type/code) on non-2xx responses, formatted the file, and rebuilt successfully.
