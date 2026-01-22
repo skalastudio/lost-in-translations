@@ -194,3 +194,10 @@ now on the build we have this error: /Volumes/MoonLD1/IndieDev/repos/lost-in-tra
 
 **Response:**
 Deferred picker updates to the next runloop using DispatchQueue.main.async in MenuBarContentView, rebuilt successfully, and asked to re-run the app to confirm the runtime warning is gone.
+## 2026-01-22T22:54:13Z — GPT-5 Codex
+
+**Prompt:**
+now on the build we have this error: /Volumes/MoonLD1/IndieDev/repos/lost-in-translations/LostInTranslations/Views/MenuBarContentView.swift:48 Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+
+**Response:**
+Changed picker setters to use DispatchQueue.main.async to defer state changes beyond the view update cycle, reformatted, and rebuilt successfully.

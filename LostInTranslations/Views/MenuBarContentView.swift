@@ -187,6 +187,7 @@ private struct LanguagePickerRow: View {
 
 private struct ActionButtonsRow: View {
     @ObservedObject var viewModel: MainViewModel
+    @Environment(\.openSettings) private var openSettings
 
     var body: some View {
         HStack(spacing: 10) {
@@ -202,6 +203,10 @@ private struct ActionButtonsRow: View {
 
             Button("Clear") {
                 viewModel.clearAll()
+            }
+
+            Button("Settings") {
+                openSettings()
             }
             Spacer()
         }
