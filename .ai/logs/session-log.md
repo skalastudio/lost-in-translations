@@ -19,3 +19,178 @@ sorry the file is on .codex/AGENTS.md
 
 **Response:**
 Acknowledged and will use the updated `.codex/AGENTS.md` instructions.
+## 2026-01-22T21:34:24Z — GPT-5 Codex
+
+**Prompt:**
+yes
+
+**Response:**
+Re-read `.codex/AGENTS.md`, confirmed guidance, and updated the plan to align with the app-first notes and repo workflow.
+## 2026-01-22T21:36:59Z — GPT-5 Codex
+
+**Prompt:**
+ok, so now let's start cooking code
+
+**Response:**
+Aligned project settings for the menu bar app by adding app sandbox entitlements, updating Xcode scripts to use the correct scheme, regenerating the Xcode project, and confirming a successful build with escalated permissions.
+## 2026-01-22T21:40:26Z — GPT-5 Codex
+
+**Prompt:**
+yes
+
+**Response:**
+Implemented the menu bar UI scaffold and MVVM wiring: new models and MainViewModel with AppStorage preferences, menu bar popover layout with controls, language selection, actions, results, diagnostics, and a Settings window with consent flow sheet. Regenerated the Xcode project and built successfully.
+## 2026-01-22T21:45:18Z — GPT-5 Codex
+
+**Prompt:**
+ok
+
+**Response:**
+Implemented provider integration scaffolding: task spec builder, model catalog, provider clients for OpenAI/Claude/Gemini, JSON response parsing, Keychain storage, and consent flow UI updates. Updated the task runner and wired MainViewModel to use real provider calls and error handling, then regenerated the Xcode project and built successfully.
+## 2026-01-22T21:47:15Z — GPT-5 Codex
+
+**Prompt:**
+ok
+
+**Response:**
+Added SwiftData history persistence with a HistoryEntry model and HistoryStore, wired saving/clearing into MainViewModel and Settings, added Swift Testing-based unit tests, regenerated the project, and confirmed build/test success.
+## 2026-01-22T21:52:55Z — GPT-5 Codex
+
+**Prompt:**
+1
+
+**Response:**
+Implemented compare-mode for Provider=Auto, including compare results model/state, parallel provider execution, and a grid UI to select a winning result set. Built successfully.
+## 2026-01-22T21:54:06Z — GPT-5 Codex
+
+**Prompt:**
+y
+
+**Response:**
+Added per-provider error indicators to Auto compare mode, showing error messages in the grid and disabling selection when a provider fails. Build succeeded.
+## 2026-01-22T21:55:27Z — GPT-5 Codex
+
+**Prompt:**
+y
+
+**Response:**
+Added a "Retry failed providers" button in the compare grid and wiring to rerun only failed providers, merging results back into the grid. Build succeeded.
+## 2026-01-22T21:56:46Z — GPT-5 Codex
+
+**Prompt:**
+y
+
+**Response:**
+Added per-provider loading spinners for retry in compare mode and wired retry state management so failed providers show progress while rerunning. Build succeeded.
+## 2026-01-22T21:57:48Z — GPT-5 Codex
+
+**Prompt:**
+yes
+
+**Response:**
+Added status badges to compare cards (running/success/failed) with state updates from compare execution and retries. Build succeeded.
+## 2026-01-22T21:59:12Z — GPT-5 Codex
+
+**Prompt:**
+yes
+
+**Response:**
+Added a compare summary row with totals and running/success/failed counts above the compare grid. Build succeeded.
+## 2026-01-22T21:59:45Z — GPT-5 Codex
+
+**Prompt:**
+yes
+
+**Response:**
+Added animated transitions to the compare summary row as running/success/failed counts update. Build succeeded.
+## 2026-01-22T22:00:23Z — GPT-5 Codex
+
+**Prompt:**
+y
+
+**Response:**
+Animated status badges in compare cards so they transition as provider state changes. Build succeeded.
+## 2026-01-22T22:01:20Z — GPT-5 Codex
+
+**Prompt:**
+y
+
+**Response:**
+Added per-provider latency display in compare cards and measured latency during compare runs (including errors). Build succeeded.
+## 2026-01-22T22:01:58Z — GPT-5 Codex
+
+**Prompt:**
+y
+
+**Response:**
+Added latency min/avg/max summary in the compare header row based on completed provider timings. Build succeeded.
+## 2026-01-22T22:04:56Z — GPT-5 Codex
+
+**Prompt:**
+first let's organize better the project, move all the views to Views folder, app related files to App Folder, model files to Models folder
+
+**Response:**
+Reorganized the project structure into App/Views/Models/Services folders, regenerated the Xcode project, and verified the build succeeded.
+## 2026-01-22T22:06:12Z — GPT-5 Codex
+
+**Prompt:**
+now we need a Resources folder for the assets of the app
+
+**Response:**
+Added `LostInTranslations/Resources` and wired it into Xcodegen as a resources folder, regenerated the project, and confirmed the build succeeded.
+## 2026-01-22T22:07:58Z — GPT-5 Codex
+
+**Prompt:**
+add the Assets.xcassets for the project on Resources folder
+
+**Response:**
+Created `LostInTranslations/Resources/Assets.xcassets` with a standard Contents.json and confirmed the build succeeded.
+## 2026-01-22T22:10:59Z — GPT-5 Codex
+
+**Prompt:**
+generate previews for all the views
+
+**Response:**
+Added SwiftUI previews for all views (MenuBarContentView, SettingsView, ConsentFlowView, DiagnosticsView) with sample data, and confirmed the build succeeded.
+## 2026-01-22T22:15:16Z — GPT-5 Codex
+
+**Prompt:**
+we have an error to fix: /Volumes/MoonLD1/IndieDev/repos/lost-in-translations/LostInTranslations/Services/MainViewModel.swift:26 Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+
+**Response:**
+Replaced @AppStorage-backed computed properties in MainViewModel with @Published settings synced to UserDefaults to avoid publishing during view updates; build produced no errors.
+## 2026-01-22T22:27:15Z — GPT-5 Codex
+
+**Prompt:**
+run lint because we have some issues
+
+**Response:**
+Fixed lint warnings by refactoring provider request/response types, TaskRunner, TaskSpecBuilder, ResponseParser, and formatting. Split MenuBarContentView preview into a separate file to satisfy file length rules, ran swift-format in-place, and reran lint successfully.
+## 2026-01-22T22:36:37Z — GPT-5 Codex
+
+**Prompt:**
+do 1
+
+**Response:**
+Added an AppIcon asset set (Contents.json) under Assets.xcassets. Regenerated the Xcode project after adding MainViewModel+History.swift and fixed access to historyStore to resolve build errors; build succeeded.
+## 2026-01-22T22:41:45Z — GPT-5 Codex
+
+**Prompt:**
+when i run the application, on the xcode console i get the error: Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+
+**Response:**
+Added guarded picker bindings to avoid redundant published assignments during view updates, regenerated the project to include MainViewModel+History, fixed access control, and rebuilt successfully. Asked to re-run app to confirm the warning is gone.
+## 2026-01-22T22:44:43Z — GPT-5 Codex
+
+**Prompt:**
+the error persist and is show when i click of instances on the button "Improve"
+
+**Response:**
+Deferred picker bindings onto the next MainActor turn to avoid publishing during view updates, rebuilt successfully, and asked to re-run to confirm the runtime warning is gone.
+## 2026-01-22T22:46:32Z — GPT-5 Codex
+
+**Prompt:**
+now on the build we have this error: /Volumes/MoonLD1/IndieDev/repos/lost-in-translations/LostInTranslations/Views/MenuBarContentView.swift:48 Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+
+**Response:**
+Deferred picker updates to the next runloop using DispatchQueue.main.async in MenuBarContentView, rebuilt successfully, and asked to re-run the app to confirm the runtime warning is gone.

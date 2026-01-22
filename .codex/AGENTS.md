@@ -21,7 +21,7 @@
 
 ## Testing Guidelines
 - Test execution is driven by `xcodebuild test` via `./scripts/test.sh`.
-- Schemes are configured in the Xcode project; the test script targets `Lost In Translations`.
+- Schemes are configured in the Xcode project; the test script targets `LostInTranslations`.
 - Use the reset script for deterministic first-run test coverage when needed.
 
 ## Commit & Pull Request Guidelines

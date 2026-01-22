@@ -13,9 +13,12 @@ targets:
     deploymentTarget: 14.0
     sources:
       - path: LostInTranslations
+      - path: LostInTranslations/Resources
+        type: folder
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.lostintranslations.app
+        CODE_SIGN_ENTITLEMENTS: LostInTranslations/LostInTranslations.entitlements
     info:
       path: LostInTranslations/Info.plist
       properties:

@@ -1,8 +1,9 @@
-import XCTest
+import Testing
 @testable import LostInTranslations
 
-final class LostInTranslationsTests: XCTestCase {
-    func testExample() {
-        XCTAssertTrue(true)
+struct LostInTranslationsTests {
+    @Test
+    func example() {
+        #expect(true)
     }
 }
