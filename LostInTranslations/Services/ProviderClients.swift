@@ -13,6 +13,7 @@ struct ProviderResult: Sendable {
 struct OpenAIClient: ProviderClient {
     let provider: Provider = .openAI
     private let builder = TaskSpecBuilder()
+    private static let endpoint = URL(string: "https://api.openai.com/v1/chat/completions")!
 
     func run(spec: TaskSpec, apiKey: String) async throws -> ProviderResult {
         let model = ModelCatalog.defaultModel(for: provider, tier: spec.modelTier)
@@ -26,7 +27,7 @@ struct OpenAIClient: ProviderClient {
             responseFormat: .init(type: "json_object")
         )
         let request = try makeRequest(
-            url: URL(string: "https://api.openai.com/v1/chat/completions")!,
+            url: Self.endpoint,
             apiKey: apiKey,
             body: requestBody
         )
@@ -49,17 +50,21 @@ struct OpenAIClient: ProviderClient {
     }
 
     private func send(request: URLRequest) async throws -> Data {
+        let data: Data
+        let response: URLResponse
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            guard let http = response as? HTTPURLResponse else { throw ProviderError.invalidResponse }
-            guard (200..<300).contains(http.statusCode) else {
-                let message = parseOpenAIError(from: data) ?? "OpenAI error: HTTP \(http.statusCode)."
-                throw ProviderError.serviceError(message)
-            }
-            return data
+            (data, response) = try await URLSession.shared.data(for: request)
         } catch {
             throw ProviderError.network(error)
         }
+        guard let http = response as? HTTPURLResponse else {
+            throw ProviderError.invalidResponse
+        }
+        guard (200..<300).contains(http.statusCode) else {
+            let message = parseOpenAIError(from: data) ?? "OpenAI error: HTTP \(http.statusCode)."
+            throw ProviderError.serviceError(message)
+        }
+        return data
     }
 
     private func parseOpenAIError(from data: Data) -> String? {
@@ -79,6 +84,7 @@ struct OpenAIClient: ProviderClient {
 struct ClaudeClient: ProviderClient {
     let provider: Provider = .claude
     private let builder = TaskSpecBuilder()
+    private static let endpoint = URL(string: "https://api.anthropic.com/v1/messages")!
 
     func run(spec: TaskSpec, apiKey: String) async throws -> ProviderResult {
         let model = ModelCatalog.defaultModel(for: provider, tier: spec.modelTier)
@@ -86,9 +92,9 @@ struct ClaudeClient: ProviderClient {
             model: model,
             maxTokens: 1024,
             system: builder.systemPrompt(for: spec),
-            messages: [.init(role: "user", content: builder.userPrompt(for: spec))],
+            messages: [.init(role: "user", content: builder.userPrompt(for: spec))]
         )
-        var request = URLRequest(url: URL(string: "https://api.anthropic.com/v1/messages")!)
+        var request = URLRequest(url: Self.endpoint)
         request.httpMethod = "POST"
         request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
         request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
@@ -105,22 +111,45 @@ struct ClaudeClient: ProviderClient {
     }
 
     private func send(request: URLRequest) async throws -> Data {
+        let data: Data
+        let response: URLResponse
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            guard let http = response as? HTTPURLResponse else { throw ProviderError.invalidResponse }
-            guard (200..<300).contains(http.statusCode) else {
-                throw ProviderError.serviceError("Claude error: HTTP \(http.statusCode).")
-            }
-            return data
+            (data, response) = try await URLSession.shared.data(for: request)
         } catch {
             throw ProviderError.network(error)
         }
+        guard let http = response as? HTTPURLResponse else {
+            throw ProviderError.invalidResponse
+        }
+        guard (200..<300).contains(http.statusCode) else {
+            let message = parseClaudeError(from: data) ?? "Claude error: HTTP \(http.statusCode)."
+            throw ProviderError.serviceError(message)
+        }
+        return data
+    }
+
+    private func parseClaudeError(from data: Data) -> String? {
+        struct ClaudeErrorResponse: Decodable {
+            let error: ClaudeErrorBody
+        }
+        struct ClaudeErrorBody: Decodable {
+            let message: String
+            let type: String?
+        }
+        guard let errorResponse = try? JSONDecoder().decode(ClaudeErrorResponse.self, from: data) else {
+            return nil
+        }
+        if let type = errorResponse.error.type {
+            return "Claude error: \(errorResponse.error.message) (\(type))"
+        }
+        return "Claude error: \(errorResponse.error.message)"
     }
 }
 
 struct GeminiClient: ProviderClient {
     let provider: Provider = .gemini
     private let builder = TaskSpecBuilder()
+    private static let baseURL = "https://generativelanguage.googleapis.com/v1beta/models/"
 
     func run(spec: TaskSpec, apiKey: String) async throws -> ProviderResult {
         let model = ModelCatalog.defaultModel(for: provider, tier: spec.modelTier)
@@ -130,8 +159,11 @@ struct GeminiClient: ProviderClient {
                 .init(role: "user", parts: [.init(text: builder.userPrompt(for: spec))]),
             ]
         )
-        let urlString = "https://generativelanguage.googleapis.com/v1beta/models/\(model):generateContent?key=\(apiKey)"
-        var request = URLRequest(url: URL(string: urlString)!)
+        let urlString = "\(Self.baseURL)\(model):generateContent?key=\(apiKey)"
+        guard let url = URL(string: urlString) else {
+            throw ProviderError.invalidResponse
+        }
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try JSONEncoder().encode(requestBody)
@@ -146,16 +178,38 @@ struct GeminiClient: ProviderClient {
     }
 
     private func send(request: URLRequest) async throws -> Data {
+        let data: Data
+        let response: URLResponse
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            guard let http = response as? HTTPURLResponse else { throw ProviderError.invalidResponse }
-            guard (200..<300).contains(http.statusCode) else {
-                throw ProviderError.serviceError("Gemini error: HTTP \(http.statusCode).")
-            }
-            return data
+            (data, response) = try await URLSession.shared.data(for: request)
         } catch {
             throw ProviderError.network(error)
         }
+        guard let http = response as? HTTPURLResponse else {
+            throw ProviderError.invalidResponse
+        }
+        guard (200..<300).contains(http.statusCode) else {
+            let message = parseGeminiError(from: data) ?? "Gemini error: HTTP \(http.statusCode)."
+            throw ProviderError.serviceError(message)
+        }
+        return data
+    }
+
+    private func parseGeminiError(from data: Data) -> String? {
+        struct GeminiErrorResponse: Decodable {
+            let error: GeminiErrorBody
+        }
+        struct GeminiErrorBody: Decodable {
+            let message: String
+            let status: String?
+        }
+        guard let errorResponse = try? JSONDecoder().decode(GeminiErrorResponse.self, from: data) else {
+            return nil
+        }
+        if let status = errorResponse.error.status {
+            return "Gemini error: \(errorResponse.error.message) (\(status))"
+        }
+        return "Gemini error: \(errorResponse.error.message)"
     }
 }
 

@@ -1,6 +1,6 @@
 import Foundation
 
-enum WritingMode: String, CaseIterable, Identifiable {
+enum WritingMode: String, CaseIterable, Identifiable, Sendable {
     case translate = "Translate"
     case improve = "Improve"
     case synonyms = "Synonyms"
@@ -8,7 +8,7 @@ enum WritingMode: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-enum WritingIntent: String, CaseIterable, Identifiable {
+enum WritingIntent: String, CaseIterable, Identifiable, Sendable {
     case email = "Email"
     case sms = "SMS"
     case chat = "Chat"
@@ -17,7 +17,7 @@ enum WritingIntent: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-enum Tone: String, CaseIterable, Identifiable {
+enum Tone: String, CaseIterable, Identifiable, Sendable {
     case neutral = "Neutral"
     case formal = "Formal"
     case informal = "Informal"
@@ -28,7 +28,7 @@ enum Tone: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-enum Provider: String, CaseIterable, Identifiable {
+enum Provider: String, CaseIterable, Identifiable, Sendable {
     case auto = "Auto"
     case openAI = "OpenAI"
     case claude = "Claude"
@@ -37,7 +37,7 @@ enum Provider: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-enum ModelTier: String, CaseIterable, Identifiable {
+enum ModelTier: String, CaseIterable, Identifiable, Sendable {
     case fast = "Fast"
     case balanced = "Balanced"
     case best = "Best"
@@ -45,7 +45,7 @@ enum ModelTier: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-struct LanguageOption: Identifiable, Hashable {
+struct LanguageOption: Identifiable, Hashable, Sendable {
     let id: String
     let name: String
     let code: String
@@ -62,13 +62,13 @@ struct LanguageOption: Identifiable, Hashable {
     static let all: [LanguageOption] = [.english, .portuguese, .german, .french, .spanish, .italian, .japanese]
 }
 
-struct OutputResult: Identifiable, Hashable {
+struct OutputResult: Identifiable, Hashable, Sendable {
     let id = UUID()
     let language: LanguageOption
     let text: String
 }
 
-struct CompareResult: Identifiable, Hashable {
+struct CompareResult: Identifiable, Hashable, Sendable {
     let id = UUID()
     let provider: Provider
     let model: String?
@@ -79,7 +79,7 @@ struct CompareResult: Identifiable, Hashable {
     let latencyMs: Int?
 }
 
-struct DiagnosticsState: Hashable {
+struct DiagnosticsState: Hashable, Sendable {
     var lastProvider: Provider?
     var lastModel: String?
     var tokenEstimate: Int?

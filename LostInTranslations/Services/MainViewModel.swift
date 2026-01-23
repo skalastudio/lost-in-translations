@@ -56,6 +56,7 @@ final class MainViewModel: ObservableObject {
     private let taskRunner = TaskRunner()
     let historyStore: HistoryStore?
     private let defaults: UserDefaults
+    private var currentTask: Task<Void, Never>?
 
     private enum Keys {
         static let defaultMode = "defaultMode"
@@ -111,15 +112,20 @@ final class MainViewModel: ObservableObject {
             lastInlineError = "Enter text before running."
             return
         }
+
+        // Cancel any previous running task
+        currentTask?.cancel()
+
         isRunning = true
         let start = Date()
 
-        Task {
+        currentTask = Task {
             defer { isRunning = false }
             do {
                 let spec = buildSpec()
                 if provider == .auto {
                     let output = try await taskRunner.runCompare(spec: spec)
+                    guard !Task.isCancelled else { return }
                     compareResults = output.results
                     results = []
                     diagnostics.lastProvider = nil
@@ -127,8 +133,12 @@ final class MainViewModel: ObservableObject {
                     diagnostics.tokenEstimate = output.tokenEstimate
                     diagnostics.latencyMs = Int(Date().timeIntervalSince(start) * 1000)
                     diagnostics.lastError = nil
+                    if keepHistory, let firstSuccess = output.results.first(where: { $0.isSuccess }) {
+                        try saveCompareHistory(result: firstSuccess)
+                    }
                 } else {
                     let output = try await taskRunner.run(spec: spec)
+                    guard !Task.isCancelled else { return }
                     compareResults = []
                     results = output.results
                     diagnostics.lastProvider = output.provider
@@ -140,7 +150,10 @@ final class MainViewModel: ObservableObject {
                         try saveHistory(output: output)
                     }
                 }
+            } catch is CancellationError {
+                // Task was cancelled, no need to show error
             } catch {
+                guard !Task.isCancelled else { return }
                 diagnostics.lastError = error.localizedDescription
                 lastInlineError = error.localizedDescription
                 if case ProviderError.missingKey = error {
@@ -171,20 +184,27 @@ final class MainViewModel: ObservableObject {
             )
         }
 
+        // Cancel any previous running task
+        currentTask?.cancel()
+
         isRunning = true
         let start = Date()
-        Task {
+        currentTask = Task {
             defer { isRunning = false }
             do {
                 let spec = buildSpec()
                 let output = try await taskRunner.runCompare(spec: spec, providers: failedProviders)
+                guard !Task.isCancelled else { return }
                 var updated = compareResults.filter { $0.isLoading == false }
                 updated.append(contentsOf: output.results)
                 compareResults = updated
                 diagnostics.tokenEstimate = output.tokenEstimate
                 diagnostics.latencyMs = Int(Date().timeIntervalSince(start) * 1000)
                 diagnostics.lastError = nil
+            } catch is CancellationError {
+                // Task was cancelled, no need to show error
             } catch {
+                guard !Task.isCancelled else { return }
                 compareResults = compareResults.map { result in
                     guard failedProviders.contains(result.provider) else { return result }
                     return CompareResult(

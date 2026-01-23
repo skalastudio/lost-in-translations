@@ -2,6 +2,7 @@ import SwiftData
 import SwiftUI
 
 @main
+@MainActor
 struct LostInTranslationsApp: App {
     private let modelContainer: ModelContainer
     @StateObject private var viewModel: MainViewModel

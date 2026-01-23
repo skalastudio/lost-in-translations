@@ -39,57 +39,21 @@ private struct ControlsRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 8) {
-                Picker(
-                    "Mode",
-                    selection: Binding(
-                        get: { viewModel.mode },
-                        set: { newValue in
-                            DispatchQueue.main.async {
-                                if viewModel.mode != newValue {
-                                    viewModel.mode = newValue
-                                }
-                            }
-                        }
-                    )
-                ) {
+                Picker("Mode", selection: $viewModel.mode) {
                     ForEach(WritingMode.allCases) { mode in
                         Text(mode.rawValue).tag(mode)
                     }
                 }
                 .pickerStyle(.segmented)
 
-                Picker(
-                    "Intent",
-                    selection: Binding(
-                        get: { viewModel.intent },
-                        set: { newValue in
-                            DispatchQueue.main.async {
-                                if viewModel.intent != newValue {
-                                    viewModel.intent = newValue
-                                }
-                            }
-                        }
-                    )
-                ) {
+                Picker("Intent", selection: $viewModel.intent) {
                     ForEach(WritingIntent.allCases) { intent in
                         Text(intent.rawValue).tag(intent)
                     }
                 }
                 .frame(maxWidth: 130)
 
-                Picker(
-                    "Tone",
-                    selection: Binding(
-                        get: { viewModel.tone },
-                        set: { newValue in
-                            DispatchQueue.main.async {
-                                if viewModel.tone != newValue {
-                                    viewModel.tone = newValue
-                                }
-                            }
-                        }
-                    )
-                ) {
+                Picker("Tone", selection: $viewModel.tone) {
                     ForEach(Tone.allCases) { tone in
                         Text(tone.rawValue).tag(tone)
                     }
@@ -98,38 +62,14 @@ private struct ControlsRow: View {
             }
 
             HStack(spacing: 8) {
-                Picker(
-                    "Provider",
-                    selection: Binding(
-                        get: { viewModel.provider },
-                        set: { newValue in
-                            DispatchQueue.main.async {
-                                if viewModel.provider != newValue {
-                                    viewModel.provider = newValue
-                                }
-                            }
-                        }
-                    )
-                ) {
+                Picker("Provider", selection: $viewModel.provider) {
                     ForEach(Provider.allCases) { provider in
                         Text(provider.rawValue).tag(provider)
                     }
                 }
                 .frame(maxWidth: 140)
 
-                Picker(
-                    "Model",
-                    selection: Binding(
-                        get: { viewModel.modelTier },
-                        set: { newValue in
-                            DispatchQueue.main.async {
-                                if viewModel.modelTier != newValue {
-                                    viewModel.modelTier = newValue
-                                }
-                            }
-                        }
-                    )
-                ) {
+                Picker("Model", selection: $viewModel.modelTier) {
                     ForEach(ModelTier.allCases) { tier in
                         Text(tier.rawValue).tag(tier)
                     }
