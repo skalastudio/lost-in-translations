@@ -1,6 +1,7 @@
 import SwiftData
 import SwiftUI
 
+
 @main
 @MainActor
 struct LostInTranslationsApp: App {
