@@ -208,3 +208,24 @@ apply the number 2
 
 **Response:**
 Implemented OpenAI error-body parsing to surface specific error messages (type/code) on non-2xx responses, formatted the file, and rebuilt successfully.
+## 2026-01-22T23:13:56Z — GPT-5 Codex
+
+**Prompt:**
+1. all of then; 2. Do not open and external browser, use an embedded web view; 3. remove api keys
+
+**Response:**
+Acknowledged requirements for embedded web-view auth for all providers, removing API key flow, and restated understanding plus the need to align with provider-supported OAuth flows before implementation.
+## 2026-01-22T23:25:30Z — GPT-5 Codex
+
+**Prompt:**
+yes
+
+**Response:**
+Implemented embedded OAuth consent flow with PKCE for providers, removed API key wiring, updated TaskRunner/ProviderClients to use access tokens, added WebView auth UI, regenerated the Xcode project, and ran format/lint/build.
+## 2026-01-22T23:59:19Z — GPT-5 Codex
+
+**Prompt:**
+ok, we new to reverto the work to use api-keys
+
+**Response:**
+Reverted the OAuth flow to API-key auth, restored Keychain key storage, removed OAuth/web view files, regenerated the Xcode project, and ran format/lint/build.

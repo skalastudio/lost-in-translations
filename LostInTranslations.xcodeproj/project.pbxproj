@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C9C3704EB59C856B18D825D /* TaskSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1AC5DBB67B26817D99770B /* TaskSpec.swift */; };
+		16FEC3358C4D0C544C591F02 /* StatusBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018C952BC3E01C0C5AC04705 /* StatusBadge.swift */; };
 		196CA5C7096B2E0D2E961D09 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DED281DD311ADE707BFE8BD /* Models.swift */; };
 		1FC038AC401E8AA5D2E369AF /* HistoryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0700763CC52B3C27812086D /* HistoryEntry.swift */; };
 		2ABB0FE070C1D1E78A8547C4 /* TaskRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F45BD86FCAF3BCD03DF657 /* TaskRunner.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		018C952BC3E01C0C5AC04705 /* StatusBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBadge.swift; sourceTree = "<group>"; };
 		02EF98D995CC85E3B0BD5670 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		03F38928111B5BE6FC4810F1 /* LostInTranslationsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LostInTranslationsApp.swift; sourceTree = "<group>"; };
 		07F45BD86FCAF3BCD03DF657 /* TaskRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRunner.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				4BE363F30EB4A42AD0DE7BD5 /* MenuBarContentView.swift */,
 				CC4856B1D7E11A29E25D444F /* MenuBarContentView+Preview.swift */,
 				2EBFAD9955216C352AC3DCA9 /* SettingsView.swift */,
+				018C952BC3E01C0C5AC04705 /* StatusBadge.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 				6B7B80880401DDD58936C7C3 /* ProviderError.swift in Sources */,
 				C6ABECDDDD2892DB048FC855 /* ResponseParser.swift in Sources */,
 				A6EFD4731653E9FCC37E906E /* SettingsView.swift in Sources */,
+				16FEC3358C4D0C544C591F02 /* StatusBadge.swift in Sources */,
 				2ABB0FE070C1D1E78A8547C4 /* TaskRunner.swift in Sources */,
 				0C9C3704EB59C856B18D825D /* TaskSpec.swift in Sources */,
 				68015AFB53F1EB5F1F77C03C /* TaskSpecBuilder.swift in Sources */,
