@@ -26,10 +26,10 @@ struct LostInTranslationsApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra("app.title", systemImage: "text.bubble") {
+        WindowGroup {
             MenuBarContentView(viewModel: viewModel)
         }
-        .menuBarExtraStyle(.window)
+        .modelContainer(modelContainer)
 
         Settings {
             SettingsView(viewModel: viewModel)

@@ -369,3 +369,10 @@ the app icon is on folder LostInTranslations/Resources and the name is "LostInTr
 
 **Response:**
 Updated project.yml to point the icon resource path to LostInTranslations/Resources/LostInTranslations.icon and ran the build script.
+## 2026-01-24T22:45:53Z — GPT-5 Codex
+
+**Prompt:**
+the app icon is on folder LostInTranslations/Resources and the name is "LostInTranslations.icon"
+
+**Response:**
+Aligned project.yml to reference the icon under LostInTranslations/Resources and ran the build script to verify.

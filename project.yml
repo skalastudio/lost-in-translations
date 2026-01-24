@@ -41,7 +41,7 @@ targets:
       path: LostInTranslations/Info.plist
       properties:
         CFBundleDisplayName: "Lost in Translations"
-        LSUIElement: true
+        LSUIElement: false
         NSHumanReadableCopyright: "Copyright © 2026"
   LostInTranslationsTests:
     type: bundle.unit-test
