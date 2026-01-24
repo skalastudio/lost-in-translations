@@ -19,7 +19,6 @@ targets:
       - path: LostInTranslations
         excludes:
           - Resources
-          - LostInTranslations.icon
     resources:
       - path: LostInTranslations/Resources
       - path: LostInTranslations/Resources/LostInTranslations.icon

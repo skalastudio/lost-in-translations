@@ -376,3 +376,10 @@ the app icon is on folder LostInTranslations/Resources and the name is "LostInTr
 
 **Response:**
 Aligned project.yml to reference the icon under LostInTranslations/Resources and ran the build script to verify.
+## 2026-01-24T22:56:18Z — GPT-5 Codex
+
+**Prompt:**
+the app do not show the correct icon. The file LostInTranslation/Resources/LostInTranslations.icon is a file make on "Icon Composer" an apple an, and added to the project. Fix the associated of the file icon to the project
+
+**Response:**
+Aligned project.yml to reference the icon under Resources and regenerated the project so the Xcode project points at the Icon Composer asset, then ran the build script.
