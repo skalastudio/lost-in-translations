@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -21,7 +21,6 @@
 		3E35A69C03BEC7CDF5A56984 /* AIPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC15F18B9DA0ED051269D52 /* AIPrompts.swift */; };
 		403352595FAE7E39D85E0C48 /* ConsentFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B3DFB438EE0430AAA9BB4A /* ConsentFlowView.swift */; };
 		54AF026C198284F142CE6B26 /* GeminiModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74543479B76BAD2C5BAC1AC /* GeminiModels.swift */; };
-		66598951774A18E143C46152 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 8611E59190891B275B9B9964 /* Resources */; };
 		68015AFB53F1EB5F1F77C03C /* TaskSpecBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DEF8CCEF97E4B251FF506B /* TaskSpecBuilder.swift */; };
 		78EF45EA9826B02031BE1A12 /* LostInTranslationsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F38928111B5BE6FC4810F1 /* LostInTranslationsApp.swift */; };
 		798B0E294DDA631D41FBA02E /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51679A96886468D8652A79D3 /* MainViewModel.swift */; };
@@ -80,8 +79,7 @@
 		67B9D3DF3622B01196C27173 /* GeminiAPIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiAPIConstants.swift; sourceTree = "<group>"; };
 		6A482FC515D26DE91B61B74F /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		6B1AC5DBB67B26817D99770B /* TaskSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSpec.swift; sourceTree = "<group>"; };
-		840DF38906BCAC03F3090FD7 /* bubble.left.and.text.bubble.right.svg */ = {isa = PBXFileReference; path = bubble.left.and.text.bubble.right.svg; sourceTree = "<group>"; };
-		8611E59190891B275B9B9964 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = LostInTranslations/Resources; sourceTree = SOURCE_ROOT; };
+		840DF38906BCAC03F3090FD7 /* bubble.left.and.text.bubble.right.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = bubble.left.and.text.bubble.right.svg; sourceTree = "<group>"; };
 		8C88337D57522BD01DFB1EAB /* LostInTranslationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LostInTranslationsTests.swift; sourceTree = "<group>"; };
 		94DEF8CCEF97E4B251FF506B /* TaskSpecBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSpecBuilder.swift; sourceTree = "<group>"; };
 		9C5BAA2820689BF2E947220F /* ClaudeModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeModels.swift; sourceTree = "<group>"; };
@@ -191,7 +189,6 @@
 		A0E9C4EA9A7712172035F40A = {
 			isa = PBXGroup;
 			children = (
-				8611E59190891B275B9B9964 /* Resources */,
 				1BC4AC6E48290F0CFF9FD07B /* LostInTranslations */,
 				98D62A9E6C51EF39FC7C8C8B /* LostInTranslationsTests */,
 				F968902898A7A226BF76D628 /* Products */,
@@ -328,7 +325,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					3032858A124BC411CD8546F3 = {
 						DevelopmentTeam = FWXSV2MP8Z;
@@ -346,7 +343,6 @@
 			);
 			mainGroup = A0E9C4EA9A7712172035F40A;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -361,7 +357,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				66598951774A18E143C46152 /* Resources in Resources */,
 				8556C2059449EDCA859165F8 /* bubble.left.and.text.bubble.right.svg in Resources */,
 				FCC93CE79D0C67D67371F21B /* icon.json in Resources */,
 			);
@@ -442,6 +437,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = FWXSV2MP8Z;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = LostInTranslations/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Lost in Translations";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
@@ -562,6 +558,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = FWXSV2MP8Z;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = LostInTranslations/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Lost in Translations";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";

@@ -8,6 +8,14 @@ struct LostInTranslationsApp: App {
     @StateObject private var viewModel: MainViewModel
 
     init() {
+        #if DEBUG
+            let arguments = ProcessInfo.processInfo.arguments
+            if arguments.contains(AppConstants.LaunchArguments.useMockProvider)
+                || arguments.contains("-\(AppConstants.LaunchArguments.useMockProvider)")
+            {
+                print("[MockProvider] Enabled via \(AppConstants.LaunchArguments.useMockProvider) launch argument.")
+            }
+        #endif
         do {
             let container = try ModelContainer(for: HistoryEntry.self)
             modelContainer = container

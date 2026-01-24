@@ -20,8 +20,9 @@ targets:
         excludes:
           - Resources
           - LostInTranslations.icon
+    resources:
       - path: LostInTranslations/Resources
-        type: folder
+      - path: LostInTranslations/Resources/LostInTranslations.icon
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.skala.lostintranslations.app

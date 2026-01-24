@@ -341,3 +341,17 @@ yes
 
 **Response:**
 Updated Info.plist to use MARKETING_VERSION and CURRENT_PROJECT_VERSION placeholders, set CURRENT_PROJECT_VERSION in project.yml, regenerated the project, and ran format/lint/build.
+## 2026-01-24T22:23:05Z — GPT-5 Codex
+
+**Prompt:**
+when i run the app i do not see any log on xcode console to see if the app start with mock provider. i only need to see it on xcode log
+
+**Response:**
+Added a debug-only startup print in the app init that logs mock provider usage to the Xcode console, then ran format/lint/build.
+## 2026-01-24T22:25:02Z — GPT-5 Codex
+
+**Prompt:**
+other think, when app start i do not see the correct text based on translations, i only the the codes like consent.apiKey.placeholder
+
+**Response:**
+Switched Resources handling in project.yml to use the resources section (instead of a folder reference) so Localizable.strings is processed correctly, regenerated the project, and rebuilt.
