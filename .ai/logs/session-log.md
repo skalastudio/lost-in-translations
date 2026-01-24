@@ -299,3 +299,24 @@ Now that we have providers i want for development and tests, have mock provider 
 
 **Response:**
 Added a MockProviderClient that generates randomized outputs per mode/tone, wired TaskRunner to use it when the debug-only UseMockProbider argument is present (including compare/auto behavior), regenerated the project, and ran format/lint/build.
+## 2026-01-24T19:43:19Z — GPT-5 Codex
+
+**Prompt:**
+add a log message on xcode console if the mock provider is in use
+
+**Response:**
+Added a debug-only logger entry when the UseMockProbider launch argument enables the mock provider, then ran format/lint/build.
+## 2026-01-24T19:46:52Z — GPT-5 Codex
+
+**Prompt:**
+the name of the argument is UseMockProvider and not UseMockProbider. Add this strings on AppConstants.swift to store all the string constants used over the app. The ones that are have defined constants do not touch.
+
+**Response:**
+Added `AppConstants` for launch argument/logging strings, updated TaskRunner to use the corrected UseMockProvider argument and constants, and adjusted the XcodeGen sources to avoid duplicate resource copies; regenerated the project and ran format/lint/build.
+## 2026-01-24T19:53:54Z — GPT-5 Codex
+
+**Prompt:**
+i change the project file on xcode, align the project.yml with the definitions made on xcode, to not lose info when change the project using the project.yml
+
+**Response:**
+Aligned project.yml to the Xcode changes by adding the project/target build settings, defining the Mocked scheme with the UseMockProvider argument, and updating TaskRunner to accept the dashed argument variant; regenerated the project and ran format/lint/build.

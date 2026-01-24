@@ -1,10 +1,14 @@
 name: LostInTranslations
 options:
-  bundleIdPrefix: com.lostintranslations
+  bundleIdPrefix: com.skala.lostintranslations
 settings:
   base:
     MACOSX_DEPLOYMENT_TARGET: 14.0
     SWIFT_VERSION: 6.2
+    ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: YES
+    DEAD_CODE_STRIPPING: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    STRING_CATALOG_GENERATE_SYMBOLS: YES
 packages: {}
 targets:
   LostInTranslations:
@@ -13,21 +17,22 @@ targets:
     deploymentTarget: 14.0
     sources:
       - path: LostInTranslations
+        excludes:
+          - Resources
+          - LostInTranslation.icon
       - path: LostInTranslations/Resources
         type: folder
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.lostintranslations.app
         CODE_SIGN_ENTITLEMENTS: LostInTranslations/LostInTranslations.entitlements
+        DEAD_CODE_STRIPPING: YES
     info:
       path: LostInTranslations/Info.plist
       properties:
         CFBundleDisplayName: "Lost In Translations"
         LSUIElement: true
-        NSHumanReadableCopyright: "Copyright © 2025"
-    scheme:
-      testTargets:
-        - LostInTranslationsTests
+        NSHumanReadableCopyright: "Copyright © 2026"
   LostInTranslationsTests:
     type: bundle.unit-test
     platform: macOS
@@ -36,3 +41,22 @@ targets:
       - path: LostInTranslationsTests
     dependencies:
       - target: LostInTranslations
+
+schemes:
+  LostInTranslations:
+    build:
+      targets:
+        LostInTranslations: [run, test, profile, analyze, archive]
+    test:
+      targets:
+        - LostInTranslationsTests
+  LostInTranslations (Mocked):
+    build:
+      targets:
+        LostInTranslations: [run, test, profile, analyze, archive]
+    test:
+      targets:
+        - LostInTranslationsTests
+    run:
+      commandLineArguments:
+        "-UseMockProvider": true

@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 actor TaskRunner {
     private let builder = TaskSpecBuilder()
@@ -10,7 +11,18 @@ actor TaskRunner {
 
     private static let useMockProvider: Bool = {
         #if DEBUG
-            return ProcessInfo.processInfo.arguments.contains("UseMockProbider")
+            let arguments = ProcessInfo.processInfo.arguments
+            let enabled =
+                arguments.contains(AppConstants.LaunchArguments.useMockProvider)
+                || arguments.contains("-\(AppConstants.LaunchArguments.useMockProvider)")
+            if enabled {
+                Logger(
+                    subsystem: AppConstants.Logging.subsystem,
+                    category: AppConstants.Logging.mockProviderCategory
+                )
+                .info("Mock provider enabled via \(AppConstants.LaunchArguments.useMockProvider) launch argument.")
+            }
+            return enabled
         #else
             return false
         #endif
