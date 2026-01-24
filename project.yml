@@ -26,7 +26,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.skala.lostintranslations.app
         MARKETING_VERSION: 1.0.0
-        ASSETCATALOG_COMPILER_APPICON_NAME: LostInTranslation.icon
+        ASSETCATALOG_COMPILER_APPICON_NAME: LostInTranslations.icon
         CODE_SIGN_IDENTITY: "Apple Development"
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: FWXSV2MP8Z
