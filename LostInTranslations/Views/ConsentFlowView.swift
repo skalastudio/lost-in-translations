@@ -5,14 +5,11 @@ struct ConsentFlowView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Provider Consent")
+            Text("consent.title")
                 .font(.title2)
 
-            Text(
-                "Complete consent flows here for OpenAI, Claude, and Gemini. "
-                    + "This is separate from any account-level login."
-            )
-            .font(.body)
+            Text("consent.description")
+                .font(.body)
 
             Divider()
 
@@ -26,7 +23,7 @@ struct ConsentFlowView: View {
 
             HStack {
                 Spacer()
-                Button("Done") {
+                Button("consent.done") {
                     dismiss()
                 }
             }
@@ -45,35 +42,36 @@ private struct ProviderCredentialRow: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(provider.rawValue)
+                let statusKey: LocalizedStringKey = isStored ? "consent.keyStored" : "consent.keyRequired"
+                Text(provider.localizedName)
                     .font(.headline)
-                Text(isStored ? "Key stored in Keychain." : "Requires API key and explicit consent.")
+                Text(statusKey)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
             Spacer()
-            SecureField("API key", text: $apiKey)
+            SecureField("consent.apiKey.placeholder", text: $apiKey)
                 .textFieldStyle(.roundedBorder)
                 .frame(width: 220)
-            Button("Save") {
+            Button("consent.save") {
                 do {
                     guard !apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-                        statusMessage = "Enter a key first."
+                        statusMessage = String(localized: "consent.enterKeyFirst")
                         return
                     }
                     try KeychainStore.saveKey(apiKey, for: provider)
                     apiKey = ""
                     isStored = true
-                    statusMessage = "Saved."
+                    statusMessage = String(localized: "consent.saved")
                 } catch {
                     statusMessage = error.localizedDescription
                 }
             }
-            Button("Clear") {
+            Button("consent.clear") {
                 do {
                     try KeychainStore.deleteKey(for: provider)
                     isStored = false
-                    statusMessage = "Removed."
+                    statusMessage = String(localized: "consent.removed")
                 } catch {
                     statusMessage = error.localizedDescription
                 }

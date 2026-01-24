@@ -10,15 +10,15 @@ enum ProviderError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .missingKey(let provider):
-            return "Missing API key for \(provider.rawValue). Add it in Settings."
+            return String(format: String(localized: "error.missingKey"), provider.localizedName)
         case .invalidResponse:
-            return "The provider returned an invalid response."
+            return String(localized: "error.invalidResponse")
         case .decodingFailed:
-            return "Failed to parse the provider response."
+            return String(localized: "error.decodingFailed")
         case .serviceError(let message):
             return message
         case .network(let error):
-            return "Network error: \(error.localizedDescription)"
+            return String(format: String(localized: "error.network"), error.localizedDescription)
         }
     }
 }

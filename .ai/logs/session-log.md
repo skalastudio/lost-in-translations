@@ -229,3 +229,10 @@ ok, we new to reverto the work to use api-keys
 
 **Response:**
 Reverted the OAuth flow to API-key auth, restored Keychain key storage, removed OAuth/web view files, regenerated the Xcode project, and ran format/lint/build.
+## 2026-01-24T18:33:20Z — GPT-5 Codex
+
+**Prompt:**
+I want my app to be localized, so move all the messages to be localized
+
+**Response:**
+Added `Localizable.strings`, updated all user-facing UI strings and error messages to use localization keys, localized enum display names and diagnostics, and ran format/lint/build.

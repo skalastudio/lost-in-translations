@@ -16,7 +16,9 @@ struct KeychainStore {
         SecItemDelete(query as CFDictionary)
         let status = SecItemAdd(query as CFDictionary, nil)
         guard status == errSecSuccess else {
-            throw ProviderError.serviceError("Unable to save API key for \(provider.rawValue).")
+            throw ProviderError.serviceError(
+                String(format: String(localized: "error.keychain.save"), provider.localizedName)
+            )
         }
     }
 
@@ -44,7 +46,9 @@ struct KeychainStore {
         ]
         let status = SecItemDelete(query as CFDictionary)
         guard status == errSecSuccess || status == errSecItemNotFound else {
-            throw ProviderError.serviceError("Unable to remove API key for \(provider.rawValue).")
+            throw ProviderError.serviceError(
+                String(format: String(localized: "error.keychain.delete"), provider.localizedName)
+            )
         }
     }
 }

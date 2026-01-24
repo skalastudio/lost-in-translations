@@ -61,7 +61,9 @@ struct OpenAIClient: ProviderClient {
             throw ProviderError.invalidResponse
         }
         guard (200..<300).contains(http.statusCode) else {
-            let message = parseOpenAIError(from: data) ?? "OpenAI error: HTTP \(http.statusCode)."
+            let message =
+                parseOpenAIError(from: data)
+                ?? String(format: String(localized: "error.openai.http"), http.statusCode)
             throw ProviderError.serviceError(message)
         }
         return data
@@ -72,12 +74,17 @@ struct OpenAIClient: ProviderClient {
             return nil
         }
         if let code = errorResponse.error.code, let type = errorResponse.error.type {
-            return "OpenAI error: \(errorResponse.error.message) (\(type), \(code))"
+            return String(
+                format: String(localized: "error.openai.detailTypeCode"),
+                errorResponse.error.message,
+                type,
+                code
+            )
         }
         if let type = errorResponse.error.type {
-            return "OpenAI error: \(errorResponse.error.message) (\(type))"
+            return String(format: String(localized: "error.openai.detailType"), errorResponse.error.message, type)
         }
-        return "OpenAI error: \(errorResponse.error.message)"
+        return String(format: String(localized: "error.openai.detail"), errorResponse.error.message)
     }
 }
 
@@ -122,7 +129,9 @@ struct ClaudeClient: ProviderClient {
             throw ProviderError.invalidResponse
         }
         guard (200..<300).contains(http.statusCode) else {
-            let message = parseClaudeError(from: data) ?? "Claude error: HTTP \(http.statusCode)."
+            let message =
+                parseClaudeError(from: data)
+                ?? String(format: String(localized: "error.claude.http"), http.statusCode)
             throw ProviderError.serviceError(message)
         }
         return data
@@ -140,9 +149,9 @@ struct ClaudeClient: ProviderClient {
             return nil
         }
         if let type = errorResponse.error.type {
-            return "Claude error: \(errorResponse.error.message) (\(type))"
+            return String(format: String(localized: "error.claude.detailType"), errorResponse.error.message, type)
         }
-        return "Claude error: \(errorResponse.error.message)"
+        return String(format: String(localized: "error.claude.detail"), errorResponse.error.message)
     }
 }
 
@@ -189,7 +198,9 @@ struct GeminiClient: ProviderClient {
             throw ProviderError.invalidResponse
         }
         guard (200..<300).contains(http.statusCode) else {
-            let message = parseGeminiError(from: data) ?? "Gemini error: HTTP \(http.statusCode)."
+            let message =
+                parseGeminiError(from: data)
+                ?? String(format: String(localized: "error.gemini.http"), http.statusCode)
             throw ProviderError.serviceError(message)
         }
         return data
@@ -207,9 +218,9 @@ struct GeminiClient: ProviderClient {
             return nil
         }
         if let status = errorResponse.error.status {
-            return "Gemini error: \(errorResponse.error.message) (\(status))"
+            return String(format: String(localized: "error.gemini.detailStatus"), errorResponse.error.message, status)
         }
-        return "Gemini error: \(errorResponse.error.message)"
+        return String(format: String(localized: "error.gemini.detail"), errorResponse.error.message)
     }
 }
 

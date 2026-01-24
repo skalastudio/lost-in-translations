@@ -87,13 +87,13 @@ final class MainViewModel: ObservableObject {
         var current = selectedLanguages
         if current.contains(option) {
             if current.count <= 2 {
-                lastInlineError = "Select at least two languages."
+                lastInlineError = String(localized: "error.languages.min")
                 return
             }
             current.removeAll { $0 == option }
         } else {
             if current.count >= 3 {
-                lastInlineError = "You can choose up to three languages."
+                lastInlineError = String(localized: "error.languages.max")
                 return
             }
             current.append(option)
@@ -109,7 +109,7 @@ final class MainViewModel: ObservableObject {
     func runTask() {
         lastInlineError = nil
         guard !inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            lastInlineError = "Enter text before running."
+            lastInlineError = String(localized: "error.input.empty")
             return
         }
 
@@ -165,24 +165,10 @@ final class MainViewModel: ObservableObject {
 
     func retryFailedCompare() {
         guard provider == .auto else { return }
-        let failedProviders =
-            compareResults
-            .filter { $0.errorMessage != nil }
-            .map(\.provider)
+        let failedProviders = failedCompareProviders()
         guard !failedProviders.isEmpty else { return }
 
-        compareResults = compareResults.map { result in
-            guard failedProviders.contains(result.provider) else { return result }
-            return CompareResult(
-                provider: result.provider,
-                model: nil,
-                results: [],
-                errorMessage: nil,
-                isLoading: true,
-                isSuccess: false,
-                latencyMs: nil
-            )
-        }
+        markProvidersForRetry(failedProviders)
 
         // Cancel any previous running task
         currentTask?.cancel()
@@ -195,36 +181,25 @@ final class MainViewModel: ObservableObject {
                 let spec = buildSpec()
                 let output = try await taskRunner.runCompare(spec: spec, providers: failedProviders)
                 guard !Task.isCancelled else { return }
-                var updated = compareResults.filter { $0.isLoading == false }
-                updated.append(contentsOf: output.results)
-                compareResults = updated
-                diagnostics.tokenEstimate = output.tokenEstimate
-                diagnostics.latencyMs = Int(Date().timeIntervalSince(start) * 1000)
-                diagnostics.lastError = nil
+                applyRetryResults(output: output, start: start)
             } catch is CancellationError {
                 // Task was cancelled, no need to show error
             } catch {
                 guard !Task.isCancelled else { return }
-                compareResults = compareResults.map { result in
-                    guard failedProviders.contains(result.provider) else { return result }
-                    return CompareResult(
-                        provider: result.provider,
-                        model: nil,
-                        results: [],
-                        errorMessage: error.localizedDescription,
-                        isLoading: false,
-                        isSuccess: false,
-                        latencyMs: nil
-                    )
-                }
-                diagnostics.lastError = error.localizedDescription
-                lastInlineError = error.localizedDescription
+                applyRetryFailure(error: error, providers: failedProviders)
             }
         }
     }
 
     func copyAllResults() {
-        let combined = results.map { "\($0.language.name): \($0.text)" }.joined(separator: "\n\n")
+        let combined = results.map { result in
+            String(
+                format: String(localized: "results.copyAll.line"),
+                result.language.localizedName,
+                result.text
+            )
+        }
+        .joined(separator: "\n\n")
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(combined, forType: .string)
     }
@@ -235,11 +210,11 @@ final class MainViewModel: ObservableObject {
 
     func useCompareResult(_ result: CompareResult) {
         guard !result.isLoading else {
-            lastInlineError = "This provider is still running."
+            lastInlineError = String(localized: "error.provider.running")
             return
         }
         guard !result.results.isEmpty else {
-            lastInlineError = result.errorMessage ?? "No results to use."
+            lastInlineError = result.errorMessage ?? String(localized: "error.result.none")
             return
         }
         results = result.results
@@ -257,5 +232,52 @@ final class MainViewModel: ObservableObject {
 
     private func persist(_ key: String, value: String) {
         defaults.set(value, forKey: key)
+    }
+
+    private func failedCompareProviders() -> [Provider] {
+        compareResults
+            .filter { $0.errorMessage != nil }
+            .map(\.provider)
+    }
+
+    private func markProvidersForRetry(_ providers: [Provider]) {
+        compareResults = compareResults.map { result in
+            guard providers.contains(result.provider) else { return result }
+            return CompareResult(
+                provider: result.provider,
+                model: nil,
+                results: [],
+                errorMessage: nil,
+                isLoading: true,
+                isSuccess: false,
+                latencyMs: nil
+            )
+        }
+    }
+
+    private func applyRetryResults(output: CompareRunOutput, start: Date) {
+        var updated = compareResults.filter { $0.isLoading == false }
+        updated.append(contentsOf: output.results)
+        compareResults = updated
+        diagnostics.tokenEstimate = output.tokenEstimate
+        diagnostics.latencyMs = Int(Date().timeIntervalSince(start) * 1000)
+        diagnostics.lastError = nil
+    }
+
+    private func applyRetryFailure(error: Error, providers: [Provider]) {
+        compareResults = compareResults.map { result in
+            guard providers.contains(result.provider) else { return result }
+            return CompareResult(
+                provider: result.provider,
+                model: nil,
+                results: [],
+                errorMessage: error.localizedDescription,
+                isLoading: false,
+                isSuccess: false,
+                latencyMs: nil
+            )
+        }
+        diagnostics.lastError = error.localizedDescription
+        lastInlineError = error.localizedDescription
     }
 }

@@ -39,39 +39,39 @@ private struct ControlsRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 8) {
-                Picker("Mode", selection: $viewModel.mode) {
+                Picker("controls.mode", selection: $viewModel.mode) {
                     ForEach(WritingMode.allCases) { mode in
-                        Text(mode.rawValue).tag(mode)
+                        Text(mode.localizedName).tag(mode)
                     }
                 }
                 .pickerStyle(.segmented)
 
-                Picker("Intent", selection: $viewModel.intent) {
+                Picker("controls.intent", selection: $viewModel.intent) {
                     ForEach(WritingIntent.allCases) { intent in
-                        Text(intent.rawValue).tag(intent)
+                        Text(intent.localizedName).tag(intent)
                     }
                 }
                 .frame(maxWidth: 130)
 
-                Picker("Tone", selection: $viewModel.tone) {
+                Picker("controls.tone", selection: $viewModel.tone) {
                     ForEach(Tone.allCases) { tone in
-                        Text(tone.rawValue).tag(tone)
+                        Text(tone.localizedName).tag(tone)
                     }
                 }
                 .frame(maxWidth: 150)
             }
 
             HStack(spacing: 8) {
-                Picker("Provider", selection: $viewModel.provider) {
+                Picker("controls.provider", selection: $viewModel.provider) {
                     ForEach(Provider.allCases) { provider in
-                        Text(provider.rawValue).tag(provider)
+                        Text(provider.localizedName).tag(provider)
                     }
                 }
                 .frame(maxWidth: 140)
 
-                Picker("Model", selection: $viewModel.modelTier) {
+                Picker("controls.model", selection: $viewModel.modelTier) {
                     ForEach(ModelTier.allCases) { tier in
-                        Text(tier.rawValue).tag(tier)
+                        Text(tier.localizedName).tag(tier)
                     }
                 }
                 .frame(maxWidth: 140)
@@ -79,13 +79,19 @@ private struct ControlsRow: View {
                 Spacer()
             }
 
-            DisclosureGroup("Advanced models") {
+            DisclosureGroup("controls.advancedModels") {
                 VStack(alignment: .leading, spacing: 4) {
                     ForEach([Provider.openAI, Provider.claude, Provider.gemini], id: \.self) { provider in
                         if let models = viewModel.advancedModels[provider] {
-                            Text("\(provider.rawValue): \(models.joined(separator: ", "))")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
+                            Text(
+                                String(
+                                    format: String(localized: "controls.advancedModels.line"),
+                                    provider.localizedName,
+                                    models.joined(separator: ", ")
+                                )
+                            )
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
                         }
                     }
                 }
@@ -101,9 +107,9 @@ private struct LanguagePickerRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
-                Text("Languages")
+                Text("controls.languages")
                     .font(.subheadline)
-                Button("PT/EN/DE Preset") {
+                Button("controls.preset") {
                     viewModel.applyPresetLanguages()
                 }
                 .buttonStyle(.link)
@@ -131,21 +137,22 @@ private struct ActionButtonsRow: View {
 
     var body: some View {
         HStack(spacing: 10) {
-            Button(viewModel.isRunning ? "Running…" : "Run") {
+            let runTitle: LocalizedStringKey = viewModel.isRunning ? "actions.running" : "actions.run"
+            Button(runTitle) {
                 viewModel.runTask()
             }
             .disabled(viewModel.isRunning)
 
-            Button("Copy All") {
+            Button("actions.copyAll") {
                 viewModel.copyAllResults()
             }
             .disabled(viewModel.results.isEmpty)
 
-            Button("Clear") {
+            Button("actions.clear") {
                 viewModel.clearAll()
             }
 
-            Button("Settings") {
+            Button("actions.settings") {
                 openSettings()
             }
             Spacer()
@@ -159,14 +166,14 @@ private struct ResultsSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Results")
+                Text("results.title")
                     .font(.headline)
                 Spacer()
             }
 
             if viewModel.provider == .auto {
                 if viewModel.compareResults.isEmpty {
-                    Text("Compare view will appear here when Auto is selected.")
+                    Text("results.comparePlaceholder")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 } else {
@@ -177,14 +184,14 @@ private struct ResultsSection: View {
             ForEach(viewModel.results) { result in
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
-                        Text(result.language.name)
+                        Text(result.language.localizedName)
                             .font(.subheadline)
                         Spacer()
-                        Button("Copy") {
+                        Button("results.copy") {
                             NSPasteboard.general.clearContents()
                             NSPasteboard.general.setString(result.text, forType: .string)
                         }
-                        Button("Use this") {
+                        Button("results.useThis") {
                             viewModel.useResult(result)
                         }
                     }
@@ -214,16 +221,16 @@ private struct CompareResultsGrid: View {
             ForEach(viewModel.compareResults) { result in
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        Text(result.provider.rawValue)
+                        Text(result.provider.localizedName)
                             .font(.headline)
                         Spacer()
                         StatusBadge(result: result)
                         if let latency = result.latencyMs {
-                            Text("\(latency) ms")
+                            Text(String(format: String(localized: "compare.latency"), latency))
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
                         }
-                        Text(result.model ?? "Unavailable")
+                        Text(result.model ?? String(localized: "compare.modelUnavailable"))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -231,7 +238,7 @@ private struct CompareResultsGrid: View {
                         HStack(spacing: 6) {
                             ProgressView()
                                 .controlSize(.small)
-                            Text("Retrying...")
+                            Text("compare.retrying")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -241,13 +248,19 @@ private struct CompareResultsGrid: View {
                             .foregroundStyle(.red)
                     } else {
                         ForEach(result.results) { item in
-                            Text("\(item.language.code): \(item.text)")
-                                .font(.caption)
-                                .lineLimit(3)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Text(
+                                String(
+                                    format: String(localized: "compare.itemSummary"),
+                                    item.language.code,
+                                    item.text
+                                )
+                            )
+                            .font(.caption)
+                            .lineLimit(3)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
-                    Button("Use this set") {
+                    Button("compare.useThisSet") {
                         viewModel.useCompareResult(result)
                     }
                     .disabled(result.isLoading || result.errorMessage != nil || result.results.isEmpty)
@@ -258,7 +271,7 @@ private struct CompareResultsGrid: View {
             }
         }
         if viewModel.compareResults.contains(where: { $0.errorMessage != nil }) {
-            Button("Retry failed providers") {
+            Button("compare.retryFailed") {
                 viewModel.retryFailedCompare()
             }
             .padding(.top, 8)
@@ -279,19 +292,19 @@ private struct CompareSummaryRow: View {
         let latencySummary = formatLatencySummary(latencies)
 
         return HStack(spacing: 8) {
-            Text("Compare Summary")
+            Text("compare.summary.title")
                 .font(.subheadline)
             Spacer()
-            Text("Total \(total)")
+            Text(String(format: String(localized: "compare.summary.total"), total))
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            Text("Running \(running)")
+            Text(String(format: String(localized: "compare.summary.running"), running))
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            Text("Success \(success)")
+            Text(String(format: String(localized: "compare.summary.success"), success))
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            Text("Failed \(failed)")
+            Text(String(format: String(localized: "compare.summary.failed"), failed))
                 .font(.caption)
                 .foregroundStyle(.secondary)
             if let latencySummary {
@@ -311,6 +324,11 @@ private struct CompareSummaryRow: View {
         let minValue = latencies.min() ?? 0
         let maxValue = latencies.max() ?? 0
         let avgValue = latencies.reduce(0, +) / max(latencies.count, 1)
-        return "Latency min \(minValue) ms | avg \(avgValue) ms | max \(maxValue) ms"
+        return String(
+            format: String(localized: "compare.summary.latency"),
+            minValue,
+            avgValue,
+            maxValue
+        )
     }
 }

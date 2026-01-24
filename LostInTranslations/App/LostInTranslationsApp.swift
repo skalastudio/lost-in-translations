@@ -1,7 +1,6 @@
 import SwiftData
 import SwiftUI
 
-
 @main
 @MainActor
 struct LostInTranslationsApp: App {
@@ -14,12 +13,12 @@ struct LostInTranslationsApp: App {
             modelContainer = container
             _viewModel = StateObject(wrappedValue: MainViewModel(historyStore: HistoryStore(container: container)))
         } catch {
-            fatalError("Unable to initialize SwiftData: \(error)")
+            fatalError(String(format: String(localized: "error.swiftdata.init"), error.localizedDescription))
         }
     }
 
     var body: some Scene {
-        MenuBarExtra("Lost In Translations", systemImage: "text.bubble") {
+        MenuBarExtra("app.title", systemImage: "text.bubble") {
             MenuBarContentView(viewModel: viewModel)
         }
         .menuBarExtraStyle(.window)

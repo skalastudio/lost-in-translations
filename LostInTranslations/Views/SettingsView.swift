@@ -5,11 +5,11 @@ struct SettingsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Settings")
+            Text("settings.title")
                 .font(.title2)
 
-            Toggle("Keep History", isOn: $viewModel.keepHistory)
-            Button("Clear History") {
+            Toggle("settings.keepHistory", isOn: $viewModel.keepHistory)
+            Button("settings.clearHistory") {
                 viewModel.clearHistory()
             }
             .disabled(!viewModel.keepHistory)
@@ -17,13 +17,13 @@ struct SettingsView: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Provider Access")
+                Text("settings.providerAccess.title")
                     .font(.headline)
-                Text("Connect each provider through a dedicated consent flow. Keys are stored in Keychain.")
+                Text("settings.providerAccess.subtitle")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
 
-                Button("Manage Provider Access") {
+                Button("settings.providerAccess.manage") {
                     viewModel.showConsentFlow = true
                 }
             }

@@ -8,16 +8,16 @@ struct StatusBadge: View {
         let color: Color
 
         if result.isLoading {
-            label = "Running"
+            label = String(localized: "status.running")
             color = .gray
         } else if result.isSuccess {
-            label = "Success"
+            label = String(localized: "status.success")
             color = .green
         } else if result.errorMessage != nil {
-            label = "Failed"
+            label = String(localized: "status.failed")
             color = .red
         } else {
-            label = "Pending"
+            label = String(localized: "status.pending")
             color = .gray
         }
 

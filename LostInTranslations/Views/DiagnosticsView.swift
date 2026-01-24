@@ -4,14 +4,37 @@ struct DiagnosticsView: View {
     let diagnostics: DiagnosticsState
 
     var body: some View {
-        DisclosureGroup("Diagnostics") {
+        let placeholder = String(localized: "diagnostics.placeholder")
+
+        DisclosureGroup("diagnostics.title") {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Last provider: \(diagnostics.lastProvider?.rawValue ?? "—")")
-                Text("Last model: \(diagnostics.lastModel ?? "—")")
-                Text("Token estimate: \(diagnostics.tokenEstimate.map(String.init) ?? "—")")
-                Text("Latency: \(diagnostics.latencyMs.map { "\($0) ms" } ?? "—")")
+                Text(
+                    String(
+                        format: String(localized: "diagnostics.lastProvider"),
+                        diagnostics.lastProvider?.localizedName ?? placeholder
+                    )
+                )
+                Text(
+                    String(
+                        format: String(localized: "diagnostics.lastModel"),
+                        diagnostics.lastModel ?? placeholder
+                    )
+                )
+                Text(
+                    String(
+                        format: String(localized: "diagnostics.tokenEstimate"),
+                        diagnostics.tokenEstimate.map(String.init) ?? placeholder
+                    )
+                )
+                Text(
+                    String(
+                        format: String(localized: "diagnostics.latency"),
+                        diagnostics.latencyMs.map { String(format: String(localized: "compare.latency"), $0) }
+                            ?? placeholder
+                    )
+                )
                 if let error = diagnostics.lastError {
-                    Text("Last error: \(error)")
+                    Text(String(format: String(localized: "diagnostics.lastError"), error))
                         .foregroundStyle(.red)
                 }
             }
