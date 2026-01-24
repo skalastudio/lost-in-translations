@@ -355,3 +355,17 @@ other think, when app start i do not see the correct text based on translations,
 
 **Response:**
 Switched Resources handling in project.yml to use the resources section (instead of a folder reference) so Localizable.strings is processed correctly, regenerated the project, and rebuilt.
+## 2026-01-24T22:36:31Z — GPT-5 Codex
+
+**Prompt:**
+please check the project.yml and align with the project... dot not change xcode project only the file project.yml to match the xcode project
+
+**Response:**
+Aligned project.yml with the Xcode project by fixing the resource icon path and adding the tests bundle identifier, then ran the build script.
+## 2026-01-24T22:41:01Z — GPT-5 Codex
+
+**Prompt:**
+the app icon is on folder LostInTranslations/Resources and the name is "LostInTranslations.icon"
+
+**Response:**
+Updated project.yml to point the icon resource path to LostInTranslations/Resources/LostInTranslations.icon and ran the build script.

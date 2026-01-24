@@ -49,6 +49,9 @@ targets:
     deploymentTarget: 14.0
     sources:
       - path: LostInTranslationsTests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.skala.lostintranslations.LostInTranslationsTests
     dependencies:
       - target: LostInTranslations
 
