@@ -307,6 +307,12 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					3032858A124BC411CD8546F3 = {
+						DevelopmentTeam = FWXSV2MP8Z;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = F5B8DA679E11A08B89C127F7 /* Build configuration list for PBXProject "LostInTranslations" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -403,7 +409,7 @@
 		704D3E24951A0256C6454FA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = LostInTranslations.icon;
 				CODE_SIGN_ENTITLEMENTS = LostInTranslations/LostInTranslations.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -411,7 +417,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = FWXSV2MP8Z;
 				INFOPLIST_FILE = LostInTranslations/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Lost in Translation";
+				INFOPLIST_KEY_CFBundleDisplayName = "Lost in Translations";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -496,7 +502,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.lostintranslations.LostInTranslationsTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skala.lostintranslations.LostInTranslationsTests;
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LostInTranslations.app/Contents/MacOS/LostInTranslations";
 			};
@@ -513,7 +519,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.lostintranslations.LostInTranslationsTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skala.lostintranslations.LostInTranslationsTests;
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LostInTranslations.app/Contents/MacOS/LostInTranslations";
 			};
@@ -522,7 +528,7 @@
 		A950F3B23E128512119D8CB6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = LostInTranslations.icon;
 				CODE_SIGN_ENTITLEMENTS = LostInTranslations/LostInTranslations.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -530,7 +536,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = FWXSV2MP8Z;
 				INFOPLIST_FILE = LostInTranslations/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Lost in Translation";
+				INFOPLIST_KEY_CFBundleDisplayName = "Lost in Translations";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

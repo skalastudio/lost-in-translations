@@ -320,3 +320,17 @@ i change the project file on xcode, align the project.yml with the definitions m
 
 **Response:**
 Aligned project.yml to the Xcode changes by adding the project/target build settings, defining the Mocked scheme with the UseMockProvider argument, and updating TaskRunner to accept the dashed argument variant; regenerated the project and ran format/lint/build.
+## 2026-01-24T19:58:51Z — GPT-5 Codex
+
+**Prompt:**
+ok, i change again the xode project, align the changes with project.yml
+
+**Response:**
+Checked the repo and found no pending changes from Xcode to align, so no project.yml updates were needed.
+## 2026-01-24T20:02:15Z — GPT-5 Codex
+
+**Prompt:**
+info.plist, app cattegory, display name, bundle identifier, version, App icon, signing capabilities
+
+**Response:**
+Aligned project.yml with the updated Xcode settings (bundle id, display name, marketing version, app icon, signing settings, app category), regenerated the project, and ran format/lint/build.
