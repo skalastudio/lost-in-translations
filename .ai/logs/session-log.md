@@ -334,3 +334,10 @@ info.plist, app cattegory, display name, bundle identifier, version, App icon, s
 
 **Response:**
 Aligned project.yml with the updated Xcode settings (bundle id, display name, marketing version, app icon, signing settings, app category), regenerated the project, and ran format/lint/build.
+## 2026-01-24T22:16:54Z — GPT-5 Codex
+
+**Prompt:**
+yes
+
+**Response:**
+Updated Info.plist to use MARKETING_VERSION and CURRENT_PROJECT_VERSION placeholders, set CURRENT_PROJECT_VERSION in project.yml, regenerated the project, and ran format/lint/build.
