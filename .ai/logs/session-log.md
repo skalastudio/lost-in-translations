@@ -292,3 +292,10 @@ yes
 
 **Response:**
 Confirmed the request and prepared the update summary with the latest changes and next steps.
+## 2026-01-24T19:29:49Z — GPT-5 Codex
+
+**Prompt:**
+Now that we have providers i want for development and tests, have mock provider to simulate the calls to external providers, those calls generate random translate messages simulate the type of message and tone. The way to activate the mock provider is by defined an app argument like "UseMockProbider" that is only possible to use on Debug
+
+**Response:**
+Added a MockProviderClient that generates randomized outputs per mode/tone, wired TaskRunner to use it when the debug-only UseMockProbider argument is present (including compare/auto behavior), regenerated the project, and ran format/lint/build.

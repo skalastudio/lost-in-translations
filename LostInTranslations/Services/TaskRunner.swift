@@ -8,6 +8,14 @@ actor TaskRunner {
         let key: String
     }
 
+    private static let useMockProvider: Bool = {
+        #if DEBUG
+            return ProcessInfo.processInfo.arguments.contains("UseMockProbider")
+        #else
+            return false
+        #endif
+    }()
+
     private let clients: [Provider: ProviderClient] = [
         .openAI: OpenAIClient(),
         .claude: ClaudeClient(),
@@ -17,9 +25,7 @@ actor TaskRunner {
     func run(spec: TaskSpec) async throws -> TaskRunOutput {
         let provider = try resolveProvider(from: spec.provider)
         let apiKey = try readKey(for: provider)
-        guard let client = clients[provider] else {
-            throw ProviderError.invalidResponse
-        }
+        let client = try client(for: provider)
         let result = try await client.run(spec: spec, apiKey: apiKey)
         let tokenEstimate = builder.estimateTokens(for: spec.inputText)
         return TaskRunOutput(
@@ -90,7 +96,16 @@ actor TaskRunner {
     }
 
     private func compareTasks(for providers: [Provider]) -> [CompareTask] {
-        providers.compactMap { provider in
+        if Self.useMockProvider {
+            return providers.map { provider in
+                CompareTask(
+                    provider: provider,
+                    client: MockProviderClient(provider: provider),
+                    key: "mock"
+                )
+            }
+        }
+        return providers.compactMap { provider in
             guard let client = clients[provider], let key = KeychainStore.readKey(for: provider) else {
                 return nil
             }
@@ -99,6 +114,9 @@ actor TaskRunner {
     }
 
     private func resolveProvider(from selection: Provider) throws -> Provider {
+        if Self.useMockProvider {
+            return selection == .auto ? .openAI : selection
+        }
         if selection != .auto {
             return selection
         }
@@ -110,15 +128,31 @@ actor TaskRunner {
     }
 
     private func availableProviders() -> [Provider] {
-        [Provider.openAI, Provider.claude, Provider.gemini].filter { provider in
+        if Self.useMockProvider {
+            return [.openAI, .claude, .gemini]
+        }
+        return [Provider.openAI, Provider.claude, Provider.gemini].filter { provider in
             KeychainStore.readKey(for: provider) != nil
         }
     }
 
     private func readKey(for provider: Provider) throws -> String {
+        if Self.useMockProvider {
+            return "mock"
+        }
         guard let key = KeychainStore.readKey(for: provider) else {
             throw ProviderError.missingKey(provider)
         }
         return key
+    }
+
+    private func client(for provider: Provider) throws -> ProviderClient {
+        if Self.useMockProvider {
+            return MockProviderClient(provider: provider)
+        }
+        guard let client = clients[provider] else {
+            throw ProviderError.invalidResponse
+        }
+        return client
     }
 }
