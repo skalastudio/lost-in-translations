@@ -1,8 +1,18 @@
 # Lost in Translations
-_add info_
+Lost in Translations is a macOS 14+ mac app for translation, rewriting, and synonym suggestions using LLM providers (OpenAI, Anthropic Claude, Google Gemini). It's built with Swift 6.2 and SwiftUI, targeting the Mac App Store.
+
 
 ## Features
-_add info_
+- User can input text to translate in any language and when press translate, it will translate into the defined languages.
+- The user can define max 3 languages to be translated in one call 
+- The user can define the type target message: email, message, chat 
+- The user can define the type of tone  
+- The user can use to get synonyms, improve a messsage
+- The user can use audio input to right the message
+- The app allows using different LLM providers (OpenAI, Anthropic Claude, Google Gemini)
+- The app allows set the API key for each provider 
+- The app allows to set the model for each provider (and by default suggest the more appropriated models and with less costs)
+- The app if no API Key is defined, the list of providers will be disabled. Only providers with API keys will be enabled.
 
 ## Requirements
 
@@ -11,8 +21,8 @@ _add info_
 
 ## Setup Instructions
 
-### 1. Configure Internet Accounts
-_add info_
+### 1. Configure API Keys Accounts
+1. Go to Settings and set the API Keys for each provider 
 
 
 ### 2. Build and Run the App
@@ -58,7 +68,6 @@ This app demonstrates modern Swift 6.2 best practices:
 - **Structured Concurrency**: Task-based async patterns, no DispatchQueue or completion handlers
 - **LocalizedError**: User-facing error messages with proper descriptions
 - **UserNotifications Framework**: Modern notification API replacing deprecated NSUserNotification
-
 
 ## Permissions
 

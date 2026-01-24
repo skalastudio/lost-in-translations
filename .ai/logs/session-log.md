@@ -236,3 +236,59 @@ I want my app to be localized, so move all the messages to be localized
 
 **Response:**
 Added `Localizable.strings`, updated all user-facing UI strings and error messages to use localization keys, localized enum display names and diagnostics, and ran format/lint/build.
+## 2026-01-24T18:40:30Z — GPT-5 Codex
+
+**Prompt:**
+let's improve the provider apis, add all the urls, paramerters and headers to a dedicated api constants files, if different constants are used per provide create a dedicated constant swift file per provider
+
+**Response:**
+Added OpenAI/Claude/Gemini API constants files, refactored ProviderClients to use the centralized URLs/headers/parameters, regenerated the project, and ran format/lint/build.
+## 2026-01-24T18:43:04Z — GPT-5 Codex
+
+**Prompt:**
+yes
+
+**Response:**
+Moved model list defaults into ModelCatalogConstants, added a ProviderRetryPolicy with backoff settings, wired a shared retry helper into provider network requests, regenerated the project, and ran format/lint/build.
+## 2026-01-24T18:48:30Z — GPT-5 Codex
+
+**Prompt:**
+all the providers are defined on ProviderClients.swift, i want each provider in an specific file and based on protocol, define a provider protocol that all the providers must implement
+
+**Response:**
+Split OpenAI/Claude/Gemini clients into dedicated files, introduced a shared ProviderClient protocol with a shared request helper, removed ProviderClients.swift, regenerated the project, and ran format/lint/build.
+## 2026-01-24T18:50:25Z — GPT-5 Codex
+
+**Prompt:**
+yes
+
+**Response:**
+Moved each provider request/response DTOs into dedicated model files (OpenAIModels, ClaudeModels, GeminiModels), cleaned client files, regenerated the project, and ran format/lint/build.
+## 2026-01-24T18:51:48Z — GPT-5 Codex
+
+**Prompt:**
+yes
+
+**Response:**
+Moved provider files into per-provider folders under Services/Providers (OpenAI, Claude, Gemini, Shared), regenerated the Xcode project, and ran format/lint/build.
+## 2026-01-24T18:57:34Z — GPT-5 Codex
+
+**Prompt:**
+yes
+
+**Response:**
+Moved provider constants/clients/models into per-provider folders under Services/Providers and kept shared protocol/retry policy in Providers/Shared; regenerated the project and ran format/lint/build.
+## 2026-01-24T18:59:52Z — GPT-5 Codex
+
+**Prompt:**
+add strings using on TaskSpecBuilers to a constant file name AIPrompts.swift
+
+**Response:**
+Added `AIPrompts` constants, switched `TaskSpecBuilder` prompts to use them, regenerated the Xcode project, and ran format/lint/build.
+## 2026-01-24T19:01:40Z — GPT-5 Codex
+
+**Prompt:**
+yes
+
+**Response:**
+Confirmed the request and prepared the update summary with the latest changes and next steps.

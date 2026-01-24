@@ -3,24 +3,21 @@ import Foundation
 struct TaskSpecBuilder {
     func systemPrompt(for spec: TaskSpec) -> String {
         var instructions = [
-            "You are a writing assistant for macOS.",
-            """
-            Return a strict JSON object with a top-level key "results" that is an array of \
-            {"language":"CODE","text":"..."}.
-            """,
-            "Preserve names, numbers, and meaning. Avoid hallucinations.",
+            AIPrompts.systemBase,
+            AIPrompts.systemJSONFormat,
+            AIPrompts.systemSafety,
         ]
 
         switch spec.mode {
         case .translate:
-            instructions.append("Translate into 2-3 target languages.")
-            instructions.append("Respect the intent and tone. Keep meaning.")
+            instructions.append(AIPrompts.translateInstruction)
+            instructions.append(AIPrompts.translateToneInstruction)
         case .improve:
-            instructions.append("Rewrite to improve clarity in the same language unless targets are provided.")
-            instructions.append("Respect intent and tone.")
+            instructions.append(AIPrompts.improveInstruction)
+            instructions.append(AIPrompts.improveToneInstruction)
         case .synonyms:
-            instructions.append("Provide synonyms with short usage notes.")
-            instructions.append("Preserve register and avoid rare words unless asked.")
+            instructions.append(AIPrompts.synonymsInstruction)
+            instructions.append(AIPrompts.synonymsRegisterInstruction)
         }
 
         return instructions.joined(separator: " ")
@@ -29,12 +26,12 @@ struct TaskSpecBuilder {
     func userPrompt(for spec: TaskSpec) -> String {
         let languageCodes = spec.languages.map(\.code).joined(separator: ", ")
         return """
-            Mode: \(spec.mode.rawValue)
-            Intent: \(spec.intent.rawValue)
-            Tone: \(spec.tone.rawValue)
-            Target Languages: \(languageCodes)
+            \(AIPrompts.userModeLabel) \(spec.mode.rawValue)
+            \(AIPrompts.userIntentLabel) \(spec.intent.rawValue)
+            \(AIPrompts.userToneLabel) \(spec.tone.rawValue)
+            \(AIPrompts.userTargetsLabel) \(languageCodes)
 
-            Input:
+            \(AIPrompts.userInputLabel)
             \(spec.inputText)
             """
     }

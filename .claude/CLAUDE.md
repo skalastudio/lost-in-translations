@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Lost in Translations is a macOS 14+ menu bar app for translation, rewriting, and synonym suggestions using LLM providers (OpenAI, Anthropic Claude, Google Gemini). It's built with Swift 6.2 and SwiftUI, targeting the Mac App Store.
+Lost in Translations is a macOS 14+ mac app for translation, rewriting, and synonym suggestions using LLM providers (OpenAI, Anthropic Claude, Google Gemini). It's built with Swift 6.2 and SwiftUI, targeting the Mac App Store.
 
 ## Build & Development Commands
 
