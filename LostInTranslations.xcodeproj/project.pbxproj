@@ -323,7 +323,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					3032858A124BC411CD8546F3 = {
 						DevelopmentTeam = FWXSV2MP8Z;
@@ -448,6 +448,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = FWXSV2MP8Z;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = LostInTranslations/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Lost in Translations";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
@@ -568,6 +569,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = FWXSV2MP8Z;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = LostInTranslations/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Lost in Translations";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
