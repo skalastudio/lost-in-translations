@@ -81,7 +81,9 @@ struct HistoryModeView: View {
         appModel.selectedPurpose = item.purpose
         appModel.selectedTone = item.tone
         appModel.performTranslate()
-        appModel.selectedMode = .translate
+        Task { @MainActor in
+            appModel.selectedMode = .translate
+        }
     }
 
     /// Formats a date for list display.

@@ -10,13 +10,26 @@ struct RootSplitView: View {
     /// Root view body.
     var body: some View {
         NavigationSplitView {
-            SidebarView(selectedMode: $appModel.selectedMode)
+            SidebarView(selectedMode: sidebarSelection)
         } detail: {
             detailView
                 .toolbar {
                     detailToolbar
                 }
         }
+    }
+
+    /// Selection binding that avoids publishing during a view update pass.
+    private var sidebarSelection: Binding<AppMode> {
+        Binding(
+            get: { appModel.selectedMode },
+            set: { newValue in
+                guard appModel.selectedMode != newValue else { return }
+                Task { @MainActor in
+                    appModel.selectedMode = newValue
+                }
+            }
+        )
     }
 
     @ViewBuilder

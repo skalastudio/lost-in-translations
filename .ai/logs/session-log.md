@@ -1113,3 +1113,21 @@ Commands run
 
 Permissions/Sync
 - None.
+### 2026-01-25T16:53:19Z — gpt-5
+**Prompt**
+when i click on the options in the side bar, i see on xcode console the followng error: Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+
+**Response**
+Deferred sidebar selection updates and history restore mode changes to avoid publishing during SwiftUI view updates. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/RootSplitView.swift`
+- `LostInTranslations/Views/HistoryModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
