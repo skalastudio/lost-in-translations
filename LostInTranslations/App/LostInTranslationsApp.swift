@@ -6,6 +6,7 @@ import SwiftUI
 struct LostInTranslationsApp: App {
     private let modelContainer: ModelContainer
     @StateObject private var viewModel: MainViewModel
+    @StateObject private var appModel = AppModel()
 
     init() {
         #if DEBUG
@@ -27,7 +28,8 @@ struct LostInTranslationsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainView(viewModel: viewModel)
+            RootSplitView(viewModel: viewModel)
+                .environmentObject(appModel)
         }
         .modelContainer(modelContainer)
 

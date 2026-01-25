@@ -397,3 +397,391 @@ rename the MenuBarContentView to MainView and the related files also
 
 **Response:**
 Renamed MenuBarContentView to MainView (files and type), updated references in the app entry point and preview, regenerated the Xcode project, and reran formatting, lint, and the build script.
+## 2026-01-25T12:54:19Z — GPT-5 Codex
+
+**Prompt:**
+now let's on redesign the app to follow the standard layout of apple applications:
+Plan + file structure (no code yet)
+You are a senior macOS SwiftUI engineer. I’m redesigning my app “Lost in Translations” into a normal macOS app (not menu bar). Target macOS 14+.
+
+Goal: Apple-standard layout (sidebar + content) using NavigationSplitView.
+
+First, propose:
+1) the main user flows (Translate / Improve / Rephrase / Synonyms / History optional)
+2) a recommended SwiftUI file structure (folders + key views)
+3) what state models/enums you would create (e.g., AppMode, Provider, Intent, Tone)
+Do not write code yet. Keep it concise and Apple-HIG aligned.
+
+Only modify/introduce the files needed. Keep the code compilable.
+
+**Response:**
+Noted that .ai/prompts/1.initial-prompt.md is missing, then provided a concise Apple-HIG-aligned plan covering user flows, SwiftUI file structure, and recommended state models/enums without writing code.
+## 2026-01-25T12:56:53Z — GPT-5 Codex
+
+**Prompt:**
+Plan: Apple-standard NavigationSplitView redesign for “Lost in Translations” (no code)
+
+1) Main user flows (HIG-aligned)
+- Translate (primary): user enters text → chooses source (Auto) + 1–3 target languages → runs → sees results in the detail area with per-language actions (Copy / Replace / Regenerate).
+- Improve Text: user enters text → chooses “Purpose” preset (clarity, grammar, shorter, more formal, friendlier) + optional tone → gets a single improved result with Copy / Replace.
+- Rephrase: user enters text → chooses style + number of variants (1 or 3) → gets variant cards with Copy / Replace per variant.
+- Synonyms: user enters/selects a word/phrase → sees synonyms list + usage notes + examples; can copy or insert a synonym.
+- History (optional): local-only list of recent actions (preview + mode + timestamp). Selecting an item restores the previous state in that mode.
+
+2) Recommended SwiftUI file structure (folders + key views)
+- App/
+  - LostInTranslationsApp.swift
+  - AppModel.swift (global app-level observable state and routing)
+- Views/
+  - RootSplitView.swift (NavigationSplitView shell)
+  - SidebarView.swift (mode navigation list)
+  - Modes/
+    - TranslateModeView.swift
+    - ImproveModeView.swift
+    - RephraseModeView.swift
+    - SynonymsModeView.swift
+    - HistoryModeView.swift (optional)
+  - Components/
+    - InputEditor.swift (text editor with placeholder)
+    - OutputCardView.swift (per-result card + actions)
+    - LanguagePillsView.swift (target languages chips/pills)
+- Models/
+  - AppMode.swift (Translate/Improve/Rephrase/Synonyms/History)
+  - Language.swift
+  - Tone.swift
+  - Purpose.swift (Email, Chat, Notes, Professional, etc.)
+  - Provider.swift (OpenAI/Claude/Gemini)
+  - HistoryItem.swift (local record)
+- Services/
+  - PromptBuilder.swift (maps mode + purpose + tone + language to prompts)
+  - ProviderClient.swift (protocol)
+  - OpenAIClient.swift / ClaudeClient.swift / GeminiClient.swift (stubs initially)
+- Settings/
+  - SettingsView.swift (TabView)
+  - ProvidersSettingsView.swift (API keys)
+  - OutputSettingsView.swift (copy format, max languages, etc.)
+  - PrivacySettingsView.swift (history on/off)
+
+3) State models / enums (minimal + stable)
+- enum AppMode: Hashable { translate, improve, rephrase, synonyms, history }
+- enum Provider: Hashable { openAI, anthropic, gemini }
+- enum Tone: Hashable { neutral, professional, formal, casual, friendly, direct }
+- enum Purpose: Hashable { email, sms, chat, notes }  // used to shape output format
+- struct HistoryItem: Identifiable { mode, inputPreview, metadata, date, provider }
+- class AppModel: ObservableObject
+  - selectedMode
+  - selectedProvider (default)
+  - translateState / improveState / rephraseState / synonymsState (small structs)
+  - settings (max languages, storeHistory, etc.)
+
+Notes:
+- Keep sidebar strictly for navigation (no form controls).
+- Put provider key management and advanced options in Settings (Cmd+,).
+- Use unified toolbar for mode-specific controls (languages, purpose, tone).
+- Start with UI-only stubs and in-memory data; add networking later.
+
+**Response:**
+Confirmed this plan is aligned with Apple HIG and NavigationSplitView. Offered to proceed by mapping to the current repo and updating file structure next (no code changes yet).
+## 2026-01-25T12:59:57Z — GPT-5 Codex
+
+**Prompt:**
+yes, but put all the Views on the Views folder, no need one folder for Settings
+
+**Response:**
+Moved view models into a new ViewModels folder, grouped reusable views under Views/Components while keeping all views in Views (including SettingsView), regenerated the Xcode project, and ran format, lint, and build checks.
+## 2026-01-25T13:04:23Z — GPT-5 Codex
+
+**Prompt:**
+ok
+
+**Response:**
+Renamed MainView to RootSplitView, introduced NavigationSplitView with a SidebarView and placeholder mode views, added AppMode/Purpose/HistoryItem models, resolved a Tone enum naming conflict, regenerated the project, and reran lint/build checks.
+## 2026-01-25T13:12:43Z — GPT-5 Codex
+
+**Prompt:**
+Update the existing NavigationSplitView app shell to add a unified toolbar that is contextual per AppMode.
+
+Constraints:
+- Keep everything compilable.
+- Do NOT add networking or provider clients yet.
+- Do NOT rename existing files unless necessary.
+- Keep UI minimal and macOS-native (HIG).
+
+Requirements:
+1) Add a shared AppModel (or MainViewModel if already exists) that stores:
+   - selectedMode: AppMode
+   - selectedPurpose: Purpose (default .chat or .notes)
+   - selectedTone: Tone (default .neutral)
+   - translateFromLanguage: Language (or String "Auto" if Language model not present yet)
+   - translateTargetLanguages: [Language] (or [String]) with max 3
+2) Add toolbar items only when selectedMode == .translate:
+   - From language picker (default "Auto")
+   - Target language “pills” (show selected targets) and a + menu/button to add up to 3
+   - Purpose menu (Email/SMS/Chat/Notes)
+   - Tone menu (Neutral/Professional/Formal/Casual/Friendly/Direct)
+   - A primary action button “Translate” (stub action)
+3) For other modes, keep the toolbar minimal (e.g., a “Clear” button stub).
+4) Use .toolbar in the detail view so it behaves as a unified toolbar.
+5) If Language model doesn’t exist, implement minimal Language enum now (PT, EN, DE + Auto) in Models/Language.swift and use it.
+
+Return code changes only.. 
+“Use a single AppModel shared via environmentObject.”
+
+**Response:**
+Added AppModel and Language models, wired AppModel as an EnvironmentObject, and implemented a contextual unified toolbar in RootSplitView with translate-specific controls and a minimal Clear button for other modes. Regenerated the project and ran format, lint, and build checks.
+## 2026-01-25T13:17:16Z — GPT-5 Codex
+
+**Prompt:**
+Implement the Translate mode UI and wire it to the existing AppModel + toolbar Translate action.
+
+Context:
+- AppModel and Language enum already exist.
+- RootSplitView already has a contextual toolbar for Translate mode (from/targets/purpose/tone + Translate button).
+- TranslateModeView currently is a placeholder.
+
+Constraints:
+- UI only (no networking).
+- Keep the project compilable.
+- Do NOT introduce a second view model; use the existing AppModel via @EnvironmentObject.
+- Do NOT rename files unless necessary.
+- Keep styling minimal and macOS-native.
+
+Requirements:
+1) Update AppModel to include:
+   - @Published var translateInputText: String
+   - @Published var translateOutputs: [TranslationOutput]
+   - func performTranslateStub()
+   - func clearCurrentMode() (or reuse existing clear; ensure it clears translateInputText + translateOutputs when in translate mode)
+2) Define:
+   - struct TranslationOutput: Identifiable { id, language: Language, text: String }
+   Place it in Models/TranslationOutput.swift (preferred) or inside AppModel if you must.
+3) RootSplitView:
+   - Ensure the toolbar “Translate” button calls appModel.performTranslateStub()
+   - Add Cmd+Enter keyboard shortcut for Translate
+4) TranslateModeView UI:
+   - Use a horizontal split layout (prefer HSplitView on macOS 14; fallback to HStack + Divider if needed)
+   - Left panel: TextEditor bound to appModel.translateInputText with a placeholder “Paste or type text…”
+   - Right panel: vertical list of output cards for appModel.translateOutputs (one per target language)
+5) Output cards:
+   - Show language label (e.g. “Portuguese (PT)” or “English (EN)”)
+   - Show output text in a scrollable/read-only area
+   - Buttons: Copy, Replace Input, Regenerate (all stub actions)
+   - Copy uses NSPasteboard to put the card text on clipboard
+   - Replace Input sets appModel.translateInputText = outputText
+   - Regenerate calls appModel.performTranslateStub() (good enough for stub)
+6) Stub translation behavior:
+   - When performTranslateStub() is called, generate outputs for the currently selected target languages:
+     text = "(Stub) <LANG>: " + first ~120 chars of translateInputText
+   - If input is empty, outputs should become empty.
+7) Add Cmd+Shift+C shortcut to copy all outputs (joined with blank line separators) to NSPasteboard.
+   - This shortcut can live in TranslateModeView or RootSplitView, but it must work when Translate mode is active.
+
+Deliver:
+- Updated TranslateModeView.swift
+- Any small supporting views/components if helpful (InputEditor, OutputCardView), but keep it minimal.
+- Update AppModel and RootSplitView wiring accordingly.
+Return code changes only.
+
+**Response:**
+Implemented a stubbed Translate UI with HSplitView, wired AppModel state and actions, added TranslationOutput model, and hooked Translate/Copy shortcuts. Ran xcodegen, format, lint, and build.
+## 2026-01-25T13:22:54Z — GPT-5 Codex
+
+**Prompt:**
+Extend the existing Translate stub logic so toolbar selections (from/targets/purpose/tone) are reflected in the generated outputs.
+
+Constraints:
+- Still UI + stub logic only.
+- Keep project compilable.
+- Do NOT introduce networking or provider clients.
+- Reuse existing AppModel properties (do not duplicate state).
+
+Requirements:
+1) Update AppModel.performTranslateStub() so each TranslationOutput.text includes:
+   - Selected Purpose (e.g. Email / Chat / Notes)
+   - Selected Tone (e.g. Professional / Casual)
+   - Source language + target language
+   Example stub format:
+   “[Email | Professional | Auto → EN]
+    (Stub) Translated text: <first 120 chars>”
+
+2) If no target languages are selected:
+   - Do not generate outputs
+   - Optionally set translateOutputs = [] (no alerts yet)
+
+3) Ensure changes to toolbar controls do NOT auto-run translation.
+   - Translation only runs when:
+     - Toolbar Translate button is clicked
+     - Cmd+Enter is pressed
+
+4) Add a small visual hint in each output card header showing:
+   - Language
+   - Purpose
+   - Tone
+   (Text-only, no icons needed)
+
+Return code changes only.
+
+**Response:**
+Updated stub output formatting to include purpose/tone/source/target, stored purpose and tone on each TranslationOutput for header display, and added guard for empty target languages. Build failed due to a DerivedData permission error (not code-related).
+## 2026-01-25T13:25:12Z — GPT-5 Codex
+
+**Prompt:**
+i remove the build, start to create it again
+
+**Response:**
+Retried `scripts/build.sh`, but the build still failed due to a DerivedData permission error (unable to write build/DerivedData/info.plist). Advised checking folder permissions.
+## 2026-01-25T13:28:00Z — GPT-5 Codex
+
+**Prompt:**
+i give a chmod 777 to build folder try
+
+**Response:**
+Retried `scripts/build.sh`, but it still failed during clean/build because Xcode cannot write `build/DerivedData/info.plist` (permission error). Suggested checking ownership/permissions on build/DerivedData.
+## 2026-01-25T13:31:00Z — GPT-5 Codex
+
+**Prompt:**
+done... i can continue
+
+**Response:**
+Retried the build, but it still failed because Xcode couldn't write to build/DerivedData/info.plist. Suggested verifying ownership/permissions on build/DerivedData or using a different DerivedData path for the build.
+## 2026-01-25T13:34:20Z — GPT-5 Codex
+
+**Prompt:**
+done
+
+**Response:**
+Reran the build after the permission reset and it succeeded.
+## 2026-01-25T13:37:51Z — GPT-5 Codex
+
+**Prompt:**
+Add minimal, local-only History support for Translate mode.
+
+Constraints:
+- Local only (no cloud, no sync).
+- Keep it simple and HIG-aligned.
+- No heavy persistence frameworks required (SwiftData optional but not mandatory).
+- Keep project compilable.
+
+Requirements:
+1) On each successful performTranslateStub():
+   - Create a HistoryItem capturing:
+     - mode = .translate
+     - inputPreview (first ~80 chars)
+     - targetLanguages
+     - purpose
+     - tone
+     - timestamp
+   - Append it to an in-memory history array in AppModel.
+
+2) HistoryModeView:
+   - Show a List of HistoryItem entries:
+     - Title: inputPreview
+     - Subtitle: purpose + tone + target languages
+     - Trailing: relative timestamp (e.g. “5 min ago”)
+   - Selecting an item restores:
+     - translateInputText
+     - selected target languages
+     - purpose
+     - tone
+     - outputs regenerated via performTranslateStub()
+
+3) Sidebar:
+   - History item already exists — do not change navigation.
+   - Selecting History shows HistoryModeView.
+
+4) Optional (nice to have):
+   - Add “Clear History” button in HistoryModeView toolbar.
+
+Return code changes only.
+
+**Response:**
+Added in-memory history tracking on stub translate, expanded HistoryItem to store input/targets/purpose/tone, implemented HistoryModeView list with relative timestamps and restore behavior, and added Clear History. Ran format, lint, and build successfully.
+## 2026-01-25T13:40:49Z — GPT-5 Codex
+
+**Prompt:**
+Polish SidebarView to be more Apple-native and slightly more informative.
+
+Constraints:
+- Keep app compilable.
+- No new features beyond UI polish.
+- Do not add custom styling or colors.
+- Use SF Symbols and standard List sidebar behavior.
+
+Requirements:
+1) Organize sidebar into two sections:
+   - “Actions”: Translate, Improve Text, Rephrase, Synonyms
+   - “Library”: History
+2) Add a badge/count for History showing the total number of history items.
+   - Use SwiftUI .badge(...) on the History row if possible.
+3) Keep icons consistent and HIG-friendly:
+   - Translate: "globe"
+   - Improve: "wand.and.stars"
+   - Rephrase: "arrow.triangle.2.circlepath"
+   - Synonyms: "text.book.closed"
+   - History: "clock.arrow.circlepath"
+4) Ensure selection persists and works the same.
+Return code changes only (SidebarView + any minimal helpers).
+
+**Response:**
+Updated SidebarView to use Actions/Library sections, added a History badge count via AppModel, and aligned labels/icons to the specified SF Symbols. Ran format, lint, and build successfully.
+## 2026-01-25T13:43:51Z — GPT-5 Codex
+
+**Prompt:**
+Add Apple-style empty states and guidance text (no new features).
+
+Constraints:
+- Keep project compilable.
+- No custom colors, no fancy styling. Use standard fonts/materials.
+- Avoid modal alerts.
+
+Requirements:
+1) HistoryModeView:
+   - If there are no history items, show an empty state in the detail area:
+     - Title: “No History Yet”
+     - Subtitle: “Run a translation to see recent items here.”
+     - Optional small tip: “Tip: Press ⌘↩ to translate.”
+   - Keep the Clear History button but disable it when history is empty.
+
+2) TranslateModeView:
+   - If translateInputText is empty, show a subtle placeholder / hint on the output side:
+     - “Results will appear here”
+     - “Paste or type text, then press ⌘↩”
+   - If translateOutputs is empty after a run attempt with empty input, keep output empty state (no errors).
+
+3) Keep it macOS-native:
+   - Use ContentUnavailableView if available on macOS 14 (preferred).
+   - Otherwise implement a simple VStack with system font styles.
+
+Return code changes only.
+
+**Response:**
+Added ContentUnavailableView-based empty states for History and Translate outputs with fallback VStack, disabled Clear History when empty, and kept output empty state messaging. Ran format, lint, and build successfully.
+## 2026-01-25T13:45:14Z — GPT-5 Codex
+
+**Prompt:**
+Improve HIG behavior by disabling toolbar/actions when input/output state doesn’t allow them.
+
+Constraints:
+- Keep project compilable.
+- No new features beyond disabled states + tiny UX polish.
+
+Requirements:
+1) In RootSplitView toolbar:
+   - Disable “Translate” button when translateInputText is empty or whitespace.
+   - Keep Cmd+Enter shortcut, but it should do nothing when disabled (no alerts).
+
+2) In output cards:
+   - Disable Copy/Replace when output text is empty.
+   - Disable Regenerate when translateInputText is empty.
+
+3) In History:
+   - Disable “Clear History” when there are no items.
+
+Implementation notes:
+- Use computed properties in AppModel (e.g., hasTranslateInput, canTranslate, hasHistory).
+- Trim whitespace when checking emptiness.
+
+Return code changes only.
+
+**Response:**
+Added AppModel computed flags, wired Translate button disable state, and disabled output card actions based on input/output availability while keeping Clear History tied to hasHistory. Ran format, lint, and build successfully.
