@@ -1131,3 +1131,175 @@ Commands run
 
 Permissions/Sync
 - None.
+### 2026-01-25T17:17:35Z — gpt-5
+**Prompt**
+to finalize today, lets fix the historic view, when i click the option on the side bar, nothing happens i do not see any detail related with historic... check and fix it
+
+**Response**
+Moved sidebar selection to local state with synchronization back to AppModel to ensure the History detail view is shown reliably when selected. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/RootSplitView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+### 2026-01-25T17:21:07Z — gpt-5
+**Prompt**
+again click History, nothing is show on the detail area of the app
+
+**Response**
+Switched the detail view and toolbar to follow the local sidebar selection state so History renders even if AppModel selection is delayed. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/RootSplitView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+### 2026-01-25T17:29:26Z — gpt-5
+**Prompt**
+1. no; 2. it is enought to render the history view; 3. no errors no warnings
+
+**Response**
+Switched sidebar selection to an optional binding and aligned detail/toolbar routing to the local selection so List selection changes actually register. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/SidebarView.swift`
+- `LostInTranslations/Views/RootSplitView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+### 2026-01-25T17:30:37Z — gpt-5
+**Prompt**
+can you fix this: xcodebuild warns about multiple matching destinations?
+
+**Response**
+Updated build script to target the current CPU architecture (`uname -m`) in the destination, eliminating the multiple matching destinations warning. Ran lint and build.
+
+Files touched
+- `scripts/build.sh`
+
+Commands run
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+### 2026-01-25T17:34:47Z — gpt-5
+**Prompt**
+it got worse, now any of the options became highlith and i can not select any thing on the side bar
+
+**Response**
+Fixed sidebar selection tagging to use non-optional tags while keeping the optional selection binding, restoring selection highlighting. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/SidebarView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+### 2026-01-25T17:39:13Z — gpt-5
+**Prompt**
+Now all the options on Actions are working, but the options on Library not, meaning the History is not selectable
+
+**Response**
+Adjusted History row badge to only apply when there are history items, to avoid selection being swallowed by the badge wrapper. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/SidebarView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+### 2026-01-25T17:45:36Z — gpt-5
+**Prompt**
+no, it sill is not selectable
+
+**Response**
+Switched sidebar rows to `NavigationLink(value:)` to ensure History is selectable in the sidebar List. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/SidebarView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+### 2026-01-25T17:49:07Z — gpt-5
+**Prompt**
+now, is clickable and it is highligh but not show ai content on righ side related to history
+
+**Response**
+Moved selection handling to `NavigationSplitView(selection:)` and removed List selection binding so the detail view follows the selected sidebar NavigationLink. Ran swift-format and lint. Build failed due to icon asset compilation: actool couldn't open `LostInTranslations.icon` (CoreSimulator service errors).
+
+Files touched
+- `LostInTranslations/Views/SidebarView.swift`
+- `LostInTranslations/Views/RootSplitView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh` (failed: actool couldn't open `LostInTranslations.icon`)
+
+Permissions/Sync
+- None.
+### 2026-01-25T17:52:23Z — gpt-5
+**Prompt**
+now, is clickable and it is highligh but not show ai content on righ side related to history
+
+**Response**
+Reverted to List selection binding with tags (no NavigationLink) so sidebar selection drives detail view again. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/SidebarView.swift`
+- `LostInTranslations/Views/RootSplitView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+### 2026-01-25T17:56:45Z — gpt-5
+**Prompt**
+now again the history is not selectable anymore... please take your time investigating the issue, do not can up with quick soluction, because you already try several times
+
+**Response**
+Reworked the History sidebar row to avoid `.badge` selection issues by rendering an inline count chip in the row and keeping a plain tagged row. Ran swift-format, lint, and build (succeeded).
+
+Files touched
+- `LostInTranslations/Views/SidebarView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.

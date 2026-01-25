@@ -6,36 +6,38 @@ struct RootSplitView: View {
     @ObservedObject var viewModel: MainViewModel
     /// Shared application state.
     @EnvironmentObject private var appModel: AppModel
+    /// Sidebar selection stored locally to avoid publishing during view updates.
+    @State private var sidebarMode: AppMode? = .translate
 
     /// Root view body.
     var body: some View {
         NavigationSplitView {
-            SidebarView(selectedMode: sidebarSelection)
+            SidebarView(selectedMode: $sidebarMode)
         } detail: {
             detailView
                 .toolbar {
                     detailToolbar
                 }
         }
-    }
-
-    /// Selection binding that avoids publishing during a view update pass.
-    private var sidebarSelection: Binding<AppMode> {
-        Binding(
-            get: { appModel.selectedMode },
-            set: { newValue in
-                guard appModel.selectedMode != newValue else { return }
-                Task { @MainActor in
-                    appModel.selectedMode = newValue
-                }
+        .onAppear {
+            sidebarMode = appModel.selectedMode
+        }
+        .onChange(of: sidebarMode) { _, newValue in
+            guard let newValue, appModel.selectedMode != newValue else { return }
+            Task { @MainActor in
+                appModel.selectedMode = newValue
             }
-        )
+        }
+        .onChange(of: appModel.selectedMode) { _, newValue in
+            guard sidebarMode != newValue else { return }
+            sidebarMode = newValue
+        }
     }
 
     @ViewBuilder
     /// Detail content for the selected mode.
     private var detailView: some View {
-        switch appModel.selectedMode {
+        switch sidebarMode ?? appModel.selectedMode {
         case .translate:
             TranslateModeView()
         case .improve:
@@ -52,7 +54,7 @@ struct RootSplitView: View {
     @ToolbarContentBuilder
     /// Mode-specific toolbar content.
     private var detailToolbar: some ToolbarContent {
-        if appModel.selectedMode == .translate {
+        if (sidebarMode ?? appModel.selectedMode) == .translate {
             ToolbarItemGroup {
                 Picker("toolbar.from", selection: $appModel.translateFromLanguage) {
                     ForEach(Language.allCases) { language in

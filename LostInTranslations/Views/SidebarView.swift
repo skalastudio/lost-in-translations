@@ -3,7 +3,7 @@ import SwiftUI
 /// Sidebar navigation for app modes.
 struct SidebarView: View {
     /// Binding for the selected mode.
-    @Binding var selectedMode: AppMode
+    @Binding var selectedMode: AppMode?
     /// Shared application state.
     @EnvironmentObject private var appModel: AppModel
 
@@ -11,15 +11,14 @@ struct SidebarView: View {
     var body: some View {
         List(selection: $selectedMode) {
             Section("sidebar.actions") {
-                sidebarRow(for: .translate)
-                sidebarRow(for: .improve)
-                sidebarRow(for: .rephrase)
-                sidebarRow(for: .synonyms)
+                sidebarRow(for: .translate, count: nil)
+                sidebarRow(for: .improve, count: nil)
+                sidebarRow(for: .rephrase, count: nil)
+                sidebarRow(for: .synonyms, count: nil)
             }
 
             Section("sidebar.library") {
-                sidebarRow(for: .history)
-                    .badge(appModel.historyItems.count)
+                sidebarRow(for: .history, count: appModel.historyItems.count)
             }
         }
         .listStyle(.sidebar)
@@ -28,9 +27,20 @@ struct SidebarView: View {
     @ViewBuilder
     /// Builds a row label for a given mode.
     /// - Parameter mode: App mode to render.
-    private func sidebarRow(for mode: AppMode) -> some View {
-        Label(mode.displayName, systemImage: mode.systemImageName)
-            .tag(mode)
+    private func sidebarRow(for mode: AppMode, count: Int?) -> some View {
+        HStack {
+            Label(mode.displayName, systemImage: mode.systemImageName)
+            Spacer()
+            if let count, count > 0 {
+                Text("\(count)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(.quaternary, in: Capsule())
+            }
+        }
+        .tag(mode)
     }
 }
 
@@ -55,7 +65,7 @@ extension AppMode {
 /// Preview wrapper for SidebarView.
 private struct SidebarPreview: View {
     /// Preview selection state.
-    @State private var mode: AppMode = .translate
+    @State private var mode: AppMode? = .translate
 
     /// Preview body.
     var body: some View {

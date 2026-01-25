@@ -27,15 +27,8 @@ Lost in Translations is a macOS 14+ mac app for translation, rewriting, and syno
 
 ### 2. Build and Run the App
 
-Setup build permissions:
-`sudo chown -R "$USER":staff build`
-`chmod -R u+rwX build`
-
-`rm -rf build/DerivedData`
-`mkdir -p build/DerivedData`
-`chmod -R u+rwX build/DerivedData`
-`xattr -rc build/DerivedData`
-
+- The scripts to build, analize and tests user a `${TMPDIR}` to perform the builds
+- Xcode use the folders defined on "Settings/Locations" > `~/Library/Developer/Xcode/DerivedData`
 
 1. Open the project in Xcode:
    ```bash
