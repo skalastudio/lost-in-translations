@@ -10,6 +10,21 @@ final class AppModel: ObservableObject {
     @Published var translateInputText: String = ""
     @Published var translateOutputs: [TranslationOutput] = []
     @Published var translateIsRunning: Bool = false
+    @Published var improveInputText: String = ""
+    @Published var improveOutputText: String = ""
+    @Published var improveIsRunning: Bool = false
+    @Published var improveErrorMessage: String?
+    @Published var rephraseInputText: String = ""
+    @Published var rephraseVariantsEnabled: Bool = false
+    @Published var rephraseOutputs: [String] = []
+    @Published var rephraseIsRunning: Bool = false
+    @Published var rephraseErrorMessage: String?
+    @Published var synonymsQuery: String = ""
+    @Published var synonymsResults: [String] = []
+    @Published var synonymsUsageNotes: String = ""
+    @Published var synonymsExamples: [String] = []
+    @Published var synonymsIsRunning: Bool = false
+    @Published var synonymsErrorMessage: String?
     @Published var historyItems: [HistoryItem] = []
     @Published var storeHistoryLocally: Bool = true {
         didSet {
@@ -25,6 +40,9 @@ final class AppModel: ObservableObject {
     let maxTargetLanguages = 3
     private let taskRunner = TaskRunner()
     private var translateTask: Task<Void, Never>?
+    private var improveTask: Task<Void, Never>?
+    private var rephraseTask: Task<Void, Never>?
+    private var synonymsTask: Task<Void, Never>?
 
     init() {
         loadHistory()
@@ -36,6 +54,30 @@ final class AppModel: ObservableObject {
 
     var canTranslate: Bool {
         hasTranslateInput
+    }
+
+    var hasImproveInput: Bool {
+        !improveInputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    var canImprove: Bool {
+        hasImproveInput
+    }
+
+    var hasRephraseInput: Bool {
+        !rephraseInputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    var canRephrase: Bool {
+        hasRephraseInput
+    }
+
+    var hasSynonymsQuery: Bool {
+        !synonymsQuery.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    var canLookupSynonyms: Bool {
+        hasSynonymsQuery
     }
 
     var hasHistory: Bool {
@@ -131,12 +173,110 @@ final class AppModel: ObservableObject {
         }
     }
 
+    func performImprove(preset: ImprovePreset? = nil) {
+        cancelImprove()
+        let trimmed = improveInputText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            improveOutputText = ""
+            improveErrorMessage = nil
+            return
+        }
+        improveIsRunning = true
+        improveErrorMessage = nil
+        improveOutputText = ""
+        let instruction = preset?.instruction
+        improveTask = Task { [weak self] in
+            await self?.runImprove(inputText: trimmed, extraInstruction: instruction)
+        }
+    }
+
+    func cancelImprove() {
+        improveTask?.cancel()
+        improveTask = nil
+        improveIsRunning = false
+    }
+
+    func performRephrase() {
+        cancelRephrase()
+        let trimmed = rephraseInputText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            rephraseOutputs = []
+            rephraseErrorMessage = nil
+            return
+        }
+        rephraseIsRunning = true
+        rephraseErrorMessage = nil
+        rephraseOutputs = []
+        let instruction =
+            rephraseVariantsEnabled
+            ? "Provide 3 variants as separate bullet points."
+            : "Provide a single rephrase."
+        let variantsEnabled = rephraseVariantsEnabled
+        rephraseTask = Task { [weak self] in
+            await self?.runRephrase(
+                inputText: trimmed,
+                extraInstruction: instruction,
+                variantsEnabled: variantsEnabled
+            )
+        }
+    }
+
+    func cancelRephrase() {
+        rephraseTask?.cancel()
+        rephraseTask = nil
+        rephraseIsRunning = false
+    }
+
+    func performSynonyms() {
+        cancelSynonyms()
+        let trimmed = synonymsQuery.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            synonymsResults = []
+            synonymsUsageNotes = ""
+            synonymsExamples = []
+            synonymsErrorMessage = nil
+            return
+        }
+        synonymsIsRunning = true
+        synonymsErrorMessage = nil
+        synonymsResults = []
+        synonymsUsageNotes = ""
+        synonymsExamples = []
+        let instruction = """
+            Return sections labeled \"Synonyms:\", \"Usage:\", and \"Examples:\"
+            with concise content suitable for a macOS UI.
+            """
+        synonymsTask = Task { [weak self] in
+            await self?.runSynonyms(inputText: trimmed, extraInstruction: instruction)
+        }
+    }
+
+    func cancelSynonyms() {
+        synonymsTask?.cancel()
+        synonymsTask = nil
+        synonymsIsRunning = false
+    }
+
     func clearCurrentMode() {
         switch selectedMode {
         case .translate:
             translateInputText = ""
             translateOutputs = []
-        case .improve, .rephrase, .synonyms, .history:
+        case .improve:
+            improveInputText = ""
+            improveOutputText = ""
+            improveErrorMessage = nil
+        case .rephrase:
+            rephraseInputText = ""
+            rephraseOutputs = []
+            rephraseErrorMessage = nil
+        case .synonyms:
+            synonymsQuery = ""
+            synonymsResults = []
+            synonymsUsageNotes = ""
+            synonymsExamples = []
+            synonymsErrorMessage = nil
+        case .history:
             break
         }
     }
@@ -204,6 +344,87 @@ extension AppModel {
         translateTask = nil
         if succeeded {
             appendHistory(inputText: inputText, targets: targets, purpose: purpose, tone: tone)
+        }
+    }
+
+    fileprivate func runImprove(
+        inputText: String,
+        extraInstruction: String?
+    ) async {
+        defer {
+            improveIsRunning = false
+            improveTask = nil
+        }
+        do {
+            let result = try await runSingleTask(
+                mode: .improve,
+                inputText: inputText,
+                extraInstruction: extraInstruction
+            )
+            guard !Task.isCancelled else { return }
+            improveOutputText = result.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            improveErrorMessage = nil
+        } catch is CancellationError {
+            // Ignore cancellation.
+        } catch {
+            guard !Task.isCancelled else { return }
+            improveErrorMessage = Self.mapErrorMessage(error)
+        }
+    }
+
+    fileprivate func runRephrase(
+        inputText: String,
+        extraInstruction: String?,
+        variantsEnabled: Bool
+    ) async {
+        defer {
+            rephraseIsRunning = false
+            rephraseTask = nil
+        }
+        do {
+            let result = try await runSingleTask(
+                mode: .rephrase,
+                inputText: inputText,
+                extraInstruction: extraInstruction
+            )
+            guard !Task.isCancelled else { return }
+            let text = result.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            rephraseOutputs = parseRephraseOutputs(from: text, variantsEnabled: variantsEnabled)
+            rephraseErrorMessage = nil
+        } catch is CancellationError {
+            // Ignore cancellation.
+        } catch {
+            guard !Task.isCancelled else { return }
+            rephraseErrorMessage = Self.mapErrorMessage(error)
+        }
+    }
+
+    fileprivate func runSynonyms(
+        inputText: String,
+        extraInstruction: String?
+    ) async {
+        defer {
+            synonymsIsRunning = false
+            synonymsTask = nil
+        }
+        do {
+            let result = try await runSingleTask(
+                mode: .synonyms,
+                inputText: inputText,
+                extraInstruction: extraInstruction
+            )
+            guard !Task.isCancelled else { return }
+            let text = result.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            let parsed = parseSynonymsOutput(from: text)
+            synonymsResults = parsed.synonyms
+            synonymsUsageNotes = parsed.usage
+            synonymsExamples = parsed.examples
+            synonymsErrorMessage = nil
+        } catch is CancellationError {
+            // Ignore cancellation.
+        } catch {
+            guard !Task.isCancelled else { return }
+            synonymsErrorMessage = Self.mapErrorMessage(error)
         }
     }
 
@@ -291,7 +512,31 @@ extension AppModel {
             provider: context.provider,
             modelTier: context.modelTier,
             languages: [option],
-            sourceLanguage: context.sourceCode
+            sourceLanguage: context.sourceCode,
+            extraInstruction: nil
+        )
+        let output = try await taskRunner.run(spec: spec)
+        guard let result = output.results.first else {
+            throw ProviderError.invalidResponse
+        }
+        return result
+    }
+
+    fileprivate func runSingleTask(
+        mode: WritingMode,
+        inputText: String,
+        extraInstruction: String?
+    ) async throws -> OutputResult {
+        let spec = TaskSpec(
+            inputText: inputText,
+            mode: mode,
+            intent: writingIntent(for: selectedPurpose),
+            tone: selectedTone,
+            provider: .auto,
+            modelTier: .balanced,
+            languages: [preferredOutputLanguageOption],
+            sourceLanguage: translateFromLanguage.code,
+            extraInstruction: extraInstruction
         )
         let output = try await taskRunner.run(spec: spec)
         guard let result = output.results.first else {
@@ -374,6 +619,78 @@ extension AppModel {
         case .notes:
             return .plainText
         }
+    }
+
+    fileprivate var preferredOutputLanguageOption: LanguageOption {
+        translateFromLanguage.asLanguageOption ?? .english
+    }
+
+    fileprivate func parseRephraseOutputs(from text: String, variantsEnabled: Bool) -> [String] {
+        if !variantsEnabled {
+            return text.isEmpty ? [] : [text]
+        }
+        let lines =
+            text
+            .split(whereSeparator: \.isNewline)
+            .map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+        let cleaned = lines.map { line -> String in
+            var value = line
+            if let range = value.range(of: #"^[\-\u{2022}\*\s]*"#, options: .regularExpression) {
+                value.removeSubrange(range)
+            }
+            if let range = value.range(of: #"^\d+[.)]\s*"#, options: .regularExpression) {
+                value.removeSubrange(range)
+            }
+            return value.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        let variants = cleaned.filter { !$0.isEmpty }
+        if variants.isEmpty {
+            return text.isEmpty ? [] : [text]
+        }
+        return Array(variants.prefix(3))
+    }
+
+    fileprivate func parseSynonymsOutput(
+        from text: String
+    ) -> (synonyms: [String], usage: String, examples: [String]) {
+        let normalized = text.replacingOccurrences(of: "\r", with: "")
+        let lower = normalized.lowercased()
+
+        func section(_ label: String) -> String? {
+            guard let start = lower.range(of: "\(label):") else { return nil }
+            let startIndex = start.upperBound
+            let remaining = lower[startIndex...]
+            let nextLabels = ["synonyms:", "usage:", "examples:"]
+                .compactMap { remaining.range(of: $0) }
+                .map { $0.lowerBound }
+            let endIndex = nextLabels.min() ?? normalized.endIndex
+            let slice = normalized[startIndex..<endIndex]
+            return slice.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+
+        let synonymsText = section("synonyms") ?? normalized
+        let usageText = section("usage") ?? ""
+        let examplesText = section("examples") ?? ""
+
+        let synonyms = parseList(from: synonymsText)
+        let examples = parseList(from: examplesText)
+        return (synonyms, usageText, examples)
+    }
+
+    fileprivate func parseList(from text: String) -> [String] {
+        let separators = CharacterSet(charactersIn: ",;\n")
+        return
+            text
+            .components(separatedBy: separators)
+            .map { item in
+                var value = item.trimmingCharacters(in: .whitespacesAndNewlines)
+                if let range = value.range(of: #"^[\-\u{2022}\*\s]*"#, options: .regularExpression) {
+                    value.removeSubrange(range)
+                }
+                return value.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+            .filter { !$0.isEmpty }
     }
 }
 

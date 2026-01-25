@@ -15,6 +15,9 @@ struct TaskSpecBuilder {
         case .improve:
             instructions.append(AIPrompts.improveInstruction)
             instructions.append(AIPrompts.improveToneInstruction)
+        case .rephrase:
+            instructions.append(AIPrompts.rephraseInstruction)
+            instructions.append(AIPrompts.rephraseToneInstruction)
         case .synonyms:
             instructions.append(AIPrompts.synonymsInstruction)
             instructions.append(AIPrompts.synonymsRegisterInstruction)
@@ -26,6 +29,8 @@ struct TaskSpecBuilder {
     func userPrompt(for spec: TaskSpec) -> String {
         let languageCodes = spec.languages.map(\.code).joined(separator: ", ")
         let sourceLanguage = spec.sourceLanguage ?? "Auto"
+        let extra = spec.extraInstruction?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let extraLine = extra?.isEmpty == false ? "Extra: \(extra!)\n" : ""
         return """
             \(AIPrompts.userModeLabel) \(spec.mode.rawValue)
             \(AIPrompts.userIntentLabel) \(spec.intent.rawValue)
@@ -34,6 +39,7 @@ struct TaskSpecBuilder {
             \(AIPrompts.userTargetsLabel) \(languageCodes)
 
             \(AIPrompts.userInputLabel)
+            \(extraLine)
             \(spec.inputText)
             """
     }

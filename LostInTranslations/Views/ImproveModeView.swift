@@ -1,8 +1,11 @@
 import SwiftUI
 
 struct ImproveModeView: View {
-    @State private var inputText = ""
-    @State private var outputText = ""
+    @EnvironmentObject private var appModel: AppModel
+
+    private var hasOutput: Bool {
+        !appModel.improveOutputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
 
     var body: some View {
         HSplitView {
@@ -16,9 +19,9 @@ struct ImproveModeView: View {
             Text("Original")
                 .font(.headline)
             ZStack(alignment: .topLeading) {
-                TextEditor(text: $inputText)
+                TextEditor(text: $appModel.improveInputText)
                     .font(.body)
-                if inputText.isEmpty {
+                if appModel.improveInputText.isEmpty {
                     Text("Paste or type text...")
                         .foregroundStyle(.secondary)
                         .padding(.top, 8)
@@ -35,25 +38,42 @@ struct ImproveModeView: View {
             Text("Improved")
                 .font(.headline)
             HStack(spacing: 8) {
-                Button("Shorter") {
-                    outputText = stubResult(prefix: "Shorter")
+                Button(ImprovePreset.shorter.title) {
+                    appModel.performImprove(preset: .shorter)
                 }
-                Button("More formal") {
-                    outputText = stubResult(prefix: "More formal")
+                Button(ImprovePreset.moreFormal.title) {
+                    appModel.performImprove(preset: .moreFormal)
                 }
-                Button("More friendly") {
-                    outputText = stubResult(prefix: "More friendly")
+                Button(ImprovePreset.moreFriendly.title) {
+                    appModel.performImprove(preset: .moreFriendly)
                 }
             }
             .buttonStyle(.bordered)
+            .disabled(!appModel.canImprove)
 
             ScrollView {
-                if outputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                if appModel.improveIsRunning {
+                    HStack(spacing: 6) {
+                        ProgressView()
+                            .controlSize(.small)
+                        Text("Improving...")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 24)
+                } else if let error = appModel.improveErrorMessage {
+                    Text(error)
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.top, 8)
+                } else if !hasOutput {
                     emptyOutputState
                         .frame(maxWidth: .infinity)
                         .padding(.top, 24)
                 } else {
-                    Text(outputText)
+                    Text(appModel.improveOutputText)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(8)
                 }
@@ -64,13 +84,13 @@ struct ImproveModeView: View {
 
             HStack(spacing: 8) {
                 Button("Copy") {
-                    copyToPasteboard(outputText)
+                    copyToPasteboard(appModel.improveOutputText)
                 }
-                .disabled(outputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                .disabled(!hasOutput)
                 Button("Replace Input") {
-                    inputText = outputText
+                    appModel.improveInputText = appModel.improveOutputText
                 }
-                .disabled(outputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                .disabled(!hasOutput)
                 Spacer()
             }
             .buttonStyle(.bordered)
@@ -82,17 +102,10 @@ struct ImproveModeView: View {
         VStack(spacing: 6) {
             Text("Improved text will appear here")
                 .font(.headline)
-            Text("Choose a refinement to generate a stubbed result.")
+            Text("Choose a refinement to generate a result.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
-    }
-
-    private func stubResult(prefix: String) -> String {
-        let trimmed = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return "" }
-        let snippet = String(trimmed.prefix(160))
-        return "(Stub) \(prefix): \(snippet)"
     }
 
     private func copyToPasteboard(_ text: String) {

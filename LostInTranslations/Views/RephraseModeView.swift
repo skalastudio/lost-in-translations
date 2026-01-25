@@ -1,9 +1,7 @@
 import SwiftUI
 
 struct RephraseModeView: View {
-    @State private var inputText = ""
-    @State private var variantsEnabled = false
-    @State private var outputs: [String] = []
+    @EnvironmentObject private var appModel: AppModel
 
     var body: some View {
         HSplitView {
@@ -17,9 +15,9 @@ struct RephraseModeView: View {
             Text("Original")
                 .font(.headline)
             ZStack(alignment: .topLeading) {
-                TextEditor(text: $inputText)
+                TextEditor(text: $appModel.rephraseInputText)
                     .font(.body)
-                if inputText.isEmpty {
+                if appModel.rephraseInputText.isEmpty {
                     Text("Paste or type text...")
                         .foregroundStyle(.secondary)
                         .padding(.top, 8)
@@ -28,13 +26,13 @@ struct RephraseModeView: View {
             }
             .frame(minHeight: 200)
 
-            Toggle("Variants", isOn: $variantsEnabled)
+            Toggle("Variants", isOn: $appModel.rephraseVariantsEnabled)
                 .toggleStyle(.switch)
 
             Button("Rephrase") {
-                outputs = stubResults()
+                appModel.performRephrase()
             }
-            .disabled(inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            .disabled(!appModel.canRephrase)
         }
         .padding()
     }
@@ -44,18 +42,37 @@ struct RephraseModeView: View {
             Text("Rephrased")
                 .font(.headline)
             ScrollView {
-                if outputs.isEmpty {
+                if appModel.rephraseIsRunning {
+                    HStack(spacing: 6) {
+                        ProgressView()
+                            .controlSize(.small)
+                        Text("Rephrasing...")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 24)
+                } else if let error = appModel.rephraseErrorMessage {
+                    Text(error)
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.top, 8)
+                } else if appModel.rephraseOutputs.isEmpty {
                     emptyOutputState
                         .frame(maxWidth: .infinity)
                         .padding(.top, 24)
                 } else {
                     LazyVStack(spacing: 12) {
-                        ForEach(outputs.indices, id: \.self) { index in
+                        ForEach(appModel.rephraseOutputs.indices, id: \.self) { index in
+                            let text = appModel.rephraseOutputs[index]
                             RephraseVariantCard(
-                                title: variantsEnabled ? "Variant \(index + 1)" : "Result",
-                                text: outputs[index],
-                                onCopy: { copyToPasteboard(outputs[index]) },
-                                onReplace: { inputText = outputs[index] }
+                                title: appModel.rephraseVariantsEnabled
+                                    ? "Variant \(index + 1)"
+                                    : "Result",
+                                text: text,
+                                onCopy: { copyToPasteboard(text) },
+                                onReplace: { appModel.rephraseInputText = text }
                             )
                         }
                     }
@@ -74,20 +91,6 @@ struct RephraseModeView: View {
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
-    }
-
-    private func stubResults() -> [String] {
-        let trimmed = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return [] }
-        let snippet = String(trimmed.prefix(160))
-        if variantsEnabled {
-            return [
-                "(Stub) Variant 1: \(snippet)",
-                "(Stub) Variant 2: \(snippet)",
-                "(Stub) Variant 3: \(snippet)",
-            ]
-        }
-        return ["(Stub) Rephrase: \(snippet)"]
     }
 
     private func copyToPasteboard(_ text: String) {

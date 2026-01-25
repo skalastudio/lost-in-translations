@@ -12,6 +12,8 @@ enum AIPrompts {
     static let translateToneInstruction = "Respect the intent and tone. Keep meaning."
     static let improveInstruction = "Rewrite to improve clarity in the same language unless targets are provided."
     static let improveToneInstruction = "Respect intent and tone."
+    static let rephraseInstruction = "Rephrase with the same meaning in the same language."
+    static let rephraseToneInstruction = "Respect intent and tone."
     static let synonymsInstruction = "Provide synonyms with short usage notes."
     static let synonymsRegisterInstruction = "Preserve register and avoid rare words unless asked."
 

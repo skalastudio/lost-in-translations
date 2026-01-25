@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SynonymsModeView: View {
-    @State private var query = ""
+    @EnvironmentObject private var appModel: AppModel
     @State private var selectedSynonym: String?
 
     var body: some View {
@@ -15,9 +15,14 @@ struct SynonymsModeView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Lookup")
                 .font(.headline)
-            TextField("Word or short phrase", text: $query)
+            TextField("Word or short phrase", text: $appModel.synonymsQuery)
                 .textFieldStyle(.roundedBorder)
                 .frame(maxWidth: 320)
+                .onSubmit { appModel.performSynonyms() }
+            Button("Find Synonyms") {
+                appModel.performSynonyms()
+            }
+            .disabled(!appModel.canLookupSynonyms)
             Spacer()
         }
         .padding()
@@ -27,8 +32,21 @@ struct SynonymsModeView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Synonyms")
                 .font(.headline)
+            if appModel.synonymsIsRunning {
+                HStack(spacing: 6) {
+                    ProgressView()
+                        .controlSize(.small)
+                    Text("Looking up...")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            } else if let error = appModel.synonymsErrorMessage {
+                Text(error)
+                    .font(.caption)
+                    .foregroundStyle(.red)
+            }
             List(selection: $selectedSynonym) {
-                ForEach(stubSynonyms, id: \.self) { synonym in
+                ForEach(appModel.synonymsResults, id: \.self) { synonym in
                     Text(synonym)
                         .tag(synonym)
                 }
@@ -36,15 +54,24 @@ struct SynonymsModeView: View {
             .frame(minHeight: 160)
 
             GroupBox("Usage Notes") {
-                Text("Use the synonym that best matches the tone and formality of your text.")
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                Text(
+                    appModel.synonymsUsageNotes.isEmpty
+                        ? "Usage notes will appear here."
+                        : appModel.synonymsUsageNotes
+                )
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
 
             GroupBox("Examples") {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("“The result was remarkable.”")
-                    Text("“She made an impressive improvement.”")
+                    if appModel.synonymsExamples.isEmpty {
+                        Text("Examples will appear here.")
+                    } else {
+                        ForEach(appModel.synonymsExamples, id: \.self) { example in
+                            Text(example)
+                        }
+                    }
                 }
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -64,12 +91,6 @@ struct SynonymsModeView: View {
             .buttonStyle(.bordered)
         }
         .padding()
-    }
-
-    private var stubSynonyms: [String] {
-        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return [] }
-        return ["remarkable", "impressive", "notable", "extraordinary", "outstanding"]
     }
 
     private func copyToPasteboard(_ text: String) {

@@ -19,6 +19,9 @@ struct MockProviderClient: ProviderClient {
         case .improve:
             let language = spec.languages.first ?? .english
             return [OutputResult(language: language, text: mockImprovement(for: spec))]
+        case .rephrase:
+            let language = spec.languages.first ?? .english
+            return [OutputResult(language: language, text: mockRephrase(for: spec))]
         case .synonyms:
             let language = spec.languages.first ?? .english
             return [OutputResult(language: language, text: mockSynonyms(for: spec))]
@@ -41,6 +44,16 @@ struct MockProviderClient: ProviderClient {
             "\(toneLine) rewrite: \(spec.inputText)",
             "Improved (\(toneLine)): \(spec.inputText)",
             "\(toneLine) phrasing: \(spec.inputText)",
+        ]
+        return templates.randomElement() ?? spec.inputText
+    }
+
+    private func mockRephrase(for spec: TaskSpec) -> String {
+        let toneLine = toneFlavor(for: spec.tone)
+        let templates = [
+            "Rephrase (\(toneLine)): \(spec.inputText)",
+            "Same meaning, new phrasing (\(toneLine)): \(spec.inputText)",
+            "Alternate phrasing (\(toneLine)): \(spec.inputText)",
         ]
         return templates.randomElement() ?? spec.inputText
     }

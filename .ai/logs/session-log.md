@@ -1034,3 +1034,24 @@ building on xcode, it see this error: /Volumes/MoonLD1/IndieDev/repos/lost-in-tr
 
 **Response**
 Added explicit `self.` capture in the TaskGroup closure when calling `runTranslateTask` in `LostInTranslations/App/AppModel.swift`.
+### 2026-01-25T15:37:42Z — gpt-5
+**Prompt**
+for Translate, the real provider is working, now to for "Improve Text", "Rephase" and "Synonyms"
+
+**Response**
+Wired Improve, Rephrase, and Synonyms to provider-backed requests via TaskRunner, added rephrase mode support and optional extra instructions in TaskSpec/TaskSpecBuilder, and updated the three views to use AppModel state with loading/error UI. Added ImprovePreset model and parsing helpers for rephrase variants and synonyms sections.
+
+**Commands**
+- `xcodegen generate` (failed: no project.yml)
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh` (warnings about AppModel size/tuples)
+- `bash scripts/build.sh` (failed; xcodebuild returned 65 with CoreSimulator/logging warnings and no Swift errors in captured output)
+### 2026-01-25T15:39:19Z — gpt-5
+**Prompt**
+/Volumes/MoonLD1/IndieDev/repos/lost-in-translations/LostInTranslations/App/AppModel.swift:176:33 Cannot find type 'ImprovePreset' in scope
+/Volumes/MoonLD1/IndieDev/repos/lost-in-translations/LostInTranslations/Services/Providers/Mock/MockProviderClient.swift:13:9 Switch must be exhaustive
+
+fix it
+
+**Response**
+Moved ImprovePreset into `LostInTranslations/Models/Models.swift` (so it’s in the target) and removed `LostInTranslations/Models/ImprovePreset.swift`. Added a `.rephrase` case to `MockProviderClient` with a mock rephrase response.

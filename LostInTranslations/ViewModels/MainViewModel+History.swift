@@ -20,7 +20,8 @@ extension MainViewModel {
             provider: provider,
             modelTier: modelTier,
             languages: selectedLanguages,
-            sourceLanguage: nil
+            sourceLanguage: nil,
+            extraInstruction: nil
         )
     }
 

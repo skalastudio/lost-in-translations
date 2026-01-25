@@ -3,6 +3,7 @@ import Foundation
 enum WritingMode: String, CaseIterable, Identifiable, Sendable {
     case translate = "Translate"
     case improve = "Improve"
+    case rephrase = "Rephrase"
     case synonyms = "Synonyms"
 
     var id: String { rawValue }
@@ -13,6 +14,8 @@ enum WritingMode: String, CaseIterable, Identifiable, Sendable {
             return String(localized: "writingMode.translate")
         case .improve:
             return String(localized: "writingMode.improve")
+        case .rephrase:
+            return String(localized: "writingMode.rephrase")
         case .synonyms:
             return String(localized: "writingMode.synonyms")
         }
@@ -106,6 +109,36 @@ enum ModelTier: String, CaseIterable, Identifiable, Sendable {
             return String(localized: "modelTier.balanced")
         case .best:
             return String(localized: "modelTier.best")
+        }
+    }
+}
+
+enum ImprovePreset: String, CaseIterable, Identifiable, Sendable {
+    case shorter
+    case moreFormal
+    case moreFriendly
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .shorter:
+            return "Shorter"
+        case .moreFormal:
+            return "More formal"
+        case .moreFriendly:
+            return "More friendly"
+        }
+    }
+
+    var instruction: String {
+        switch self {
+        case .shorter:
+            return "Make the text shorter while preserving meaning."
+        case .moreFormal:
+            return "Make the text more formal while preserving meaning."
+        case .moreFriendly:
+            return "Make the text more friendly while preserving meaning."
         }
     }
 }

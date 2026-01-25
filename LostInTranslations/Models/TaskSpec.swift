@@ -9,6 +9,7 @@ struct TaskSpec: Sendable {
     let modelTier: ModelTier
     let languages: [LanguageOption]
     let sourceLanguage: String?
+    let extraInstruction: String?
 }
 
 struct TaskRunOutput: Sendable {
