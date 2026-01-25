@@ -1303,3 +1303,57 @@ Commands run
 
 Permissions/Sync
 - None.
+### 2026-01-25T18:06:50Z — gpt-5
+**Prompt**
+now again the history is not selectable anymore... please take your time investigating the issue, do not can up with quick soluction, because you already try several times
+
+**Response**
+Adjusted the History row to avoid `.badge` and instead render an inline count chip, keeping List selection stable. Ran swift-format, lint, and build (succeeded).
+
+Files touched
+- `LostInTranslations/Views/SidebarView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+### 2026-01-25T18:11:54Z — gpt-5
+**Prompt**
+add a search on history view, to search over the text enter by the user; also add quick filters (buttons) for actions like "Translate, Improve, Rephase and Synomysh" by tone
+
+**Response**
+Added a history search field (filters input text) and quick filter buttons for mode and tone in History view, plus empty-state messaging for no matches. Build failed due to actool/CoreSimulator dependency errors while compiling the asset catalog.
+
+Files touched
+- `LostInTranslations/Views/HistoryModeView.swift`
+- `LostInTranslations/Resources/en.lproj/Localizable.strings`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh` (failed: `error: unable to open dependencies file ... assetcatalog_dependencies_thinned`; CoreSimulator service errors)
+
+Permissions/Sync
+- None.
+### 2026-01-25T18:15:07Z — gpt-5
+**Prompt**
+xcode errors: 
+/Volumes/MoonLD1/IndieDev/repos/lost-in-translations/LostInTranslations/Views/HistoryModeView.swift:209:40 Type 'ButtonStyle' has no member 'borderedProminent'
+/Volumes/MoonLD1/IndieDev/repos/lost-in-translations/LostInTranslations/Views/HistoryModeView.swift:209:61 Type 'ButtonStyle' has no member 'bordered'
+
+**Response**
+Adjusted History filter buttons to apply `.bordered` or `.borderedProminent` in separate branches to avoid the ternary buttonStyle type error. Ran swift-format, lint, and build (succeeded).
+
+Files touched
+- `LostInTranslations/Views/HistoryModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.

@@ -208,6 +208,12 @@
 "history.empty.subtitle" = "Run a translation to see recent items here.";
 "history.empty.tip" = "Tip: Press Cmd+Return to translate.";
 "history.clear" = "Clear History";
+"history.search.placeholder" = "Search history";
+"history.search.empty.title" = "No Results";
+"history.search.empty.subtitle" = "Try adjusting your search or filters.";
+"history.filter.actions" = "Actions";
+"history.filter.tone" = "Tone";
+"history.filter.all" = "All";
 
 "settings.tab.general" = "General";
 "settings.tab.providers" = "Providers";
