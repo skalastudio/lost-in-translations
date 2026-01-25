@@ -25,10 +25,12 @@ struct TaskSpecBuilder {
 
     func userPrompt(for spec: TaskSpec) -> String {
         let languageCodes = spec.languages.map(\.code).joined(separator: ", ")
+        let sourceLanguage = spec.sourceLanguage ?? "Auto"
         return """
             \(AIPrompts.userModeLabel) \(spec.mode.rawValue)
             \(AIPrompts.userIntentLabel) \(spec.intent.rawValue)
             \(AIPrompts.userToneLabel) \(spec.tone.rawValue)
+            Source: \(sourceLanguage)
             \(AIPrompts.userTargetsLabel) \(languageCodes)
 
             \(AIPrompts.userInputLabel)

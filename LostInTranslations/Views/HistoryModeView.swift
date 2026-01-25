@@ -74,7 +74,7 @@ struct HistoryModeView: View {
         appModel.translateTargetLanguages = item.targetLanguages
         appModel.selectedPurpose = item.purpose
         appModel.selectedTone = item.tone
-        appModel.performTranslateStub()
+        appModel.performTranslate()
         appModel.selectedMode = .translate
     }
 

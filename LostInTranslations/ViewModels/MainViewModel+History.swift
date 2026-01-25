@@ -19,7 +19,8 @@ extension MainViewModel {
             tone: tone,
             provider: provider,
             modelTier: modelTier,
-            languages: selectedLanguages
+            languages: selectedLanguages,
+            sourceLanguage: nil
         )
     }
 

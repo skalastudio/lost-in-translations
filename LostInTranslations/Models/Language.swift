@@ -1,6 +1,6 @@
 import Foundation
 
-enum Language: String, CaseIterable, Identifiable, Codable {
+enum Language: String, CaseIterable, Identifiable, Codable, Sendable {
     case auto
     case english
     case portuguese
@@ -31,6 +31,19 @@ enum Language: String, CaseIterable, Identifiable, Codable {
             return "PT"
         case .german:
             return "DE"
+        }
+    }
+
+    var asLanguageOption: LanguageOption? {
+        switch self {
+        case .auto:
+            return nil
+        case .english:
+            return .english
+        case .portuguese:
+            return .portuguese
+        case .german:
+            return .german
         }
     }
 }

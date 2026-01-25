@@ -6,19 +6,25 @@ struct TranslationOutput: Identifiable, Hashable {
     let text: String
     let purpose: Purpose
     let tone: Tone
+    let isLoading: Bool
+    let errorMessage: String?
 
     init(
         id: UUID = UUID(),
         language: Language,
         text: String,
         purpose: Purpose,
-        tone: Tone
+        tone: Tone,
+        isLoading: Bool = false,
+        errorMessage: String? = nil
     ) {
         self.id = id
         self.language = language
         self.text = text
         self.purpose = purpose
         self.tone = tone
+        self.isLoading = isLoading
+        self.errorMessage = errorMessage
     }
 }
 

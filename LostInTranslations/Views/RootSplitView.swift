@@ -73,7 +73,7 @@ struct RootSplitView: View {
                 .pickerStyle(.menu)
 
                 Button("Translate") {
-                    appModel.performTranslateStub()
+                    appModel.performTranslate()
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(!appModel.canTranslate)

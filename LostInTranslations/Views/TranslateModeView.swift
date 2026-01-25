@@ -56,7 +56,7 @@ struct TranslateModeView: View {
                                 hasInput: appModel.hasTranslateInput,
                                 onCopy: { copyToPasteboard(output.text) },
                                 onReplace: { appModel.translateInputText = output.text },
-                                onRegenerate: { appModel.performTranslateStub() }
+                                onRegenerate: { appModel.performTranslate() }
                             )
                         }
                     }
@@ -127,14 +127,28 @@ private struct TranslationOutputCard: View {
             }
             .buttonStyle(.bordered)
 
-            ScrollView {
-                Text(output.text)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(8)
+            if output.isLoading {
+                HStack(spacing: 6) {
+                    ProgressView()
+                        .controlSize(.small)
+                    Text("Translating...")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            } else if let errorMessage = output.errorMessage {
+                Text(errorMessage)
+                    .font(.caption)
+                    .foregroundStyle(.red)
+            } else {
+                ScrollView {
+                    Text(output.text)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(8)
+                }
+                .frame(minHeight: 80, maxHeight: 140)
+                .background(Color.secondary.opacity(0.08))
+                .cornerRadius(6)
             }
-            .frame(minHeight: 80, maxHeight: 140)
-            .background(Color.secondary.opacity(0.08))
-            .cornerRadius(6)
         }
         .padding(10)
         .background(Color.secondary.opacity(0.06))
