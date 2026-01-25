@@ -1,9 +1,17 @@
 import Foundation
 
+/// OpenAI provider client implementation.
 struct OpenAIClient: ProviderClient {
+    /// Provider identifier.
     let provider: Provider = .openAI
+    /// Prompt builder used to construct requests.
     private let builder = TaskSpecBuilder()
 
+    /// Executes a task using the OpenAI API.
+    /// - Parameters:
+    ///   - spec: The task specification.
+    ///   - apiKey: API key for OpenAI.
+    /// - Returns: Provider result payload.
     func run(spec: TaskSpec, apiKey: String) async throws -> ProviderResult {
         let model = ModelCatalog.defaultModel(for: provider, tier: spec.modelTier)
         let requestBody = OpenAIChatRequest(
@@ -29,6 +37,12 @@ struct OpenAIClient: ProviderClient {
         return ProviderResult(results: parsed, model: model)
     }
 
+    /// Builds the URL request for the API call.
+    /// - Parameters:
+    ///   - url: API endpoint.
+    ///   - apiKey: API key for authorization.
+    ///   - body: Encodable request payload.
+    /// - Returns: URL request configured for OpenAI.
     private func makeRequest<T: Encodable>(url: URL, apiKey: String, body: T) throws -> URLRequest {
         var request = URLRequest(url: url)
         request.httpMethod = OpenAIAPIConstants.httpMethod
@@ -41,6 +55,9 @@ struct OpenAIClient: ProviderClient {
         return request
     }
 
+    /// Sends a request and validates the OpenAI response.
+    /// - Parameter request: The URL request to send.
+    /// - Returns: Raw response data.
     private func send(request: URLRequest) async throws -> Data {
         let data: Data
         let response: URLResponse
@@ -61,6 +78,9 @@ struct OpenAIClient: ProviderClient {
         return data
     }
 
+    /// Parses error details from an OpenAI error response.
+    /// - Parameter data: Raw error response data.
+    /// - Returns: Localized error message if available.
     private func parseOpenAIError(from data: Data) -> String? {
         guard let errorResponse = try? JSONDecoder().decode(OpenAIErrorResponse.self, from: data) else {
             return nil

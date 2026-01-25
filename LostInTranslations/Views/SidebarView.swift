@@ -1,9 +1,13 @@
 import SwiftUI
 
+/// Sidebar navigation for app modes.
 struct SidebarView: View {
+    /// Binding for the selected mode.
     @Binding var selectedMode: AppMode
+    /// Shared application state.
     @EnvironmentObject private var appModel: AppModel
 
+    /// View body.
     var body: some View {
         List(selection: $selectedMode) {
             Section("Actions") {
@@ -22,6 +26,8 @@ struct SidebarView: View {
     }
 
     @ViewBuilder
+    /// Builds a row label for a given mode.
+    /// - Parameter mode: App mode to render.
     private func sidebarRow(for mode: AppMode) -> some View {
         Label(mode.title, systemImage: mode.systemImageName)
             .tag(mode)
@@ -29,6 +35,7 @@ struct SidebarView: View {
 }
 
 extension AppMode {
+    /// Sidebar title for a mode.
     fileprivate var title: String {
         switch self {
         case .translate:
@@ -44,6 +51,7 @@ extension AppMode {
         }
     }
 
+    /// Sidebar system image name for a mode.
     fileprivate var systemImageName: String {
         switch self {
         case .translate:
@@ -60,9 +68,12 @@ extension AppMode {
     }
 }
 
+/// Preview wrapper for SidebarView.
 private struct SidebarPreview: View {
+    /// Preview selection state.
     @State private var mode: AppMode = .translate
 
+    /// Preview body.
     var body: some View {
         SidebarView(selectedMode: $mode)
             .environmentObject(AppModel())

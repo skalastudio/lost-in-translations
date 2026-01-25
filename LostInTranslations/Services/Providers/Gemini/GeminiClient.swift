@@ -1,9 +1,17 @@
 import Foundation
 
+/// Gemini provider client implementation.
 struct GeminiClient: ProviderClient {
+    /// Provider identifier.
     let provider: Provider = .gemini
+    /// Prompt builder used to construct requests.
     private let builder = TaskSpecBuilder()
 
+    /// Executes a task using the Gemini API.
+    /// - Parameters:
+    ///   - spec: The task specification.
+    ///   - apiKey: API key for Gemini.
+    /// - Returns: Provider result payload.
     func run(spec: TaskSpec, apiKey: String) async throws -> ProviderResult {
         let model = ModelCatalog.defaultModel(for: provider, tier: spec.modelTier)
         let requestBody = GeminiRequest(
@@ -32,6 +40,9 @@ struct GeminiClient: ProviderClient {
         return ProviderResult(results: parsed, model: model)
     }
 
+    /// Sends a request and validates the Gemini response.
+    /// - Parameter request: The URL request to send.
+    /// - Returns: Raw response data.
     private func send(request: URLRequest) async throws -> Data {
         let data: Data
         let response: URLResponse
@@ -52,6 +63,9 @@ struct GeminiClient: ProviderClient {
         return data
     }
 
+    /// Parses error details from a Gemini error response.
+    /// - Parameter data: Raw error response data.
+    /// - Returns: Localized error message if available.
     private func parseGeminiError(from data: Data) -> String? {
         guard let errorResponse = try? JSONDecoder().decode(GeminiErrorResponse.self, from: data) else {
             return nil

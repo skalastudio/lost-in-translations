@@ -1,11 +1,18 @@
 import Foundation
 
 extension AppModel {
+    /// Clears all history entries and persists the change.
     func clearHistory() {
         historyItems = []
         persistHistory()
     }
 
+    /// Appends a translate history item and persists it.
+    /// - Parameters:
+    ///   - inputText: Full input text.
+    ///   - targets: Target languages used.
+    ///   - purpose: Purpose used.
+    ///   - tone: Tone used.
     func appendHistory(
         inputText: String,
         targets: [Language],
@@ -27,6 +34,7 @@ extension AppModel {
         persistHistory()
     }
 
+    /// File location used for local history storage.
     private var historyFileURL: URL {
         let supportURL =
             FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
@@ -37,6 +45,7 @@ extension AppModel {
             .appendingPathComponent("history.json")
     }
 
+    /// Loads history from disk if enabled.
     func loadHistory() {
         guard storeHistoryLocally else { return }
         do {
@@ -47,6 +56,7 @@ extension AppModel {
         }
     }
 
+    /// Persists current history to disk if enabled.
     func persistHistory() {
         guard storeHistoryLocally else { return }
         do {
@@ -59,6 +69,7 @@ extension AppModel {
         }
     }
 
+    /// Deletes the on-disk history file if present.
     func deleteHistoryFile() {
         do {
             try FileManager.default.removeItem(at: historyFileURL)

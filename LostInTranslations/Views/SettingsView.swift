@@ -1,14 +1,23 @@
 import SwiftUI
 
+/// Settings UI for the app.
 struct SettingsView: View {
+    /// Shared application state.
     @EnvironmentObject private var appModel: AppModel
+    /// OpenAI API key input.
     @State private var openAIKey = ""
+    /// Claude API key input.
     @State private var claudeKey = ""
+    /// Gemini API key input.
     @State private var geminiKey = ""
+    /// Status text for OpenAI key actions.
     @State private var openAIStatus: String?
+    /// Status text for Claude key actions.
     @State private var claudeStatus: String?
+    /// Status text for Gemini key actions.
     @State private var geminiStatus: String?
 
+    /// View body.
     var body: some View {
         TabView {
             generalTab
@@ -27,6 +36,7 @@ struct SettingsView: View {
         .onAppear(perform: loadKeys)
     }
 
+    /// General settings tab.
     private var generalTab: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("General")
@@ -37,6 +47,7 @@ struct SettingsView: View {
         }
     }
 
+    /// Provider settings tab.
     private var providersTab: some View {
         Form {
             providerSection(title: "OpenAI", key: $openAIKey, status: openAIStatus) {
@@ -51,6 +62,7 @@ struct SettingsView: View {
         }
     }
 
+    /// Models settings tab.
     private var modelsTab: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Models")
@@ -61,6 +73,7 @@ struct SettingsView: View {
         }
     }
 
+    /// Output settings tab.
     private var outputTab: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Output")
@@ -71,6 +84,7 @@ struct SettingsView: View {
         }
     }
 
+    /// Privacy settings tab.
     private var privacyTab: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Privacy")
@@ -85,6 +99,12 @@ struct SettingsView: View {
         }
     }
 
+    /// Builds a provider settings section.
+    /// - Parameters:
+    ///   - title: Section title.
+    ///   - key: Bound API key field.
+    ///   - status: Status message.
+    ///   - onSave: Action when saving.
     private func providerSection(
         title: String,
         key: Binding<String>,
@@ -102,12 +122,18 @@ struct SettingsView: View {
         }
     }
 
+    /// Loads API keys from the keychain.
     private func loadKeys() {
         openAIKey = KeychainStore.readKey(for: .openAI) ?? ""
         claudeKey = KeychainStore.readKey(for: .claude) ?? ""
         geminiKey = KeychainStore.readKey(for: .gemini) ?? ""
     }
 
+    /// Saves or deletes the API key for a provider.
+    /// - Parameters:
+    ///   - key: Raw key input.
+    ///   - provider: Provider to update.
+    ///   - status: Status string to update.
     private func saveKey(_ key: String, provider: Provider, status: inout String?) {
         let trimmed = key.trimmingCharacters(in: .whitespacesAndNewlines)
         do {
@@ -124,6 +150,7 @@ struct SettingsView: View {
     }
 }
 
+/// Preview for SettingsView.
 #Preview {
     SettingsView()
         .environmentObject(AppModel())

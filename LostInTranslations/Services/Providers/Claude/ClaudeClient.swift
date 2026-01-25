@@ -1,9 +1,17 @@
 import Foundation
 
+/// Claude provider client implementation.
 struct ClaudeClient: ProviderClient {
+    /// Provider identifier.
     let provider: Provider = .claude
+    /// Prompt builder used to construct requests.
     private let builder = TaskSpecBuilder()
 
+    /// Executes a task using the Claude API.
+    /// - Parameters:
+    ///   - spec: The task specification.
+    ///   - apiKey: API key for Claude.
+    /// - Returns: Provider result payload.
     func run(spec: TaskSpec, apiKey: String) async throws -> ProviderResult {
         let model = ModelCatalog.defaultModel(for: provider, tier: spec.modelTier)
         let requestBody = ClaudeRequest(
@@ -28,6 +36,9 @@ struct ClaudeClient: ProviderClient {
         return ProviderResult(results: parsed, model: model)
     }
 
+    /// Sends a request and validates the Claude response.
+    /// - Parameter request: The URL request to send.
+    /// - Returns: Raw response data.
     private func send(request: URLRequest) async throws -> Data {
         let data: Data
         let response: URLResponse
@@ -48,6 +59,9 @@ struct ClaudeClient: ProviderClient {
         return data
     }
 
+    /// Parses error details from a Claude error response.
+    /// - Parameter data: Raw error response data.
+    /// - Returns: Localized error message if available.
     private func parseClaudeError(from data: Data) -> String? {
         guard let errorResponse = try? JSONDecoder().decode(ClaudeErrorResponse.self, from: data) else {
             return nil

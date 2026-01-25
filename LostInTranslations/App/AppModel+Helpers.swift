@@ -1,6 +1,12 @@
 import Foundation
 
 extension AppModel {
+    /// Runs a single provider task and returns its first output.
+    /// - Parameters:
+    ///   - mode: The writing mode for the request.
+    ///   - inputText: The input text.
+    ///   - extraInstruction: Optional extra instruction.
+    /// - Returns: The first output result.
     func runSingleTask(
         mode: WritingMode,
         inputText: String,
@@ -24,6 +30,9 @@ extension AppModel {
         return result
     }
 
+    /// Maps a purpose preset to a provider intent.
+    /// - Parameter purpose: The selected purpose.
+    /// - Returns: The writing intent for provider requests.
     func writingIntent(for purpose: Purpose) -> WritingIntent {
         switch purpose {
         case .email:
@@ -37,10 +46,14 @@ extension AppModel {
         }
     }
 
+    /// Preferred language option for single-output tasks.
     var preferredOutputLanguageOption: LanguageOption {
         translateFromLanguage.asLanguageOption ?? .english
     }
 
+    /// Maps provider errors to user-friendly messages.
+    /// - Parameter error: The error to map.
+    /// - Returns: A short user-facing message.
     nonisolated static func mapErrorMessage(_ error: Error) -> String {
         if let providerError = error as? ProviderError {
             switch providerError {

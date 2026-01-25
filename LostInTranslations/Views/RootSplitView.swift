@@ -1,9 +1,13 @@
 import SwiftUI
 
+/// Root navigation shell for the app.
 struct RootSplitView: View {
+    /// Legacy view model used by the diagnostics UI.
     @ObservedObject var viewModel: MainViewModel
+    /// Shared application state.
     @EnvironmentObject private var appModel: AppModel
 
+    /// Root view body.
     var body: some View {
         NavigationSplitView {
             SidebarView(selectedMode: $appModel.selectedMode)
@@ -16,6 +20,7 @@ struct RootSplitView: View {
     }
 
     @ViewBuilder
+    /// Detail content for the selected mode.
     private var detailView: some View {
         switch appModel.selectedMode {
         case .translate:
@@ -32,6 +37,7 @@ struct RootSplitView: View {
     }
 
     @ToolbarContentBuilder
+    /// Mode-specific toolbar content.
     private var detailToolbar: some ToolbarContent {
         if appModel.selectedMode == .translate {
             ToolbarItemGroup {
@@ -89,10 +95,14 @@ struct RootSplitView: View {
     }
 }
 
+/// Displays selected target languages as removable pills.
 private struct TargetLanguagePillsView: View {
+    /// Target languages to display.
     let languages: [Language]
+    /// Callback for removal.
     let onRemove: (Language) -> Void
 
+    /// View body.
     var body: some View {
         HStack(spacing: 6) {
             ForEach(languages) { language in

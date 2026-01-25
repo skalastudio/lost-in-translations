@@ -1,8 +1,11 @@
 import SwiftUI
 
+/// Diagnostics disclosure view for provider runs.
 struct DiagnosticsView: View {
+    /// Diagnostics state to display.
     let diagnostics: DiagnosticsState
 
+    /// View body.
     var body: some View {
         let placeholder = String(localized: "diagnostics.placeholder")
 
@@ -45,6 +48,7 @@ struct DiagnosticsView: View {
     }
 }
 
+/// Preview for DiagnosticsView.
 #Preview {
     DiagnosticsView(
         diagnostics: DiagnosticsState(

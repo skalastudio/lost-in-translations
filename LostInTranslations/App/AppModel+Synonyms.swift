@@ -1,6 +1,7 @@
 import Foundation
 
 extension AppModel {
+    /// Starts a synonyms lookup task.
     func performSynonyms() {
         cancelSynonyms()
         let trimmed = synonymsQuery.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -22,12 +23,14 @@ extension AppModel {
         }
     }
 
+    /// Cancels the current synonyms task.
     func cancelSynonyms() {
         synonymsTask?.cancel()
         synonymsTask = nil
         synonymsIsRunning = false
     }
 
+    /// Instruction for synonyms requests.
     private var synonymsInstruction: String {
         """
         Return sections labeled \"Synonyms:\", \"Usage:\", and \"Examples:\"
@@ -35,6 +38,10 @@ extension AppModel {
         """
     }
 
+    /// Runs the synonyms request and updates output state.
+    /// - Parameters:
+    ///   - inputText: The query text.
+    ///   - extraInstruction: Optional extra instruction.
     fileprivate func runSynonyms(
         inputText: String,
         extraInstruction: String?
@@ -64,6 +71,9 @@ extension AppModel {
         }
     }
 
+    /// Parses a synonyms response into structured data.
+    /// - Parameter text: Raw response text.
+    /// - Returns: Parsed synonyms response.
     fileprivate func parseSynonymsOutput(from text: String) -> SynonymsParseResult {
         let normalized = text.replacingOccurrences(of: "\r", with: "")
         let lower = normalized.lowercased()
@@ -89,6 +99,9 @@ extension AppModel {
         return SynonymsParseResult(synonyms: synonyms, usage: usageText, examples: examples)
     }
 
+    /// Parses a simple list from a text block.
+    /// - Parameter text: Raw list text.
+    /// - Returns: Cleaned list items.
     fileprivate func parseList(from text: String) -> [String] {
         let separators = CharacterSet(charactersIn: ",;\n")
         return
@@ -105,8 +118,12 @@ extension AppModel {
     }
 }
 
+/// Parsed result for a synonyms response.
 struct SynonymsParseResult: Sendable {
+    /// Synonyms list.
     let synonyms: [String]
+    /// Usage notes.
     let usage: String
+    /// Example sentences.
     let examples: [String]
 }

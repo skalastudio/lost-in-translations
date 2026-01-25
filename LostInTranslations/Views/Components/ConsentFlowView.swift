@@ -1,8 +1,11 @@
 import SwiftUI
 
+/// Consent flow UI for provider API keys.
 struct ConsentFlowView: View {
+    /// Dismiss action from the environment.
     @Environment(\.dismiss) private var dismiss
 
+    /// View body.
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("consent.title")
@@ -33,12 +36,18 @@ struct ConsentFlowView: View {
     }
 }
 
+/// Provider key entry row used in the consent flow.
 private struct ProviderCredentialRow: View {
+    /// Provider for this row.
     let provider: Provider
+    /// API key input.
     @State private var apiKey = ""
+    /// Whether a key is stored.
     @State private var isStored = false
+    /// Status message for actions.
     @State private var statusMessage: String?
 
+    /// View body.
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -91,6 +100,7 @@ private struct ProviderCredentialRow: View {
     }
 }
 
+/// Preview for ConsentFlowView.
 #Preview {
     ConsentFlowView()
 }

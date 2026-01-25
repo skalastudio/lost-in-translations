@@ -1,6 +1,7 @@
 import Foundation
 
 extension AppModel {
+    /// Starts a rephrase task using current input and settings.
     func performRephrase() {
         cancelRephrase()
         let trimmed = rephraseInputText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -21,18 +22,25 @@ extension AppModel {
         }
     }
 
+    /// Cancels the current rephrase task.
     func cancelRephrase() {
         rephraseTask?.cancel()
         rephraseTask = nil
         rephraseIsRunning = false
     }
 
+    /// Instruction for rephrase requests based on variant selection.
     private var rephraseInstruction: String {
         rephraseVariantsEnabled
             ? "Provide 3 variants as separate bullet points."
             : "Provide a single rephrase."
     }
 
+    /// Runs the rephrase request and updates output state.
+    /// - Parameters:
+    ///   - inputText: The source input text.
+    ///   - extraInstruction: Optional extra instruction.
+    ///   - variantsEnabled: Whether multiple variants are expected.
     fileprivate func runRephrase(
         inputText: String,
         extraInstruction: String?,
@@ -60,6 +68,11 @@ extension AppModel {
         }
     }
 
+    /// Parses rephrase output into one or more variants.
+    /// - Parameters:
+    ///   - text: Raw response text.
+    ///   - variantsEnabled: Whether to extract multiple variants.
+    /// - Returns: An array of rephrase variants.
     fileprivate func parseRephraseOutputs(from text: String, variantsEnabled: Bool) -> [String] {
         if !variantsEnabled {
             return text.isEmpty ? [] : [text]

@@ -2,35 +2,50 @@ import AppKit
 import Combine
 import SwiftUI
 
+/// Legacy view model backing the compare/providers UI.
 @MainActor
 final class MainViewModel: ObservableObject {
+    /// Current input text.
     @Published var inputText = ""
+    /// Latest output results.
     @Published var results: [OutputResult] = []
+    /// Compare results across providers.
     @Published var compareResults: [CompareResult] = []
+    /// Diagnostics for the last run.
     @Published var diagnostics = DiagnosticsState()
+    /// Whether a task is currently running.
     @Published var isRunning = false
+    /// Inline error string for UI display.
     @Published var lastInlineError: String?
+    /// Whether to present the consent flow.
     @Published var showConsentFlow = false
 
+    /// Selected writing mode.
     @Published var mode: WritingMode {
         didSet { persist(Keys.defaultMode, value: mode.rawValue) }
     }
+    /// Selected writing intent.
     @Published var intent: WritingIntent {
         didSet { persist(Keys.defaultIntent, value: intent.rawValue) }
     }
+    /// Selected tone.
     @Published var tone: Tone {
         didSet { persist(Keys.defaultTone, value: tone.rawValue) }
     }
+    /// Selected provider.
     @Published var provider: Provider {
         didSet { persist(Keys.defaultProvider, value: provider.rawValue) }
     }
+    /// Selected model tier.
     @Published var modelTier: ModelTier {
         didSet { persist(Keys.defaultModelTier, value: modelTier.rawValue) }
     }
+    /// Whether to persist history.
     @Published var keepHistory: Bool {
         didSet { defaults.set(keepHistory, forKey: Keys.keepHistory) }
     }
 
+    /// Persisted language identifiers.
     @Published private var storedLanguageIds: [String] {
         didSet {
             let value = storedLanguageIds.joined(separator: ",")
@@ -38,6 +53,7 @@ final class MainViewModel: ObservableObject {
         }
     }
 
+    /// Selected language options.
     var selectedLanguages: [LanguageOption] {
         get {
             let options = storedLanguageIds.compactMap { id in
@@ -53,9 +69,13 @@ final class MainViewModel: ObservableObject {
 
     let advancedModels = ModelCatalog.advancedModels
 
+    /// Task runner used for provider requests.
     private let taskRunner = TaskRunner()
+    /// Optional history store.
     let historyStore: HistoryStore?
+    /// User defaults for persistence.
     private let defaults: UserDefaults
+    /// Current in-flight task.
     private var currentTask: Task<Void, Never>?
 
     private enum Keys {
@@ -68,6 +88,10 @@ final class MainViewModel: ObservableObject {
         static let keepHistory = "keepHistory"
     }
 
+    /// Creates a view model with optional history storage.
+    /// - Parameters:
+    ///   - historyStore: Optional history store.
+    ///   - defaults: User defaults instance.
     init(historyStore: HistoryStore? = nil, defaults: UserDefaults = .standard) {
         self.historyStore = historyStore
         self.defaults = defaults
@@ -83,6 +107,8 @@ final class MainViewModel: ObservableObject {
         storedLanguageIds = storedLanguages.split(separator: ",").map(String.init)
     }
 
+    /// Toggles a language selection and enforces limits.
+    /// - Parameter option: Language option to toggle.
     func toggleLanguage(_ option: LanguageOption) {
         var current = selectedLanguages
         if current.contains(option) {
@@ -102,10 +128,12 @@ final class MainViewModel: ObservableObject {
         selectedLanguages = current
     }
 
+    /// Applies the default preset languages.
     func applyPresetLanguages() {
         selectedLanguages = LanguageOption.presets
     }
 
+    /// Runs the current task using the selected provider settings.
     func runTask() {
         lastInlineError = nil
         guard !inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
@@ -163,6 +191,7 @@ final class MainViewModel: ObservableObject {
         }
     }
 
+    /// Retries failed providers when compare mode is enabled.
     func retryFailedCompare() {
         guard provider == .auto else { return }
         let failedProviders = failedCompareProviders()
@@ -191,6 +220,7 @@ final class MainViewModel: ObservableObject {
         }
     }
 
+    /// Copies all results to the pasteboard.
     func copyAllResults() {
         let combined = results.map { result in
             String(
@@ -204,10 +234,14 @@ final class MainViewModel: ObservableObject {
         NSPasteboard.general.setString(combined, forType: .string)
     }
 
+    /// Replaces the input text with a selected result.
+    /// - Parameter result: The result to use as input.
     func useResult(_ result: OutputResult) {
         inputText = result.text
     }
 
+    /// Promotes a compare result into the primary results view.
+    /// - Parameter result: The compare result to use.
     func useCompareResult(_ result: CompareResult) {
         guard !result.isLoading else {
             lastInlineError = String(localized: "error.provider.running")
@@ -223,6 +257,7 @@ final class MainViewModel: ObservableObject {
         diagnostics.lastModel = result.model
     }
 
+    /// Clears input and results.
     func clearAll() {
         inputText = ""
         results = []
@@ -230,16 +265,23 @@ final class MainViewModel: ObservableObject {
         lastInlineError = nil
     }
 
+    /// Persists a string value to user defaults.
+    /// - Parameters:
+    ///   - key: Defaults key.
+    ///   - value: Value to store.
     private func persist(_ key: String, value: String) {
         defaults.set(value, forKey: key)
     }
 
+    /// Returns providers that failed in the last compare run.
     private func failedCompareProviders() -> [Provider] {
         compareResults
             .filter { $0.errorMessage != nil }
             .map(\.provider)
     }
 
+    /// Marks providers as loading for a retry pass.
+    /// - Parameter providers: Providers to mark.
     private func markProvidersForRetry(_ providers: [Provider]) {
         compareResults = compareResults.map { result in
             guard providers.contains(result.provider) else { return result }
@@ -255,6 +297,10 @@ final class MainViewModel: ObservableObject {
         }
     }
 
+    /// Applies retry results to the compare list.
+    /// - Parameters:
+    ///   - output: Retry output payload.
+    ///   - start: Start timestamp for latency measurement.
     private func applyRetryResults(output: CompareRunOutput, start: Date) {
         var updated = compareResults.filter { $0.isLoading == false }
         updated.append(contentsOf: output.results)
@@ -264,6 +310,10 @@ final class MainViewModel: ObservableObject {
         diagnostics.lastError = nil
     }
 
+    /// Applies retry failure results to the compare list.
+    /// - Parameters:
+    ///   - error: Error encountered.
+    ///   - providers: Providers that failed.
     private func applyRetryFailure(error: Error, providers: [Provider]) {
         compareResults = compareResults.map { result in
             guard providers.contains(result.provider) else { return result }

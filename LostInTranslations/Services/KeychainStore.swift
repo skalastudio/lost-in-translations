@@ -1,9 +1,15 @@
 import Foundation
 import Security
 
+/// Keychain helper for storing provider API keys.
 struct KeychainStore {
+    /// Keychain service name.
     private static let service = "LostInTranslations"
 
+    /// Saves an API key for a provider.
+    /// - Parameters:
+    ///   - key: API key string.
+    ///   - provider: Provider to associate with the key.
     static func saveKey(_ key: String, for provider: Provider) throws {
         let data = Data(key.utf8)
         let query: [CFString: Any] = [
@@ -22,6 +28,9 @@ struct KeychainStore {
         }
     }
 
+    /// Reads the API key for a provider.
+    /// - Parameter provider: Provider to read.
+    /// - Returns: Key string if present.
     static func readKey(for provider: Provider) -> String? {
         let query: [CFString: Any] = [
             kSecClass: kSecClassGenericPassword,
@@ -38,6 +47,8 @@ struct KeychainStore {
         return String(data: data, encoding: .utf8)
     }
 
+    /// Deletes the API key for a provider.
+    /// - Parameter provider: Provider to delete.
     static func deleteKey(for provider: Provider) throws {
         let query: [CFString: Any] = [
             kSecClass: kSecClassGenericPassword,

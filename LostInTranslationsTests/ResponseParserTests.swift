@@ -1,7 +1,9 @@
 import Testing
 @testable import LostInTranslations
 
+/// Tests for ResponseParser behavior.
 struct ResponseParserTests {
+    /// Parses a minimal valid JSON response.
     @Test
     func parsesValidJSON() throws {
         let json = """

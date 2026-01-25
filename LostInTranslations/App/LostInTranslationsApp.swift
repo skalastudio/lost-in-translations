@@ -1,13 +1,18 @@
 import SwiftData
 import SwiftUI
 
+/// App entry point and scene configuration.
 @main
 @MainActor
 struct LostInTranslationsApp: App {
+    /// SwiftData container used by history storage.
     private let modelContainer: ModelContainer
+    /// View model used for the legacy provider compare UI.
     @StateObject private var viewModel: MainViewModel
+    /// Shared application state for the SwiftUI UI.
     @StateObject private var appModel = AppModel()
 
+    /// Creates the app and configures persistence.
     init() {
         #if DEBUG
             let arguments = ProcessInfo.processInfo.arguments
@@ -26,6 +31,7 @@ struct LostInTranslationsApp: App {
         }
     }
 
+    /// The app scenes for the main window and settings.
     var body: some Scene {
         WindowGroup {
             RootSplitView(viewModel: viewModel)

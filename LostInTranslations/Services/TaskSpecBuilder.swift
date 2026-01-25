@@ -1,6 +1,10 @@
 import Foundation
 
+/// Builds system and user prompts for provider requests.
 struct TaskSpecBuilder {
+    /// Returns the system prompt for the given spec.
+    /// - Parameter spec: The task specification.
+    /// - Returns: System prompt string.
     func systemPrompt(for spec: TaskSpec) -> String {
         var instructions = [
             AIPrompts.systemBase,
@@ -26,6 +30,9 @@ struct TaskSpecBuilder {
         return instructions.joined(separator: " ")
     }
 
+    /// Returns the user prompt for the given spec.
+    /// - Parameter spec: The task specification.
+    /// - Returns: User prompt string.
     func userPrompt(for spec: TaskSpec) -> String {
         let languageCodes = spec.languages.map(\.code).joined(separator: ", ")
         let sourceLanguage = spec.sourceLanguage ?? "Auto"
@@ -44,6 +51,9 @@ struct TaskSpecBuilder {
             """
     }
 
+    /// Estimates token count based on text length.
+    /// - Parameter text: Input text.
+    /// - Returns: Estimated token count.
     func estimateTokens(for text: String) -> Int {
         max(24, text.count / 4)
     }

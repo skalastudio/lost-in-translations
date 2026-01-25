@@ -1,9 +1,13 @@
 import SwiftUI
 
+/// Synonyms mode UI.
 struct SynonymsModeView: View {
+    /// Shared application state.
     @EnvironmentObject private var appModel: AppModel
+    /// Current selection in the synonyms list.
     @State private var selectedSynonym: String?
 
+    /// View body.
     var body: some View {
         HSplitView {
             inputPanel
@@ -11,6 +15,7 @@ struct SynonymsModeView: View {
         }
     }
 
+    /// Input panel for synonyms lookup.
     private var inputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Lookup")
@@ -28,6 +33,7 @@ struct SynonymsModeView: View {
         .padding()
     }
 
+    /// Detail panel showing synonyms and notes.
     private var detailPanel: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Synonyms")
@@ -93,12 +99,15 @@ struct SynonymsModeView: View {
         .padding()
     }
 
+    /// Copies text to the pasteboard.
+    /// - Parameter text: Text to copy.
     private func copyToPasteboard(_ text: String) {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(text, forType: .string)
     }
 }
 
+/// Preview for SynonymsModeView.
 #Preview {
     let model = AppModel()
     model.synonymsQuery = "remarkable"

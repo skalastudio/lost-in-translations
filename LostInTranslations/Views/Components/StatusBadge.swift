@@ -1,8 +1,11 @@
 import SwiftUI
 
+/// Status badge for compare results.
 struct StatusBadge: View {
+    /// Compare result backing the badge.
     let result: CompareResult
 
+    /// View body.
     var body: some View {
         let label: String
         let color: Color
@@ -32,6 +35,7 @@ struct StatusBadge: View {
     }
 }
 
+/// Preview for StatusBadge.
 #Preview {
     StatusBadge(
         result: CompareResult(

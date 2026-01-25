@@ -1,8 +1,11 @@
 import SwiftUI
 
+/// Rephrase mode UI.
 struct RephraseModeView: View {
+    /// Shared application state.
     @EnvironmentObject private var appModel: AppModel
 
+    /// View body.
     var body: some View {
         HSplitView {
             inputPanel
@@ -10,6 +13,7 @@ struct RephraseModeView: View {
         }
     }
 
+    /// Input panel for rephrasing.
     private var inputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Original")
@@ -37,6 +41,7 @@ struct RephraseModeView: View {
         .padding()
     }
 
+    /// Output panel for rephrase results.
     private var outputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Rephrased")
@@ -83,6 +88,7 @@ struct RephraseModeView: View {
         .padding()
     }
 
+    /// Empty state shown when there are no outputs.
     private var emptyOutputState: some View {
         VStack(spacing: 6) {
             Text("Rephrased text will appear here")
@@ -93,12 +99,15 @@ struct RephraseModeView: View {
         }
     }
 
+    /// Copies text to the pasteboard.
+    /// - Parameter text: Text to copy.
     private func copyToPasteboard(_ text: String) {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(text, forType: .string)
     }
 }
 
+/// Preview for RephraseModeView.
 #Preview {
     let model = AppModel()
     model.rephraseInputText = "We should meet tomorrow to review the plan."
@@ -113,16 +122,23 @@ struct RephraseModeView: View {
         .frame(width: 900, height: 520)
 }
 
+/// Card view for a rephrase variant.
 private struct RephraseVariantCard: View {
+    /// Card title.
     let title: String
+    /// Output text.
     let text: String
+    /// Copy action callback.
     let onCopy: () -> Void
+    /// Replace action callback.
     let onReplace: () -> Void
 
+    /// Whether the card has output text.
     private var hasOutput: Bool {
         !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
+    /// View body.
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {

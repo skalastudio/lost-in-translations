@@ -1,9 +1,13 @@
 import SwiftUI
 
+/// History mode UI.
 struct HistoryModeView: View {
+    /// Shared application state.
     @EnvironmentObject private var appModel: AppModel
+    /// Selected history item identifier.
     @State private var selection: HistoryItemID?
 
+    /// View body.
     var body: some View {
         List(selection: $selection) {
             ForEach(appModel.historyItems) { item in
@@ -69,6 +73,8 @@ struct HistoryModeView: View {
         }
     }
 
+    /// Restores state from a history item.
+    /// - Parameter item: History item to restore.
     private func restore(_ item: HistoryItem) {
         appModel.translateInputText = item.inputText
         appModel.translateTargetLanguages = item.targetLanguages
@@ -78,6 +84,9 @@ struct HistoryModeView: View {
         appModel.selectedMode = .translate
     }
 
+    /// Formats a date for list display.
+    /// - Parameter date: Date to format.
+    /// - Returns: Localized date/time string.
     private func dateTimeString(from date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -86,6 +95,7 @@ struct HistoryModeView: View {
     }
 }
 
+/// Preview for HistoryModeView.
 #Preview {
     let model = AppModel()
     model.historyItems = [

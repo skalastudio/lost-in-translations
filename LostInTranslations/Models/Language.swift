@@ -1,13 +1,16 @@
 import Foundation
 
+/// Supported language selections for the UI.
 enum Language: String, CaseIterable, Identifiable, Codable, Sendable {
     case auto
     case english
     case portuguese
     case german
 
+    /// Stable identifier for list rendering.
     var id: String { rawValue }
 
+    /// User-facing language name.
     var title: String {
         switch self {
         case .auto:
@@ -21,6 +24,7 @@ enum Language: String, CaseIterable, Identifiable, Codable, Sendable {
         }
     }
 
+    /// ISO-style language code.
     var code: String {
         switch self {
         case .auto:
@@ -34,6 +38,7 @@ enum Language: String, CaseIterable, Identifiable, Codable, Sendable {
         }
     }
 
+    /// Maps to provider language options when available.
     var asLanguageOption: LanguageOption? {
         switch self {
         case .auto:

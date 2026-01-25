@@ -1,6 +1,7 @@
 import Foundation
 
 extension AppModel {
+    /// Generates stub translation outputs for UI previews.
     func performTranslateStub() {
         let trimmed = translateInputText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
@@ -28,6 +29,7 @@ extension AppModel {
         }
     }
 
+    /// Starts a provider-backed translation run.
     func performTranslate() {
         cancelTranslate()
         let trimmed = translateInputText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -62,6 +64,7 @@ extension AppModel {
         }
     }
 
+    /// Cancels the current translation task and clears loading state.
     func cancelTranslate() {
         translateTask?.cancel()
         translateTask = nil
@@ -79,6 +82,12 @@ extension AppModel {
         }
     }
 
+    /// Runs translation tasks and updates history on success.
+    /// - Parameters:
+    ///   - inputText: The source input text.
+    ///   - targets: Target languages to translate into.
+    ///   - purpose: The selected purpose.
+    ///   - tone: The selected tone.
     fileprivate func runTranslate(
         inputText: String,
         targets: [Language],
@@ -98,6 +107,13 @@ extension AppModel {
         }
     }
 
+    /// Translates to multiple target languages concurrently.
+    /// - Parameters:
+    ///   - inputText: The source input text.
+    ///   - targets: Target languages to translate into.
+    ///   - purpose: The selected purpose.
+    ///   - tone: The selected tone.
+    /// - Returns: Whether at least one translation succeeded.
     fileprivate func translateTargets(
         inputText: String,
         targets: [Language],
@@ -115,6 +131,13 @@ extension AppModel {
         return await runTranslateGroup(context: context, targets: targets, purpose: purpose, tone: tone)
     }
 
+    /// Executes the translation task group and updates outputs as results arrive.
+    /// - Parameters:
+    ///   - context: Shared translation context.
+    ///   - targets: Target languages to translate into.
+    ///   - purpose: The selected purpose.
+    ///   - tone: The selected tone.
+    /// - Returns: Whether at least one translation succeeded.
     fileprivate func runTranslateGroup(
         context: TranslateContext,
         targets: [Language],
@@ -167,6 +190,11 @@ extension AppModel {
         return succeeded
     }
 
+    /// Runs a single translation task.
+    /// - Parameters:
+    ///   - language: Target language.
+    ///   - context: Shared translation context.
+    /// - Returns: Output result for the language.
     fileprivate func runTranslateTask(
         language: Language,
         context: TranslateContext
@@ -192,6 +220,8 @@ extension AppModel {
         return result
     }
 
+    /// Updates a translation output in-place.
+    /// - Parameter update: The updated output value.
     fileprivate func updateOutput(_ update: TranslationOutput) {
         translateOutputs = translateOutputs.map { output in
             guard output.language == update.language else { return output }
@@ -208,17 +238,28 @@ extension AppModel {
     }
 }
 
+/// Shared translation context for provider calls.
 private struct TranslateContext: Sendable {
+    /// Source input text.
     let inputText: String
+    /// Writing intent for the request.
     let intent: WritingIntent
+    /// Tone for the request.
     let tone: Tone
+    /// Provider selection.
     let provider: Provider
+    /// Model tier selection.
     let modelTier: ModelTier
+    /// Source language code.
     let sourceCode: String
 }
 
+/// Result wrapper for translation task group execution.
 private struct TranslationTaskResult: Sendable {
+    /// Target language for the result.
     let language: Language
+    /// Output result when successful.
     let output: OutputResult?
+    /// Error message when failed.
     let errorMessage: String?
 }

@@ -1,5 +1,6 @@
 import Foundation
 
+/// App navigation modes shown in the sidebar.
 enum AppMode: String, CaseIterable, Identifiable, Codable {
     case translate
     case improve
@@ -7,8 +8,10 @@ enum AppMode: String, CaseIterable, Identifiable, Codable {
     case synonyms
     case history
 
+    /// Stable identifier for list rendering.
     var id: String { rawValue }
 
+    /// User-facing display name.
     var displayName: String {
         switch self {
         case .translate:

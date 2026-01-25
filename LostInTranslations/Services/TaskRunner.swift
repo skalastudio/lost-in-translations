@@ -1,14 +1,21 @@
 import Foundation
 import OSLog
 
+/// Coordinates provider selection and executes tasks.
 actor TaskRunner {
+    /// Prompt builder used for token estimation.
     private let builder = TaskSpecBuilder()
+    /// Internal compare task wrapper.
     private struct CompareTask {
+        /// Provider identifier.
         let provider: Provider
+        /// Provider client instance.
         let client: ProviderClient
+        /// API key for the provider.
         let key: String
     }
 
+    /// Whether the mock provider is enabled via launch arguments.
     private static let useMockProvider: Bool = {
         #if DEBUG
             let arguments = ProcessInfo.processInfo.arguments
@@ -28,12 +35,16 @@ actor TaskRunner {
         #endif
     }()
 
+    /// Provider client registry.
     private let clients: [Provider: ProviderClient] = [
         .openAI: OpenAIClient(),
         .claude: ClaudeClient(),
         .gemini: GeminiClient(),
     ]
 
+    /// Runs a single provider task.
+    /// - Parameter spec: The task specification.
+    /// - Returns: Task output from the selected provider.
     func run(spec: TaskSpec) async throws -> TaskRunOutput {
         let provider = try resolveProvider(from: spec.provider)
         let apiKey = try readKey(for: provider)
@@ -48,6 +59,9 @@ actor TaskRunner {
         )
     }
 
+    /// Runs a compare task across all available providers.
+    /// - Parameter spec: The task specification.
+    /// - Returns: Compare output with per-provider results.
     func runCompare(spec: TaskSpec) async throws -> CompareRunOutput {
         let tasks = compareTasks(for: availableProviders())
         guard !tasks.isEmpty else {
@@ -56,6 +70,11 @@ actor TaskRunner {
         return try await runCompare(spec: spec, tasks: tasks)
     }
 
+    /// Runs a compare task across specific providers.
+    /// - Parameters:
+    ///   - spec: The task specification.
+    ///   - providers: Providers to include.
+    /// - Returns: Compare output with per-provider results.
     func runCompare(spec: TaskSpec, providers: [Provider]) async throws -> CompareRunOutput {
         let tasks = compareTasks(for: providers)
         guard !tasks.isEmpty else {
@@ -107,6 +126,9 @@ actor TaskRunner {
         return CompareRunOutput(results: results, tokenEstimate: tokenEstimate)
     }
 
+    /// Builds compare tasks for the given providers.
+    /// - Parameter providers: Providers to include.
+    /// - Returns: Compare task descriptors.
     private func compareTasks(for providers: [Provider]) -> [CompareTask] {
         if Self.useMockProvider {
             return providers.map { provider in
@@ -125,6 +147,9 @@ actor TaskRunner {
         }
     }
 
+    /// Resolves the provider to use from the selection.
+    /// - Parameter selection: The user-selected provider.
+    /// - Returns: A concrete provider.
     private func resolveProvider(from selection: Provider) throws -> Provider {
         if Self.useMockProvider {
             return selection == .auto ? .openAI : selection
@@ -139,6 +164,7 @@ actor TaskRunner {
         throw ProviderError.missingKey(.openAI)
     }
 
+    /// Returns providers that are currently available.
     private func availableProviders() -> [Provider] {
         if Self.useMockProvider {
             return [.openAI, .claude, .gemini]
@@ -148,6 +174,9 @@ actor TaskRunner {
         }
     }
 
+    /// Reads the API key for a provider or throws.
+    /// - Parameter provider: Provider to read the key for.
+    /// - Returns: API key string.
     private func readKey(for provider: Provider) throws -> String {
         if Self.useMockProvider {
             return "mock"
@@ -158,6 +187,9 @@ actor TaskRunner {
         return key
     }
 
+    /// Returns a provider client for the given provider.
+    /// - Parameter provider: Provider to use.
+    /// - Returns: Provider client instance.
     private func client(for provider: Provider) throws -> ProviderClient {
         if Self.useMockProvider {
             return MockProviderClient(provider: provider)

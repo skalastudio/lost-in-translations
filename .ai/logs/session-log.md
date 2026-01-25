@@ -1072,3 +1072,9 @@ Split AppModel into multiple extensions across new AppModel+*.swift files, added
  on
 **Response**
 Relaxed AppModel task/taskRunner access to allow cross-file extensions, added explicit self handling in optional closures, and split logic across AppModel+*.swift. Updated Xcode project to include new files. Lint and build succeeded.
+### 2026-01-25T16:28:45Z — gpt-5
+**Prompt**
+now, to better understand the code, please add for all the classes, structures, enums, methods, properies, func documentation, and follow the apple guidelines and using the apple format for documentation
+
+**Response**
+Added Apple-style documentation comments across models, app state, services/providers, views, view models, and tests. Ran swift-format, lint, and build (succeeded).

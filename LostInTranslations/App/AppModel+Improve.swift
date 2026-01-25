@@ -1,6 +1,8 @@
 import Foundation
 
 extension AppModel {
+    /// Starts an improve task using an optional preset.
+    /// - Parameter preset: Optional refine preset for the request.
     func performImprove(preset: ImprovePreset? = nil) {
         cancelImprove()
         let trimmed = improveInputText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -18,12 +20,17 @@ extension AppModel {
         }
     }
 
+    /// Cancels the current improve task.
     func cancelImprove() {
         improveTask?.cancel()
         improveTask = nil
         improveIsRunning = false
     }
 
+    /// Runs the improve request and updates output state.
+    /// - Parameters:
+    ///   - inputText: The source input text.
+    ///   - extraInstruction: Optional extra instruction.
     fileprivate func runImprove(
         inputText: String,
         extraInstruction: String?

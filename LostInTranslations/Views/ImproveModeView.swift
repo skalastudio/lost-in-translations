@@ -1,12 +1,16 @@
 import SwiftUI
 
+/// Improve text mode UI.
 struct ImproveModeView: View {
+    /// Shared application state.
     @EnvironmentObject private var appModel: AppModel
 
+    /// Whether the output has content.
     private var hasOutput: Bool {
         !appModel.improveOutputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
+    /// View body.
     var body: some View {
         HSplitView {
             inputPanel
@@ -14,6 +18,7 @@ struct ImproveModeView: View {
         }
     }
 
+    /// Input panel for improvement.
     private var inputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Original")
@@ -33,6 +38,7 @@ struct ImproveModeView: View {
         .padding()
     }
 
+    /// Output panel for improvements.
     private var outputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Improved")
@@ -98,6 +104,7 @@ struct ImproveModeView: View {
         .padding()
     }
 
+    /// Empty state shown when there is no output.
     private var emptyOutputState: some View {
         VStack(spacing: 6) {
             Text("Improved text will appear here")
@@ -108,12 +115,15 @@ struct ImproveModeView: View {
         }
     }
 
+    /// Copies text to the pasteboard.
+    /// - Parameter text: Text to copy.
     private func copyToPasteboard(_ text: String) {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(text, forType: .string)
     }
 }
 
+/// Preview for ImproveModeView.
 #Preview {
     let model = AppModel()
     model.improveInputText = "This is a draft that could be clearer."

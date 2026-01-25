@@ -1,8 +1,11 @@
 import SwiftUI
 
+/// Translate mode UI.
 struct TranslateModeView: View {
+    /// Shared application state.
     @EnvironmentObject private var appModel: AppModel
 
+    /// View body.
     var body: some View {
         HSplitView {
             inputPanel
@@ -20,6 +23,7 @@ struct TranslateModeView: View {
         }
     }
 
+    /// Input panel for translation.
     private var inputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Input")
@@ -39,6 +43,7 @@ struct TranslateModeView: View {
         .padding()
     }
 
+    /// Output panel for translation results.
     private var outputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Outputs")
@@ -67,6 +72,7 @@ struct TranslateModeView: View {
         .padding()
     }
 
+    /// Copies all translation outputs to the pasteboard.
     private func copyAllOutputs() {
         let combined = appModel.translateOutputs
             .map { $0.text }
@@ -74,12 +80,15 @@ struct TranslateModeView: View {
         copyToPasteboard(combined)
     }
 
+    /// Copies text to the pasteboard.
+    /// - Parameter text: Text to copy.
     private func copyToPasteboard(_ text: String) {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(text, forType: .string)
     }
 
     @ViewBuilder
+    /// Empty state shown when there are no outputs.
     private var emptyOutputState: some View {
         if #available(macOS 14.0, *) {
             ContentUnavailableView {
@@ -99,6 +108,7 @@ struct TranslateModeView: View {
     }
 }
 
+/// Preview for TranslateModeView.
 #Preview {
     let model = AppModel()
     model.translateInputText = "Hello! How are you today?"
@@ -121,17 +131,25 @@ struct TranslateModeView: View {
         .frame(width: 1000, height: 600)
 }
 
+/// Output card for a single translation result.
 private struct TranslationOutputCard: View {
+    /// Output data for the card.
     let output: TranslationOutput
+    /// Whether there is input text to allow regeneration.
     let hasInput: Bool
+    /// Copy action callback.
     let onCopy: () -> Void
+    /// Replace input action callback.
     let onReplace: () -> Void
+    /// Regenerate action callback.
     let onRegenerate: () -> Void
 
+    /// Whether the card has output text.
     private var hasOutput: Bool {
         !output.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
+    /// View body.
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
