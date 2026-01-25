@@ -383,3 +383,17 @@ the app do not show the correct icon. The file LostInTranslation/Resources/LostI
 
 **Response:**
 Aligned project.yml to reference the icon under Resources and regenerated the project so the Xcode project points at the Icon Composer asset, then ran the build script.
+## 2026-01-24T23:06:36Z — GPT-5 Codex
+
+**Prompt:**
+generate a preview for MenuBarContentView
+
+**Response:**
+Confirmed a MenuBarContentView preview already exists in MenuBarContentView+Preview.swift and asked if any adjustments are needed.
+## 2026-01-24T23:26:03Z — GPT-5 Codex
+
+**Prompt:**
+rename the MenuBarContentView to MainView and the related files also
+
+**Response:**
+Renamed MenuBarContentView to MainView (files and type), updated references in the app entry point and preview, regenerated the Xcode project, and reran formatting, lint, and the build script.

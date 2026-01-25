@@ -27,7 +27,7 @@ struct LostInTranslationsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MenuBarContentView(viewModel: viewModel)
+            MainView(viewModel: viewModel)
         }
         .modelContainer(modelContainer)
 

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MenuBarContentView: View {
+struct MainView: View {
     @ObservedObject var viewModel: MainViewModel
 
     var body: some View {

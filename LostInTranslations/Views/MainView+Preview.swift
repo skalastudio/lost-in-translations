@@ -27,5 +27,5 @@ import SwiftUI
             latencyMs: 980
         ),
     ]
-    return MenuBarContentView(viewModel: viewModel)
+    return MainView(viewModel: viewModel)
 }
