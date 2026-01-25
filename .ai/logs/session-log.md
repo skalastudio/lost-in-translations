@@ -1078,3 +1078,38 @@ now, to better understand the code, please add for all the classes, structures, 
 
 **Response**
 Added Apple-style documentation comments across models, app state, services/providers, views, view models, and tests. Ran swift-format, lint, and build (succeeded).
+### 2026-01-25T16:43:52Z — gpt-5
+**Prompt**
+we have already a localible.string file in Resources folder to allows localization. i see a lot of string on the code, please apply the localization approach that we havew
+
+**Response**
+Localized all user-facing UI strings to use `Localizable.strings` keys, and aligned model display names + error messages with localized keys.
+
+Changes
+- Replaced hardcoded labels/placeholders in Translate/Improve/Rephrase/Synonyms/History/Settings/Sidebar/toolbar views with localized keys.
+- Localized AppMode/Language/Purpose/ImprovePreset display names and AppModel error mapping.
+- Expanded `Localizable.strings` with the new UI/action/settings/history keys and added `writingMode.rephrase`.
+
+Files touched
+- `LostInTranslations/App/AppModel+Helpers.swift`
+- `LostInTranslations/Models/AppMode.swift`
+- `LostInTranslations/Models/Language.swift`
+- `LostInTranslations/Models/Models.swift`
+- `LostInTranslations/Models/Purpose.swift`
+- `LostInTranslations/Resources/en.lproj/Localizable.strings`
+- `LostInTranslations/Views/HistoryModeView.swift`
+- `LostInTranslations/Views/ImproveModeView.swift`
+- `LostInTranslations/Views/RephraseModeView.swift`
+- `LostInTranslations/Views/RootSplitView.swift`
+- `LostInTranslations/Views/SettingsView.swift`
+- `LostInTranslations/Views/SidebarView.swift`
+- `LostInTranslations/Views/SynonymsModeView.swift`
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.

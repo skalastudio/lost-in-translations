@@ -16,13 +16,13 @@ struct RephraseModeView: View {
     /// Input panel for rephrasing.
     private var inputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Original")
+            Text("rephrase.input.title")
                 .font(.headline)
             ZStack(alignment: .topLeading) {
                 TextEditor(text: $appModel.rephraseInputText)
                     .font(.body)
                 if appModel.rephraseInputText.isEmpty {
-                    Text("Paste or type text...")
+                    Text("rephrase.input.placeholder")
                         .foregroundStyle(.secondary)
                         .padding(.top, 8)
                         .padding(.leading, 5)
@@ -30,10 +30,10 @@ struct RephraseModeView: View {
             }
             .frame(minHeight: 200)
 
-            Toggle("Variants", isOn: $appModel.rephraseVariantsEnabled)
+            Toggle("rephrase.variants", isOn: $appModel.rephraseVariantsEnabled)
                 .toggleStyle(.switch)
 
-            Button("Rephrase") {
+            Button("rephrase.action") {
                 appModel.performRephrase()
             }
             .disabled(!appModel.canRephrase)
@@ -44,14 +44,14 @@ struct RephraseModeView: View {
     /// Output panel for rephrase results.
     private var outputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Rephrased")
+            Text("rephrase.output.title")
                 .font(.headline)
             ScrollView {
                 if appModel.rephraseIsRunning {
                     HStack(spacing: 6) {
                         ProgressView()
                             .controlSize(.small)
-                        Text("Rephrasing...")
+                        Text("rephrase.output.loading")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -73,8 +73,11 @@ struct RephraseModeView: View {
                             let text = appModel.rephraseOutputs[index]
                             RephraseVariantCard(
                                 title: appModel.rephraseVariantsEnabled
-                                    ? "Variant \(index + 1)"
-                                    : "Result",
+                                    ? String(
+                                        format: String(localized: "rephrase.variant"),
+                                        index + 1
+                                    )
+                                    : String(localized: "rephrase.result"),
                                 text: text,
                                 onCopy: { copyToPasteboard(text) },
                                 onReplace: { appModel.rephraseInputText = text }
@@ -91,9 +94,9 @@ struct RephraseModeView: View {
     /// Empty state shown when there are no outputs.
     private var emptyOutputState: some View {
         VStack(spacing: 6) {
-            Text("Rephrased text will appear here")
+            Text("rephrase.output.empty.title")
                 .font(.headline)
-            Text("Paste or type text, then click Rephrase.")
+            Text("rephrase.output.empty.subtitle")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
@@ -145,9 +148,9 @@ private struct RephraseVariantCard: View {
                 Text(title)
                     .font(.subheadline)
                 Spacer()
-                Button("Copy", action: onCopy)
+                Button("actions.copy", action: onCopy)
                     .disabled(!hasOutput)
-                Button("Replace", action: onReplace)
+                Button("actions.replace", action: onReplace)
                     .disabled(!hasOutput)
             }
             .buttonStyle(.bordered)

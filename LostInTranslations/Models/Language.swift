@@ -14,13 +14,13 @@ enum Language: String, CaseIterable, Identifiable, Codable, Sendable {
     var title: String {
         switch self {
         case .auto:
-            return "Auto"
+            return String(localized: "language.auto")
         case .english:
-            return "English"
+            return String(localized: "language.english")
         case .portuguese:
-            return "Portuguese"
+            return String(localized: "language.portuguese")
         case .german:
-            return "German"
+            return String(localized: "language.german")
         }
     }
 

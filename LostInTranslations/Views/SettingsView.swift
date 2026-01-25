@@ -21,15 +21,15 @@ struct SettingsView: View {
     var body: some View {
         TabView {
             generalTab
-                .tabItem { Text("General") }
+                .tabItem { Text("settings.tab.general") }
             providersTab
-                .tabItem { Text("Providers") }
+                .tabItem { Text("settings.tab.providers") }
             modelsTab
-                .tabItem { Text("Models") }
+                .tabItem { Text("settings.tab.models") }
             outputTab
-                .tabItem { Text("Output") }
+                .tabItem { Text("settings.tab.output") }
             privacyTab
-                .tabItem { Text("Privacy") }
+                .tabItem { Text("settings.tab.privacy") }
         }
         .padding(20)
         .frame(minWidth: 520, minHeight: 380)
@@ -39,9 +39,9 @@ struct SettingsView: View {
     /// General settings tab.
     private var generalTab: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("General")
+            Text("settings.general.title")
                 .font(.title2)
-            Text("Basic app preferences will appear here.")
+            Text("settings.general.subtitle")
                 .foregroundStyle(.secondary)
             Spacer()
         }
@@ -50,13 +50,25 @@ struct SettingsView: View {
     /// Provider settings tab.
     private var providersTab: some View {
         Form {
-            providerSection(title: "OpenAI", key: $openAIKey, status: openAIStatus) {
+            providerSection(
+                title: String(localized: "settings.providers.openai"),
+                key: $openAIKey,
+                status: openAIStatus
+            ) {
                 saveKey(openAIKey, provider: .openAI, status: &openAIStatus)
             }
-            providerSection(title: "Claude", key: $claudeKey, status: claudeStatus) {
+            providerSection(
+                title: String(localized: "settings.providers.claude"),
+                key: $claudeKey,
+                status: claudeStatus
+            ) {
                 saveKey(claudeKey, provider: .claude, status: &claudeStatus)
             }
-            providerSection(title: "Gemini", key: $geminiKey, status: geminiStatus) {
+            providerSection(
+                title: String(localized: "settings.providers.gemini"),
+                key: $geminiKey,
+                status: geminiStatus
+            ) {
                 saveKey(geminiKey, provider: .gemini, status: &geminiStatus)
             }
         }
@@ -65,9 +77,9 @@ struct SettingsView: View {
     /// Models settings tab.
     private var modelsTab: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Models")
+            Text("settings.models.title")
                 .font(.title2)
-            Text("Model defaults and performance options will appear here.")
+            Text("settings.models.subtitle")
                 .foregroundStyle(.secondary)
             Spacer()
         }
@@ -76,9 +88,9 @@ struct SettingsView: View {
     /// Output settings tab.
     private var outputTab: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Output")
+            Text("settings.output.title")
                 .font(.title2)
-            Text("Formatting and output preferences will appear here.")
+            Text("settings.output.subtitle")
                 .foregroundStyle(.secondary)
             Spacer()
         }
@@ -87,14 +99,14 @@ struct SettingsView: View {
     /// Privacy settings tab.
     private var privacyTab: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Privacy")
+            Text("settings.privacy.title")
                 .font(.title2)
-            Text("Translations run locally in this app unless you use an external provider.")
+            Text("settings.privacy.subtitle")
                 .foregroundStyle(.secondary)
-            Text("Your history stays on this Mac.")
+            Text("settings.privacy.historyNote")
                 .foregroundStyle(.secondary)
 
-            Toggle("Store History locally", isOn: $appModel.storeHistoryLocally)
+            Toggle("settings.privacy.storeHistory", isOn: $appModel.storeHistoryLocally)
             Spacer()
         }
     }
@@ -111,14 +123,19 @@ struct SettingsView: View {
         status: String?,
         onSave: @escaping () -> Void
     ) -> some View {
-        Section(title) {
-            SecureField("\(title) API Key", text: key)
-            Button("Save", action: onSave)
+        Section {
+            SecureField(
+                String(format: String(localized: "settings.providers.apiKey.placeholder"), title),
+                text: key
+            )
+            Button("actions.save", action: onSave)
             if let status {
                 Text(status)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+        } header: {
+            Text(title)
         }
     }
 
@@ -139,13 +156,13 @@ struct SettingsView: View {
         do {
             if trimmed.isEmpty {
                 try KeychainStore.deleteKey(for: provider)
-                status = "Key removed."
+                status = String(localized: "settings.providers.status.removed")
             } else {
                 try KeychainStore.saveKey(trimmed, for: provider)
-                status = "Saved."
+                status = String(localized: "settings.providers.status.saved")
             }
         } catch {
-            status = "Unable to save."
+            status = String(localized: "settings.providers.status.failed")
         }
     }
 }

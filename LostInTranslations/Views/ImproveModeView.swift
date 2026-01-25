@@ -21,13 +21,13 @@ struct ImproveModeView: View {
     /// Input panel for improvement.
     private var inputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Original")
+            Text("improve.input.title")
                 .font(.headline)
             ZStack(alignment: .topLeading) {
                 TextEditor(text: $appModel.improveInputText)
                     .font(.body)
                 if appModel.improveInputText.isEmpty {
-                    Text("Paste or type text...")
+                    Text("improve.input.placeholder")
                         .foregroundStyle(.secondary)
                         .padding(.top, 8)
                         .padding(.leading, 5)
@@ -41,7 +41,7 @@ struct ImproveModeView: View {
     /// Output panel for improvements.
     private var outputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Improved")
+            Text("improve.output.title")
                 .font(.headline)
             HStack(spacing: 8) {
                 Button(ImprovePreset.shorter.title) {
@@ -62,7 +62,7 @@ struct ImproveModeView: View {
                     HStack(spacing: 6) {
                         ProgressView()
                             .controlSize(.small)
-                        Text("Improving...")
+                        Text("improve.output.loading")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -89,11 +89,11 @@ struct ImproveModeView: View {
             .frame(minHeight: 160)
 
             HStack(spacing: 8) {
-                Button("Copy") {
+                Button("actions.copy") {
                     copyToPasteboard(appModel.improveOutputText)
                 }
                 .disabled(!hasOutput)
-                Button("Replace Input") {
+                Button("actions.replaceInput") {
                     appModel.improveInputText = appModel.improveOutputText
                 }
                 .disabled(!hasOutput)
@@ -107,9 +107,9 @@ struct ImproveModeView: View {
     /// Empty state shown when there is no output.
     private var emptyOutputState: some View {
         VStack(spacing: 6) {
-            Text("Improved text will appear here")
+            Text("improve.output.empty.title")
                 .font(.headline)
-            Text("Choose a refinement to generate a result.")
+            Text("improve.output.empty.subtitle")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }

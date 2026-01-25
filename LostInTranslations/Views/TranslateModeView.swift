@@ -13,7 +13,7 @@ struct TranslateModeView: View {
         }
         .toolbar {
             ToolbarItem(placement: .automatic) {
-                Button("Copy All Outputs") {
+                Button("translate.copyAllOutputs") {
                     copyAllOutputs()
                 }
                 .keyboardShortcut("c", modifiers: [.command, .shift])
@@ -26,13 +26,13 @@ struct TranslateModeView: View {
     /// Input panel for translation.
     private var inputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Input")
+            Text("translate.input.title")
                 .font(.headline)
             ZStack(alignment: .topLeading) {
                 TextEditor(text: $appModel.translateInputText)
                     .font(.body)
                 if appModel.translateInputText.isEmpty {
-                    Text("Paste or type text...")
+                    Text("translate.input.placeholder")
                         .foregroundStyle(.secondary)
                         .padding(.top, 8)
                         .padding(.leading, 5)
@@ -46,7 +46,7 @@ struct TranslateModeView: View {
     /// Output panel for translation results.
     private var outputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Outputs")
+            Text("translate.output.title")
                 .font(.headline)
             ScrollView {
                 if appModel.translateOutputs.isEmpty {
@@ -92,15 +92,15 @@ struct TranslateModeView: View {
     private var emptyOutputState: some View {
         if #available(macOS 14.0, *) {
             ContentUnavailableView {
-                Text("Results will appear here")
+                Text("translate.output.empty.title")
             } description: {
-                Text("Paste or type text, then press \u{2318}\u{21A9}")
+                Text("translate.output.empty.subtitle")
             }
         } else {
             VStack(spacing: 6) {
-                Text("Results will appear here")
+                Text("translate.output.empty.title")
                     .font(.headline)
-                Text("Paste or type text, then press \u{2318}\u{21A9}")
+                Text("translate.output.empty.subtitle")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -158,11 +158,11 @@ private struct TranslationOutputCard: View {
                 )
                 .font(.subheadline)
                 Spacer()
-                Button("Copy", action: onCopy)
+                Button("actions.copy", action: onCopy)
                     .disabled(!hasOutput)
-                Button("Replace Input", action: onReplace)
+                Button("actions.replaceInput", action: onReplace)
                     .disabled(!hasOutput)
-                Button("Regenerate", action: onRegenerate)
+                Button("actions.regenerate", action: onRegenerate)
                     .disabled(!hasInput)
             }
             .buttonStyle(.bordered)
@@ -171,7 +171,7 @@ private struct TranslationOutputCard: View {
                 HStack(spacing: 6) {
                     ProgressView()
                         .controlSize(.small)
-                    Text("Translating...")
+                    Text("translate.output.loading")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

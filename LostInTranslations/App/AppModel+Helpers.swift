@@ -58,26 +58,29 @@ extension AppModel {
         if let providerError = error as? ProviderError {
             switch providerError {
             case .missingKey(let provider):
-                return "API key not set for \(provider.localizedName). Open Settings → Providers."
+                return String(
+                    format: String(localized: "error.missingKey"),
+                    provider.localizedName
+                )
             case .network:
-                return "Network error. Try again."
+                return String(localized: "error.networkTryAgain")
             case .serviceError(let message):
                 let lower = message.lowercased()
                 if lower.contains("401") || lower.contains("unauthorized") {
-                    return "Invalid API key."
+                    return String(localized: "error.invalidKey")
                 }
                 if lower.contains("429") || lower.contains("rate") {
-                    return "Rate limit hit. Try again."
+                    return String(localized: "error.rateLimit")
                 }
-                return "Something went wrong."
+                return String(localized: "error.generic")
             case .invalidResponse, .decodingFailed:
-                return "Something went wrong."
+                return String(localized: "error.generic")
             }
         }
         let lower = String(describing: error).lowercased()
         if lower.contains("cancel") {
-            return "Cancelled."
+            return String(localized: "error.cancelled")
         }
-        return "Something went wrong."
+        return String(localized: "error.generic")
     }
 }

@@ -41,7 +41,7 @@ struct RootSplitView: View {
     private var detailToolbar: some ToolbarContent {
         if appModel.selectedMode == .translate {
             ToolbarItemGroup {
-                Picker("From", selection: $appModel.translateFromLanguage) {
+                Picker("toolbar.from", selection: $appModel.translateFromLanguage) {
                     ForEach(Language.allCases) { language in
                         Text(language.title).tag(language)
                     }
@@ -60,25 +60,25 @@ struct RootSplitView: View {
                         .disabled(appModel.translateTargetLanguages.contains(language))
                     }
                 } label: {
-                    Label("Add Language", systemImage: "plus")
+                    Label("toolbar.addLanguage", systemImage: "plus")
                 }
                 .disabled(appModel.translateTargetLanguages.count >= appModel.maxTargetLanguages)
 
-                Picker("Purpose", selection: $appModel.selectedPurpose) {
+                Picker("toolbar.purpose", selection: $appModel.selectedPurpose) {
                     ForEach(Purpose.allCases) { purpose in
                         Text(purpose.title).tag(purpose)
                     }
                 }
                 .pickerStyle(.menu)
 
-                Picker("Tone", selection: $appModel.selectedTone) {
+                Picker("toolbar.tone", selection: $appModel.selectedTone) {
                     ForEach(Tone.allCases) { tone in
                         Text(tone.localizedName).tag(tone)
                     }
                 }
                 .pickerStyle(.menu)
 
-                Button("Translate") {
+                Button("toolbar.translate") {
                     appModel.performTranslate()
                 }
                 .buttonStyle(.borderedProminent)
@@ -87,7 +87,7 @@ struct RootSplitView: View {
             }
         } else {
             ToolbarItem {
-                Button("Clear") {
+                Button("toolbar.clear") {
                     appModel.clearCurrentMode()
                 }
             }
@@ -115,7 +115,14 @@ private struct TargetLanguagePillsView: View {
                             .font(.caption2)
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel("Remove \(language.title)")
+                    .accessibilityLabel(
+                        Text(
+                            String(
+                                format: String(localized: "actions.removeLanguage"),
+                                language.title
+                            )
+                        )
+                    )
                 }
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)

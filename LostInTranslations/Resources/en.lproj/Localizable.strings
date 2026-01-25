@@ -69,6 +69,7 @@
 
 "writingMode.translate" = "Translate";
 "writingMode.improve" = "Improve";
+"writingMode.rephrase" = "Rephrase";
 "writingMode.synonyms" = "Synonyms";
 
 "writingIntent.email" = "Email";
@@ -100,10 +101,15 @@
 "language.italian" = "Italian";
 "language.japanese" = "Japanese";
 
-"error.missingKey" = "Missing API key for %@. Add it in Settings.";
+"error.missingKey" = "API key not set for %@. Open Settings > Providers.";
 "error.invalidResponse" = "The provider returned an invalid response.";
 "error.decodingFailed" = "Failed to parse the provider response.";
 "error.network" = "Network error: %@";
+"error.networkTryAgain" = "Network error. Try again.";
+"error.invalidKey" = "Invalid API key.";
+"error.rateLimit" = "Rate limit hit. Try again.";
+"error.generic" = "Something went wrong.";
+"error.cancelled" = "Cancelled.";
 "error.languages.min" = "Select at least two languages.";
 "error.languages.max" = "You can choose up to three languages.";
 "error.input.empty" = "Enter text before running.";
@@ -125,3 +131,108 @@
 "error.gemini.http" = "Gemini error: HTTP %d.";
 "error.gemini.detailStatus" = "Gemini error: %@ (%@)";
 "error.gemini.detail" = "Gemini error: %@";
+
+"sidebar.actions" = "Actions";
+"sidebar.library" = "Library";
+
+"mode.translate" = "Translate";
+"mode.improveText" = "Improve Text";
+"mode.rephrase" = "Rephrase";
+"mode.synonyms" = "Synonyms";
+"mode.history" = "History";
+
+"language.auto" = "Auto";
+
+"purpose.email" = "Email";
+"purpose.sms" = "SMS";
+"purpose.chat" = "Chat";
+"purpose.notes" = "Notes";
+
+"improve.preset.shorter" = "Shorter";
+"improve.preset.moreFormal" = "More formal";
+"improve.preset.moreFriendly" = "More friendly";
+
+"toolbar.from" = "From";
+"toolbar.addLanguage" = "Add Language";
+"toolbar.purpose" = "Purpose";
+"toolbar.tone" = "Tone";
+"toolbar.translate" = "Translate";
+"toolbar.clear" = "Clear";
+
+"actions.copy" = "Copy";
+"actions.replace" = "Replace";
+"actions.replaceInput" = "Replace Input";
+"actions.regenerate" = "Regenerate";
+"actions.removeLanguage" = "Remove %@";
+"actions.save" = "Save";
+
+"translate.copyAllOutputs" = "Copy All Outputs";
+"translate.input.title" = "Input";
+"translate.input.placeholder" = "Paste or type text...";
+"translate.output.title" = "Outputs";
+"translate.output.empty.title" = "Results will appear here";
+"translate.output.empty.subtitle" = "Paste or type text, then press Cmd+Return.";
+"translate.output.loading" = "Translating...";
+
+"improve.input.title" = "Original";
+"improve.input.placeholder" = "Paste or type text...";
+"improve.output.title" = "Improved";
+"improve.output.loading" = "Improving...";
+"improve.output.empty.title" = "Improved text will appear here";
+"improve.output.empty.subtitle" = "Choose a refinement to generate a result.";
+
+"rephrase.input.title" = "Original";
+"rephrase.input.placeholder" = "Paste or type text...";
+"rephrase.variants" = "Variants";
+"rephrase.action" = "Rephrase";
+"rephrase.output.title" = "Rephrased";
+"rephrase.output.loading" = "Rephrasing...";
+"rephrase.output.empty.title" = "Rephrased text will appear here";
+"rephrase.output.empty.subtitle" = "Paste or type text, then click Rephrase.";
+"rephrase.variant" = "Variant %d";
+"rephrase.result" = "Result";
+
+"synonyms.input.title" = "Lookup";
+"synonyms.input.placeholder" = "Word or short phrase";
+"synonyms.action" = "Find Synonyms";
+"synonyms.output.title" = "Synonyms";
+"synonyms.output.loading" = "Looking up...";
+"synonyms.usageNotes.title" = "Usage Notes";
+"synonyms.usageNotes.placeholder" = "Usage notes will appear here.";
+"synonyms.examples.title" = "Examples";
+"synonyms.examples.placeholder" = "Examples will appear here.";
+"synonyms.action.copySelected" = "Copy Selected";
+"synonyms.action.insertClipboard" = "Insert into Clipboard";
+
+"history.empty.title" = "No History Yet";
+"history.empty.subtitle" = "Run a translation to see recent items here.";
+"history.empty.tip" = "Tip: Press Cmd+Return to translate.";
+"history.clear" = "Clear History";
+
+"settings.tab.general" = "General";
+"settings.tab.providers" = "Providers";
+"settings.tab.models" = "Models";
+"settings.tab.output" = "Output";
+"settings.tab.privacy" = "Privacy";
+
+"settings.general.title" = "General";
+"settings.general.subtitle" = "Basic app preferences will appear here.";
+
+"settings.providers.openai" = "OpenAI";
+"settings.providers.claude" = "Claude";
+"settings.providers.gemini" = "Gemini";
+"settings.providers.apiKey.placeholder" = "%@ API Key";
+"settings.providers.status.removed" = "Key removed.";
+"settings.providers.status.saved" = "Saved.";
+"settings.providers.status.failed" = "Unable to save.";
+
+"settings.models.title" = "Models";
+"settings.models.subtitle" = "Model defaults and performance options will appear here.";
+
+"settings.output.title" = "Output";
+"settings.output.subtitle" = "Formatting and output preferences will appear here.";
+
+"settings.privacy.title" = "Privacy";
+"settings.privacy.subtitle" = "Translations run locally in this app unless you use an external provider.";
+"settings.privacy.historyNote" = "Your history stays on this Mac.";
+"settings.privacy.storeHistory" = "Store History locally";

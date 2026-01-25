@@ -141,11 +141,11 @@ enum ImprovePreset: String, CaseIterable, Identifiable, Sendable {
     var title: String {
         switch self {
         case .shorter:
-            return "Shorter"
+            return String(localized: "improve.preset.shorter")
         case .moreFormal:
-            return "More formal"
+            return String(localized: "improve.preset.moreFormal")
         case .moreFriendly:
-            return "More friendly"
+            return String(localized: "improve.preset.moreFriendly")
         }
     }
 

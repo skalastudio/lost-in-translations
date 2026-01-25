@@ -18,13 +18,13 @@ struct SynonymsModeView: View {
     /// Input panel for synonyms lookup.
     private var inputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Lookup")
+            Text("synonyms.input.title")
                 .font(.headline)
-            TextField("Word or short phrase", text: $appModel.synonymsQuery)
+            TextField("synonyms.input.placeholder", text: $appModel.synonymsQuery)
                 .textFieldStyle(.roundedBorder)
                 .frame(maxWidth: 320)
                 .onSubmit { appModel.performSynonyms() }
-            Button("Find Synonyms") {
+            Button("synonyms.action") {
                 appModel.performSynonyms()
             }
             .disabled(!appModel.canLookupSynonyms)
@@ -36,13 +36,13 @@ struct SynonymsModeView: View {
     /// Detail panel showing synonyms and notes.
     private var detailPanel: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Synonyms")
+            Text("synonyms.output.title")
                 .font(.headline)
             if appModel.synonymsIsRunning {
                 HStack(spacing: 6) {
                     ProgressView()
                         .controlSize(.small)
-                    Text("Looking up...")
+                    Text("synonyms.output.loading")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -59,20 +59,20 @@ struct SynonymsModeView: View {
             }
             .frame(minHeight: 160)
 
-            GroupBox("Usage Notes") {
+            GroupBox("synonyms.usageNotes.title") {
                 Text(
                     appModel.synonymsUsageNotes.isEmpty
-                        ? "Usage notes will appear here."
+                        ? String(localized: "synonyms.usageNotes.placeholder")
                         : appModel.synonymsUsageNotes
                 )
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
 
-            GroupBox("Examples") {
+            GroupBox("synonyms.examples.title") {
                 VStack(alignment: .leading, spacing: 6) {
                     if appModel.synonymsExamples.isEmpty {
-                        Text("Examples will appear here.")
+                        Text("synonyms.examples.placeholder")
                     } else {
                         ForEach(appModel.synonymsExamples, id: \.self) { example in
                             Text(example)
@@ -84,11 +84,11 @@ struct SynonymsModeView: View {
             }
 
             HStack(spacing: 8) {
-                Button("Copy Selected") {
+                Button("synonyms.action.copySelected") {
                     copyToPasteboard(selectedSynonym ?? "")
                 }
                 .disabled((selectedSynonym ?? "").isEmpty)
-                Button("Insert into Clipboard") {
+                Button("synonyms.action.insertClipboard") {
                     copyToPasteboard(selectedSynonym ?? "")
                 }
                 .disabled((selectedSynonym ?? "").isEmpty)

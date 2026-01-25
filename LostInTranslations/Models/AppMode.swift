@@ -15,15 +15,15 @@ enum AppMode: String, CaseIterable, Identifiable, Codable {
     var displayName: String {
         switch self {
         case .translate:
-            return "Translate"
+            return String(localized: "mode.translate")
         case .improve:
-            return "Improve"
+            return String(localized: "mode.improveText")
         case .rephrase:
-            return "Rephrase"
+            return String(localized: "mode.rephrase")
         case .synonyms:
-            return "Synonyms"
+            return String(localized: "mode.synonyms")
         case .history:
-            return "History"
+            return String(localized: "mode.history")
         }
     }
 }

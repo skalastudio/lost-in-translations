@@ -41,22 +41,22 @@ struct HistoryModeView: View {
             if appModel.historyItems.isEmpty {
                 if #available(macOS 14.0, *) {
                     ContentUnavailableView {
-                        Label("No History Yet", systemImage: "clock.arrow.circlepath")
+                        Label("history.empty.title", systemImage: "clock.arrow.circlepath")
                     } description: {
-                        Text("Run a translation to see recent items here.")
+                        Text("history.empty.subtitle")
                     } actions: {
-                        Text("Tip: Press \u{2318}\u{21A9} to translate.")
+                        Text("history.empty.tip")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                 } else {
                     VStack(spacing: 8) {
-                        Label("No History Yet", systemImage: "clock.arrow.circlepath")
+                        Label("history.empty.title", systemImage: "clock.arrow.circlepath")
                             .font(.title3)
-                        Text("Run a translation to see recent items here.")
+                        Text("history.empty.subtitle")
                             .font(.body)
                             .foregroundStyle(.secondary)
-                        Text("Tip: Press \u{2318}\u{21A9} to translate.")
+                        Text("history.empty.tip")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -65,7 +65,7 @@ struct HistoryModeView: View {
         }
         .toolbar {
             ToolbarItem {
-                Button("Clear History") {
+                Button("history.clear") {
                     appModel.clearHistory()
                 }
                 .disabled(!appModel.hasHistory)

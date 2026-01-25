@@ -10,14 +10,14 @@ struct SidebarView: View {
     /// View body.
     var body: some View {
         List(selection: $selectedMode) {
-            Section("Actions") {
+            Section("sidebar.actions") {
                 sidebarRow(for: .translate)
                 sidebarRow(for: .improve)
                 sidebarRow(for: .rephrase)
                 sidebarRow(for: .synonyms)
             }
 
-            Section("Library") {
+            Section("sidebar.library") {
                 sidebarRow(for: .history)
                     .badge(appModel.historyItems.count)
             }
@@ -29,28 +29,12 @@ struct SidebarView: View {
     /// Builds a row label for a given mode.
     /// - Parameter mode: App mode to render.
     private func sidebarRow(for mode: AppMode) -> some View {
-        Label(mode.title, systemImage: mode.systemImageName)
+        Label(mode.displayName, systemImage: mode.systemImageName)
             .tag(mode)
     }
 }
 
 extension AppMode {
-    /// Sidebar title for a mode.
-    fileprivate var title: String {
-        switch self {
-        case .translate:
-            return "Translate"
-        case .improve:
-            return "Improve Text"
-        case .rephrase:
-            return "Rephrase"
-        case .synonyms:
-            return "Synonyms"
-        case .history:
-            return "History"
-        }
-    }
-
     /// Sidebar system image name for a mode.
     fileprivate var systemImageName: String {
         switch self {

@@ -14,13 +14,13 @@ enum Purpose: String, CaseIterable, Identifiable, Codable {
     var title: String {
         switch self {
         case .email:
-            return "Email"
+            return String(localized: "purpose.email")
         case .sms:
-            return "SMS"
+            return String(localized: "purpose.sms")
         case .chat:
-            return "Chat"
+            return String(localized: "purpose.chat")
         case .notes:
-            return "Notes"
+            return String(localized: "purpose.notes")
         }
     }
 }
