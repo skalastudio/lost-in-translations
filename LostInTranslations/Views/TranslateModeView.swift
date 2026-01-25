@@ -99,6 +99,28 @@ struct TranslateModeView: View {
     }
 }
 
+#Preview {
+    let model = AppModel()
+    model.translateInputText = "Hello! How are you today?"
+    model.translateOutputs = [
+        TranslationOutput(
+            language: .english,
+            text: "Hello! How are you today?",
+            purpose: .chat,
+            tone: .neutral
+        ),
+        TranslationOutput(
+            language: .portuguese,
+            text: "Ola! Como voce esta hoje?",
+            purpose: .chat,
+            tone: .neutral
+        ),
+    ]
+    return TranslateModeView()
+        .environmentObject(model)
+        .frame(width: 1000, height: 600)
+}
+
 private struct TranslationOutputCard: View {
     let output: TranslationOutput
     let hasInput: Bool

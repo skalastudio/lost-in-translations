@@ -31,3 +31,18 @@ struct StatusBadge: View {
             .animation(.easeInOut(duration: 0.2), value: label)
     }
 }
+
+#Preview {
+    StatusBadge(
+        result: CompareResult(
+            provider: .openAI,
+            model: "gpt-4o-mini",
+            results: [OutputResult(language: .english, text: "Hello")],
+            errorMessage: nil,
+            isLoading: false,
+            isSuccess: true,
+            latencyMs: 420
+        )
+    )
+    .padding()
+}

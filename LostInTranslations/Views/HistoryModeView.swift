@@ -85,3 +85,21 @@ struct HistoryModeView: View {
         return formatter.string(from: date)
     }
 }
+
+#Preview {
+    let model = AppModel()
+    model.historyItems = [
+        HistoryItem(
+            mode: .translate,
+            inputText: "Hello, how are you?",
+            inputPreview: "Hello, how are you?",
+            date: Date(),
+            targetLanguages: [.portuguese, .german],
+            purpose: .chat,
+            tone: .neutral
+        )
+    ]
+    return HistoryModeView()
+        .environmentObject(model)
+        .frame(width: 900, height: 520)
+}

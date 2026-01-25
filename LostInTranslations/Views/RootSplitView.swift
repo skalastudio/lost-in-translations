@@ -114,3 +114,9 @@ private struct TargetLanguagePillsView: View {
         }
     }
 }
+
+#Preview {
+    RootSplitView(viewModel: MainViewModel())
+        .environmentObject(AppModel())
+        .frame(width: 1100, height: 700)
+}

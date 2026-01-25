@@ -1055,3 +1055,20 @@ fix it
 
 **Response**
 Moved ImprovePreset into `LostInTranslations/Models/Models.swift` (so it’s in the target) and removed `LostInTranslations/Models/ImprovePreset.swift`. Added a `.rephrase` case to `MockProviderClient` with a mock rephrase response.
+### 2026-01-25T15:50:43Z — gpt-5
+**Prompt**
+add previes to all the views, add the previews on the same files, do not create a helper file
+
+**Response**
+Added #Preview blocks to all view files (including components) with inline sample state, using AppModel environment objects where needed. Ran swift-format, lint (AppModel size warnings), and build (succeeded).
+### 2026-01-25T16:02:03Z — gpt-5
+**Prompt**
+yes
+
+**Response**
+Split AppModel into multiple extensions across new AppModel+*.swift files, added them to the Xcode project, and adjusted access control to keep cross-file helpers accessible. Lint passes; build failed due to DerivedData permission errors.
+### 2026-01-25T16:06:09Z — gpt-5
+**Prompt**
+ on
+**Response**
+Relaxed AppModel task/taskRunner access to allow cross-file extensions, added explicit self handling in optional closures, and split logic across AppModel+*.swift. Updated Xcode project to include new files. Lint and build succeeded.

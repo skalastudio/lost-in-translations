@@ -98,3 +98,17 @@ struct SynonymsModeView: View {
         NSPasteboard.general.setString(text, forType: .string)
     }
 }
+
+#Preview {
+    let model = AppModel()
+    model.synonymsQuery = "remarkable"
+    model.synonymsResults = ["impressive", "notable", "extraordinary"]
+    model.synonymsUsageNotes = "Use the synonym that best fits your tone."
+    model.synonymsExamples = [
+        "The result was remarkable.",
+        "She made an impressive improvement.",
+    ]
+    return SynonymsModeView()
+        .environmentObject(model)
+        .frame(width: 900, height: 520)
+}

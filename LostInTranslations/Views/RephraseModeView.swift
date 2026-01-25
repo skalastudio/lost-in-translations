@@ -99,6 +99,20 @@ struct RephraseModeView: View {
     }
 }
 
+#Preview {
+    let model = AppModel()
+    model.rephraseInputText = "We should meet tomorrow to review the plan."
+    model.rephraseVariantsEnabled = true
+    model.rephraseOutputs = [
+        "Let's meet tomorrow to review the plan.",
+        "Can we meet tomorrow to go over the plan?",
+        "We should get together tomorrow to review the plan.",
+    ]
+    return RephraseModeView()
+        .environmentObject(model)
+        .frame(width: 900, height: 520)
+}
+
 private struct RephraseVariantCard: View {
     let title: String
     let text: String

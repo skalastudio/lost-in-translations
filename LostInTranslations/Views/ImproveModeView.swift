@@ -113,3 +113,12 @@ struct ImproveModeView: View {
         NSPasteboard.general.setString(text, forType: .string)
     }
 }
+
+#Preview {
+    let model = AppModel()
+    model.improveInputText = "This is a draft that could be clearer."
+    model.improveOutputText = "This draft is clearer and easier to read."
+    return ImproveModeView()
+        .environmentObject(model)
+        .frame(width: 900, height: 520)
+}

@@ -59,3 +59,17 @@ extension AppMode {
         }
     }
 }
+
+private struct SidebarPreview: View {
+    @State private var mode: AppMode = .translate
+
+    var body: some View {
+        SidebarView(selectedMode: $mode)
+            .environmentObject(AppModel())
+            .frame(width: 240, height: 400)
+    }
+}
+
+#Preview {
+    SidebarPreview()
+}
