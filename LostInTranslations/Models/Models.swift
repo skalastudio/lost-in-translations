@@ -41,7 +41,7 @@ enum WritingIntent: String, CaseIterable, Identifiable, Sendable {
     }
 }
 
-enum Tone: String, CaseIterable, Identifiable, Sendable {
+enum Tone: String, CaseIterable, Identifiable, Sendable, Codable {
     case neutral = "Neutral"
     case formal = "Formal"
     case informal = "Informal"

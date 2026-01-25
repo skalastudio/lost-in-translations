@@ -34,7 +34,8 @@ struct LostInTranslationsApp: App {
         .modelContainer(modelContainer)
 
         Settings {
-            SettingsView(viewModel: viewModel)
+            SettingsView()
+                .environmentObject(appModel)
         }
         .modelContainer(modelContainer)
     }

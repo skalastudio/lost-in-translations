@@ -10,8 +10,22 @@ final class AppModel: ObservableObject {
     @Published var translateInputText: String = ""
     @Published var translateOutputs: [TranslationOutput] = []
     @Published var historyItems: [HistoryItem] = []
+    @Published var storeHistoryLocally: Bool = true {
+        didSet {
+            if storeHistoryLocally {
+                persistHistory()
+            } else {
+                historyItems = []
+                deleteHistoryFile()
+            }
+        }
+    }
 
     let maxTargetLanguages = 3
+
+    init() {
+        loadHistory()
+    }
 
     var hasTranslateInput: Bool {
         !translateInputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -72,7 +86,10 @@ final class AppModel: ObservableObject {
             purpose: selectedPurpose,
             tone: selectedTone
         )
-        historyItems.insert(historyItem, at: 0)
+        if storeHistoryLocally {
+            historyItems.insert(historyItem, at: 0)
+            persistHistory()
+        }
     }
 
     func clearCurrentMode() {
@@ -87,5 +104,46 @@ final class AppModel: ObservableObject {
 
     func clearHistory() {
         historyItems = []
+        persistHistory()
+    }
+
+    private var historyFileURL: URL {
+        let supportURL =
+            FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+            .first ?? FileManager.default.temporaryDirectory
+        return
+            supportURL
+            .appendingPathComponent("LostInTranslations", isDirectory: true)
+            .appendingPathComponent("history.json")
+    }
+
+    private func loadHistory() {
+        guard storeHistoryLocally else { return }
+        do {
+            let data = try Data(contentsOf: historyFileURL)
+            historyItems = try JSONDecoder().decode([HistoryItem].self, from: data)
+        } catch {
+            historyItems = []
+        }
+    }
+
+    private func persistHistory() {
+        guard storeHistoryLocally else { return }
+        do {
+            let folderURL = historyFileURL.deletingLastPathComponent()
+            try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true)
+            let data = try JSONEncoder().encode(historyItems)
+            try data.write(to: historyFileURL, options: .atomic)
+        } catch {
+            // Silent failure for local-only history persistence.
+        }
+    }
+
+    private func deleteHistoryFile() {
+        do {
+            try FileManager.default.removeItem(at: historyFileURL)
+        } catch {
+            // Ignore missing files or delete failures.
+        }
     }
 }

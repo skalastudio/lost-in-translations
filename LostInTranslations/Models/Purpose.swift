@@ -1,6 +1,6 @@
 import Foundation
 
-enum Purpose: String, CaseIterable, Identifiable {
+enum Purpose: String, CaseIterable, Identifiable, Codable {
     case email
     case sms
     case chat

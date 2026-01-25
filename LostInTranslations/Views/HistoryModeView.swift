@@ -14,15 +14,20 @@ struct HistoryModeView: View {
                         Text(item.inputPreview)
                             .font(.headline)
                             .lineLimit(2)
-                        Text(item.subtitle)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                        HStack(spacing: 6) {
+                            Text(item.mode.displayName)
+                            Text("•")
+                            Text(item.subtitle)
+                        }
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
                     }
                 }
                 .buttonStyle(.plain)
                 .tag(item.id)
                 .overlay(alignment: .trailing) {
-                    Text(relativeTimestamp(from: item.date))
+                    Text(dateTimeString(from: item.date))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -73,9 +78,10 @@ struct HistoryModeView: View {
         appModel.selectedMode = .translate
     }
 
-    private func relativeTimestamp(from date: Date) -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .abbreviated
-        return formatter.localizedString(for: date, relativeTo: Date())
+    private func dateTimeString(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
     }
 }

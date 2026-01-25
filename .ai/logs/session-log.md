@@ -785,3 +785,93 @@ Return code changes only.
 
 **Response:**
 Added AppModel computed flags, wired Translate button disable state, and disabled output card actions based on input/output availability while keeping Clear History tied to hasHistory. Ran format, lint, and build successfully.
+## 2026-01-25T13:58:39Z — GPT-5 Codex
+
+**Prompt:**
+Implement ImproveTextModeView UI (UI only).
+
+Requirements:
+- Two-pane vertical layout (or left/right, your choice) that feels macOS-native:
+  - Original input TextEditor
+  - Improved output area
+- Provide quick refinement buttons (stub actions):
+  - Shorter
+  - More formal
+  - More friendly
+- Include Copy + Replace actions for output
+- Keep controls minimal; toolbar already contains Tone selector
+Return SwiftUI code for ImproveTextModeView and any small supporting structs.
+
+**Response:**
+Implemented ImproveModeView with an HSplitView layout, input/output panels, stub refinement buttons, and Copy/Replace actions. Ran format, lint, and build successfully.
+## 2026-01-25T14:00:06Z — GPT-5 Codex
+
+**Prompt:**
+Implement RephraseModeView UI (UI only).
+
+Requirements:
+- Similar to ImproveTextModeView but focused on “same meaning, different phrasing”
+- Add a Variants toggle:
+  - Off: show one rephrase result
+  - On: show 3 variant cards stacked (stub data)
+- Provide Copy / Replace per variant
+Return SwiftUI code only.
+
+**Response:**
+Implemented RephraseModeView with HSplitView, a variants toggle, stub outputs, and per-variant Copy/Replace actions. Ran format, lint, and build successfully.
+## 2026-01-25T14:02:41Z — GPT-5 Codex
+
+**Prompt:**
+Implement SynonymsModeView UI (UI only).
+
+Requirements:
+- Top input for a single word or short phrase (TextField)
+- Right/detail area shows:
+  - list of synonyms
+  - short usage notes (placeholder)
+  - example sentences (placeholder)
+- Add actions: Copy selected synonym, Insert into clipboard (stub)
+Make it look like a macOS utility inside a standard app window.
+Return SwiftUI code only.
+
+**Response:**
+Implemented SynonymsModeView with a lookup TextField, selectable synonym list, usage notes/examples placeholders, and Copy/Insert actions. Ran format, lint, and build successfully.
+## 2026-01-25T14:05:26Z — GPT-5 Codex
+
+**Prompt:**
+Add a Settings window (Cmd+,) in SwiftUI.
+
+Requirements:
+- Use Settings scene (SwiftUI App) with a TabView
+- Tabs:
+  - General
+  - Providers (API keys)
+  - Models
+  - Output
+  - Privacy
+- Providers tab:
+  - sections for OpenAI / Claude / Gemini
+  - secure fields + “Save” (store in Keychain if you can; otherwise stub with in-memory + TODO)
+- Privacy tab:
+  - text explaining local processing
+  - toggle “Store History locally”
+Return SwiftUI code. Use Apple frameworks only.
+
+**Response:**
+Rebuilt SettingsView as a TabView-based Settings scene with General/Providers/Models/Output/Privacy tabs, Keychain-backed provider key fields, and a Store History locally toggle wired to AppModel. Ran format, lint, and build successfully.
+## 2026-01-25T14:07:35Z — GPT-5 Codex
+
+**Prompt:**
+Add an optional History mode.
+
+Requirements:
+- Store history items locally (simple JSON in Application Support is ok; SwiftData optional)
+- A history list view with:
+  - first line preview
+  - mode
+  - date/time
+- Selecting an item restores the input text and outputs into the relevant mode view (stub if needed)
+Return code plus brief notes on where you persist data.
+
+**Response:**
+Added JSON persistence for HistoryItems in Application Support, expanded HistoryItem and AppModel to load/save/clear local history, and updated HistoryModeView to show mode + date/time and restore items. Ran format, lint, and build successfully.

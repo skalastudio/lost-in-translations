@@ -2,7 +2,7 @@ import Foundation
 
 typealias HistoryItemID = UUID
 
-struct HistoryItem: Identifiable, Hashable {
+struct HistoryItem: Identifiable, Hashable, Codable {
     let id: HistoryItemID
     let mode: AppMode
     let inputText: String

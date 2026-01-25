@@ -1,6 +1,6 @@
 import Foundation
 
-enum Language: String, CaseIterable, Identifiable {
+enum Language: String, CaseIterable, Identifiable, Codable {
     case auto
     case english
     case portuguese
