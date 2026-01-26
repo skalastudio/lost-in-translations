@@ -27,3 +27,21 @@ enum AppMode: String, CaseIterable, Identifiable, Codable {
         }
     }
 }
+
+extension AppMode {
+    /// Capability required to use the mode.
+    var requiredCapability: ProviderCapability? {
+        switch self {
+        case .translate:
+            return .translate
+        case .improve:
+            return .improve
+        case .rephrase:
+            return .rephrase
+        case .synonyms:
+            return .synonyms
+        case .history:
+            return nil
+        }
+    }
+}

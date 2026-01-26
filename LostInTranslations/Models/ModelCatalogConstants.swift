@@ -11,6 +11,7 @@ enum ModelCatalogConstants {
             "claude-3-5-opus-latest",
         ],
         .gemini: ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-2.0-flash"],
+        .appleTranslation: [],
     ]
 
     /// Default model identifiers per provider and tier.
@@ -29,6 +30,11 @@ enum ModelCatalogConstants {
             .fast: "gemini-1.5-flash",
             .balanced: "gemini-2.0-flash",
             .best: "gemini-2.0-flash",
+        ],
+        .appleTranslation: [
+            .fast: "apple-translation",
+            .balanced: "apple-translation",
+            .best: "apple-translation",
         ],
     ]
 

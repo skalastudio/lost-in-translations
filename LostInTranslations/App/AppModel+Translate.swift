@@ -124,7 +124,7 @@ extension AppModel {
             inputText: inputText,
             intent: writingIntent(for: purpose),
             tone: tone,
-            provider: .auto,
+            provider: selectedProvider,
             modelTier: .balanced,
             sourceCode: translateFromLanguage.code
         )

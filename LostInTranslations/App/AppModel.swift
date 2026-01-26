@@ -9,6 +9,12 @@ final class AppModel: ObservableObject {
     @Published var selectedPurpose: Purpose = .chat
     /// The selected tone used to shape output.
     @Published var selectedTone: Tone = .neutral
+    /// The selected provider used for requests.
+    @Published var selectedProvider: Provider = .auto {
+        didSet {
+            refreshProviderAvailability()
+        }
+    }
     /// Selected source language for translation.
     @Published var translateFromLanguage: Language = .auto
     /// Selected target languages for translation.
@@ -67,6 +73,8 @@ final class AppModel: ObservableObject {
     let maxTargetLanguages = 3
     /// Shared task runner for provider calls.
     let taskRunner = TaskRunner()
+    /// Triggers view updates when provider availability changes.
+    @Published private(set) var providerAvailabilityVersion: Int = 0
     /// Current translation task, if any.
     var translateTask: Task<Void, Never>?
     /// Current improve task, if any.
@@ -125,4 +133,33 @@ final class AppModel: ObservableObject {
     var hasHistory: Bool {
         !historyItems.isEmpty
     }
+
+    /// Whether the provider selection supports the given mode.
+    /// - Parameter mode: App mode to validate.
+    /// - Returns: True when the mode is available.
+    func isModeSupported(_ mode: AppMode) -> Bool {
+        guard let capability = mode.requiredCapability else { return true }
+        return availableCapabilities.contains(capability)
+    }
+
+    /// Forces a refresh of provider availability.
+    func refreshProviderAvailability() {
+        providerAvailabilityVersion += 1
+    }
+
+    /// Available capabilities based on provider selection and keys.
+    private var availableCapabilities: Set<ProviderCapability> {
+        if selectedProvider != .auto {
+            return selectedProvider.capabilities
+        }
+        return hasAnyAPIKey ? Provider.fullCapabilities : Provider.appleTranslation.capabilities
+    }
+
+    /// Returns true when any API key is stored.
+    private var hasAnyAPIKey: Bool {
+        [Provider.openAI, Provider.claude, Provider.gemini].contains { provider in
+            KeychainStore.readKey(for: provider) != nil
+        }
+    }
+
 }

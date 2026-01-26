@@ -43,6 +43,15 @@ struct SettingsView: View {
                 .font(.title2)
             Text("settings.general.subtitle")
                 .foregroundStyle(.secondary)
+            Picker("settings.general.provider", selection: $appModel.selectedProvider) {
+                ForEach(Provider.allCases) { provider in
+                    Text(provider.localizedName).tag(provider)
+                }
+            }
+            .pickerStyle(.menu)
+            Text("settings.general.provider.help")
+                .font(.caption)
+                .foregroundStyle(.secondary)
             Spacer()
         }
     }
@@ -70,6 +79,13 @@ struct SettingsView: View {
                 status: geminiStatus
             ) {
                 saveKey(geminiKey, provider: .gemini, status: &geminiStatus)
+            }
+            Section {
+                Text("settings.providers.apple.note")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } header: {
+                Text("settings.providers.apple")
             }
         }
     }
@@ -161,6 +177,7 @@ struct SettingsView: View {
                 try KeychainStore.saveKey(trimmed, for: provider)
                 status = String(localized: "settings.providers.status.saved")
             }
+            appModel.refreshProviderAvailability()
         } catch {
             status = String(localized: "settings.providers.status.failed")
         }

@@ -17,7 +17,7 @@ extension AppModel {
             mode: mode,
             intent: writingIntent(for: selectedPurpose),
             tone: selectedTone,
-            provider: .auto,
+            provider: selectedProvider,
             modelTier: .balanced,
             languages: [preferredOutputLanguageOption],
             sourceLanguage: translateFromLanguage.code,
@@ -66,6 +66,9 @@ extension AppModel {
                 return String(localized: "error.networkTryAgain")
             case .serviceError(let message):
                 let lower = message.lowercased()
+                if lower.contains("apple translation") {
+                    return message
+                }
                 if lower.contains("401") || lower.contains("unauthorized") {
                     return String(localized: "error.invalidKey")
                 }

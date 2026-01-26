@@ -155,47 +155,24 @@ struct HistoryModeView: View {
     /// Empty state shown when there is no history.
     @ViewBuilder
     private var historyEmptyState: some View {
-        if #available(macOS 14.0, *) {
-            ContentUnavailableView {
-                Label("history.empty.title", systemImage: "clock.arrow.circlepath")
-            } description: {
-                Text("history.empty.subtitle")
-            } actions: {
-                Text("history.empty.tip")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-        } else {
-            VStack(spacing: 8) {
-                Label("history.empty.title", systemImage: "clock.arrow.circlepath")
-                    .font(.title3)
-                Text("history.empty.subtitle")
-                    .font(.body)
-                    .foregroundStyle(.secondary)
-                Text("history.empty.tip")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+        ContentUnavailableView {
+            Label("history.empty.title", systemImage: "clock.arrow.circlepath")
+        } description: {
+            Text("history.empty.subtitle")
+        } actions: {
+            Text("history.empty.tip")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
     }
 
     /// Empty state shown when filters return no results.
     @ViewBuilder
     private var noResultsState: some View {
-        if #available(macOS 14.0, *) {
-            ContentUnavailableView {
-                Text("history.search.empty.title")
-            } description: {
-                Text("history.search.empty.subtitle")
-            }
-        } else {
-            VStack(spacing: 6) {
-                Text("history.search.empty.title")
-                    .font(.headline)
-                Text("history.search.empty.subtitle")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
+        ContentUnavailableView {
+            Text("history.search.empty.title")
+        } description: {
+            Text("history.search.empty.subtitle")
         }
     }
 

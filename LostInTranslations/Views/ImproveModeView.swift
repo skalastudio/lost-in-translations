@@ -5,6 +5,11 @@ struct ImproveModeView: View {
     /// Shared application state.
     @EnvironmentObject private var appModel: AppModel
 
+    /// Whether the current provider supports improve mode.
+    private var isSupported: Bool {
+        appModel.isModeSupported(.improve)
+    }
+
     /// Whether the output has content.
     private var hasOutput: Bool {
         !appModel.improveOutputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -12,9 +17,16 @@ struct ImproveModeView: View {
 
     /// View body.
     var body: some View {
-        HSplitView {
-            inputPanel
-            outputPanel
+        ZStack {
+            HSplitView {
+                inputPanel
+                outputPanel
+            }
+            .disabled(!isSupported)
+
+            if !isSupported {
+                unsupportedOverlay
+            }
         }
     }
 
@@ -55,7 +67,7 @@ struct ImproveModeView: View {
                 }
             }
             .buttonStyle(.bordered)
-            .disabled(!appModel.canImprove)
+            .disabled(!appModel.canImprove || !isSupported)
 
             ScrollView {
                 if appModel.improveIsRunning {
@@ -102,6 +114,27 @@ struct ImproveModeView: View {
             .buttonStyle(.bordered)
         }
         .padding()
+    }
+
+    /// Overlay shown when the provider does not support improve mode.
+    private var unsupportedOverlay: some View {
+        ContentUnavailableView {
+            Text(
+                String(
+                    format: String(localized: "provider.capability.unavailable.title"),
+                    appModel.selectedProvider.localizedName
+                )
+            )
+        } description: {
+            Text(
+                String(
+                    format: String(localized: "provider.capability.unavailable.subtitle"),
+                    appModel.selectedProvider.localizedName
+                )
+            )
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.background)
     }
 
     /// Empty state shown when there is no output.

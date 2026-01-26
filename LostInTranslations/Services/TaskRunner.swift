@@ -40,6 +40,7 @@ actor TaskRunner {
         .openAI: OpenAIClient(),
         .claude: ClaudeClient(),
         .gemini: GeminiClient(),
+        .appleTranslation: AppleTranslationClient(),
     ]
 
     /// Runs a single provider task.
@@ -140,10 +141,14 @@ actor TaskRunner {
             }
         }
         return providers.compactMap { provider in
-            guard let client = clients[provider], let key = KeychainStore.readKey(for: provider) else {
-                return nil
+            guard let client = clients[provider] else { return nil }
+            if provider.requiresAPIKey {
+                guard let key = KeychainStore.readKey(for: provider) else {
+                    return nil
+                }
+                return CompareTask(provider: provider, client: client, key: key)
             }
-            return CompareTask(provider: provider, client: client, key: key)
+            return CompareTask(provider: provider, client: client, key: "system")
         }
     }
 
@@ -161,17 +166,18 @@ actor TaskRunner {
         where KeychainStore.readKey(for: provider) != nil {
             return provider
         }
-        throw ProviderError.missingKey(.openAI)
+        return .appleTranslation
     }
 
     /// Returns providers that are currently available.
     private func availableProviders() -> [Provider] {
         if Self.useMockProvider {
-            return [.openAI, .claude, .gemini]
+            return [.openAI, .claude, .gemini, .appleTranslation]
         }
-        return [Provider.openAI, Provider.claude, Provider.gemini].filter { provider in
+        let keyedProviders = [Provider.openAI, Provider.claude, Provider.gemini].filter { provider in
             KeychainStore.readKey(for: provider) != nil
         }
+        return keyedProviders + [.appleTranslation]
     }
 
     /// Reads the API key for a provider or throws.
@@ -180,6 +186,9 @@ actor TaskRunner {
     private func readKey(for provider: Provider) throws -> String {
         if Self.useMockProvider {
             return "mock"
+        }
+        if !provider.requiresAPIKey {
+            return "system"
         }
         guard let key = KeychainStore.readKey(for: provider) else {
             throw ProviderError.missingKey(provider)

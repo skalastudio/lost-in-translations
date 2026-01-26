@@ -90,20 +90,10 @@ struct TranslateModeView: View {
     @ViewBuilder
     /// Empty state shown when there are no outputs.
     private var emptyOutputState: some View {
-        if #available(macOS 14.0, *) {
-            ContentUnavailableView {
-                Text("translate.output.empty.title")
-            } description: {
-                Text("translate.output.empty.subtitle")
-            }
-        } else {
-            VStack(spacing: 6) {
-                Text("translate.output.empty.title")
-                    .font(.headline)
-                Text("translate.output.empty.subtitle")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
+        ContentUnavailableView {
+            Text("translate.output.empty.title")
+        } description: {
+            Text("translate.output.empty.subtitle")
         }
     }
 }

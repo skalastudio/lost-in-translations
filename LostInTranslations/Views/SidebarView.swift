@@ -28,6 +28,7 @@ struct SidebarView: View {
     /// Builds a row label for a given mode.
     /// - Parameter mode: App mode to render.
     private func sidebarRow(for mode: AppMode, count: Int?) -> some View {
+        let isSupported = appModel.isModeSupported(mode)
         HStack {
             Label(mode.displayName, systemImage: mode.systemImageName)
             Spacer()
@@ -41,6 +42,7 @@ struct SidebarView: View {
             }
         }
         .tag(mode)
+        .disabled(!isSupported)
     }
 }
 

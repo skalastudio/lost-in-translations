@@ -1357,3 +1357,162 @@ Commands run
 
 Permissions/Sync
 - None.
+### 2026-01-26T19:50:23Z — gpt-5
+**Prompt**
+Add a new translation provider that uses Apple’s built-in Translation services (no API key required) and integrate it into the existing provider architecture (protocol ProviderClient, existing providers: OpenAI/Claude/Gemini/Mock). This provider must allow users to use the app without configuring any external API_KEY.
+
+**Response**
+Implemented Apple Translation provider integration, added it to provider selection/wiring, and surfaced it in settings without API key fields. Added localized strings for Apple provider and error messages, plus model catalog entries. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Services/Providers/AppleTranslation/AppleTranslationClient.swift`
+- `LostInTranslations/Services/TaskRunner.swift`
+- `LostInTranslations/Models/Models.swift`
+- `LostInTranslations/Models/ModelCatalogConstants.swift`
+- `LostInTranslations/App/AppModel+Helpers.swift`
+- `LostInTranslations/Views/SettingsView.swift`
+- `LostInTranslations/Resources/en.lproj/Localizable.strings`
+- `LostInTranslations.xcodeproj/project.pbxproj`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-26T21:03:18Z
+
+**Prompt**
+if apple provider only allow translate the other options must be disable, do this: associated to each provide define the capabilities related with app options and based on this enable for disable options based on the capabilities
+
+**Response**
+Added provider capability modeling and AppMode capability mapping, wired AppModel with selected provider + capability checks, and disabled unsupported modes in the sidebar. Added provider selection picker in Settings General, refreshed provider availability on key changes, updated translate/task specs to use the selected provider, and localized the new settings labels. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Models/Models.swift`
+- `LostInTranslations/Models/AppMode.swift`
+- `LostInTranslations/App/AppModel.swift`
+- `LostInTranslations/App/AppModel+Helpers.swift`
+- `LostInTranslations/App/AppModel+Translate.swift`
+- `LostInTranslations/Views/SidebarView.swift`
+- `LostInTranslations/Views/SettingsView.swift`
+- `LostInTranslations/Resources/en.lproj/Localizable.strings`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-26T21:12:14Z
+
+**Prompt**
+let's change the target to be mac 15+ and not mac 14+ change the necessary code base to use more up-to-date apis for mac 15+
+
+**Response**
+Updated the Xcode project deployment target to macOS 15.0, removed macOS 14 fallback UI branches by using ContentUnavailableView directly, and kept the UI aligned with macOS 15+. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations.xcodeproj/project.pbxproj`
+- `LostInTranslations/Views/TranslateModeView.swift`
+- `LostInTranslations/Views/HistoryModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-26T21:17:31Z
+
+**Prompt**
+ok, returning to apple translate, based on apple capabilities, the option for improve text, rephare and synonyms contine available and should be disable
+
+**Response**
+Stopped auto-switching modes when provider capabilities change so Improve/Rephrase/Synonyms remain visible but disabled when unsupported. Sidebar continues to show the actions with disabled state. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/App/AppModel.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-26T21:28:45Z
+
+**Prompt**
+yes
+
+**Response**
+Added disabled-state overlays for Improve, Rephrase, and Synonyms when the selected provider doesn’t support those actions, using ContentUnavailableView with localized messaging. Controls in those modes are also disabled while unsupported. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/ImproveModeView.swift`
+- `LostInTranslations/Views/RephraseModeView.swift`
+- `LostInTranslations/Views/SynonymsModeView.swift`
+- `LostInTranslations/Resources/en.lproj/Localizable.strings`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-26T22:07:07Z
+
+**Prompt**
+yes
+
+**Response**
+Updated the unsupported-mode overlay text to explicitly mention the selected provider and that it only supports Translate. Adjusted overlays in Improve/Rephrase/Synonyms to use the formatted subtitle. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/ImproveModeView.swift`
+- `LostInTranslations/Views/RephraseModeView.swift`
+- `LostInTranslations/Views/SynonymsModeView.swift`
+- `LostInTranslations/Resources/en.lproj/Localizable.strings`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.

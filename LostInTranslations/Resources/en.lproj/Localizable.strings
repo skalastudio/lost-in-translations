@@ -88,6 +88,7 @@
 "provider.openai" = "OpenAI";
 "provider.claude" = "Claude";
 "provider.gemini" = "Gemini";
+"provider.appleTranslation" = "Apple Translation";
 
 "modelTier.fast" = "Fast";
 "modelTier.balanced" = "Balanced";
@@ -223,10 +224,14 @@
 
 "settings.general.title" = "General";
 "settings.general.subtitle" = "Basic app preferences will appear here.";
+"settings.general.provider" = "Provider";
+"settings.general.provider.help" = "Choose which provider handles translations and writing actions.";
 
 "settings.providers.openai" = "OpenAI";
 "settings.providers.claude" = "Claude";
 "settings.providers.gemini" = "Gemini";
+"settings.providers.apple" = "Apple Translation";
+"settings.providers.apple.note" = "No API key required. Uses on-device/system translation when available.";
 "settings.providers.apiKey.placeholder" = "%@ API Key";
 "settings.providers.status.removed" = "Key removed.";
 "settings.providers.status.saved" = "Saved.";
@@ -242,3 +247,16 @@
 "settings.privacy.subtitle" = "Translations run locally in this app unless you use an external provider.";
 "settings.privacy.historyNote" = "Your history stays on this Mac.";
 "settings.privacy.storeHistory" = "Store History locally";
+
+"error.apple.unavailable" = "Apple Translation: requires macOS 15 or later.";
+"error.apple.requiresNewerOS" = "Apple Translation: requires a newer macOS version.";
+"error.apple.unsupportedMode" = "Apple Translation: only translation is supported for this provider.";
+"error.apple.unsupportedLanguage" = "Apple Translation: unsupported language.";
+"error.apple.unsupportedLanguagePair" = "Apple Translation: unsupported language pair.";
+"error.apple.unableToIdentifyLanguage" = "Apple Translation: could not detect the source language.";
+"error.apple.nothingToTranslate" = "Apple Translation: nothing to translate.";
+"error.apple.notInstalled" = "Apple Translation: language pack not installed. Download the language in System Settings.";
+"error.apple.generic" = "Apple Translation: something went wrong.";
+
+"provider.capability.unavailable.title" = "%@ doesn’t support this action.";
+"provider.capability.unavailable.subtitle" = "%@ only supports Translate. Choose a different provider in Settings > General.";

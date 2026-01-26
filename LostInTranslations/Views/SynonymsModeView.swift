@@ -7,11 +7,23 @@ struct SynonymsModeView: View {
     /// Current selection in the synonyms list.
     @State private var selectedSynonym: String?
 
+    /// Whether the current provider supports synonyms mode.
+    private var isSupported: Bool {
+        appModel.isModeSupported(.synonyms)
+    }
+
     /// View body.
     var body: some View {
-        HSplitView {
-            inputPanel
-            detailPanel
+        ZStack {
+            HSplitView {
+                inputPanel
+                detailPanel
+            }
+            .disabled(!isSupported)
+
+            if !isSupported {
+                unsupportedOverlay
+            }
         }
     }
 
@@ -27,7 +39,7 @@ struct SynonymsModeView: View {
             Button("synonyms.action") {
                 appModel.performSynonyms()
             }
-            .disabled(!appModel.canLookupSynonyms)
+            .disabled(!appModel.canLookupSynonyms || !isSupported)
             Spacer()
         }
         .padding()
@@ -97,6 +109,27 @@ struct SynonymsModeView: View {
             .buttonStyle(.bordered)
         }
         .padding()
+    }
+
+    /// Overlay shown when the provider does not support synonyms mode.
+    private var unsupportedOverlay: some View {
+        ContentUnavailableView {
+            Text(
+                String(
+                    format: String(localized: "provider.capability.unavailable.title"),
+                    appModel.selectedProvider.localizedName
+                )
+            )
+        } description: {
+            Text(
+                String(
+                    format: String(localized: "provider.capability.unavailable.subtitle"),
+                    appModel.selectedProvider.localizedName
+                )
+            )
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.background)
     }
 
     /// Copies text to the pasteboard.

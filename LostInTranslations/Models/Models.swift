@@ -87,6 +87,7 @@ enum Provider: String, CaseIterable, Identifiable, Sendable {
     case openAI = "OpenAI"
     case claude = "Claude"
     case gemini = "Gemini"
+    case appleTranslation = "Apple Translation"
 
     /// Stable identifier for list rendering.
     var id: String { rawValue }
@@ -102,8 +103,46 @@ enum Provider: String, CaseIterable, Identifiable, Sendable {
             return String(localized: "provider.claude")
         case .gemini:
             return String(localized: "provider.gemini")
+        case .appleTranslation:
+            return String(localized: "provider.appleTranslation")
         }
     }
+
+    /// Whether the provider requires an API key.
+    var requiresAPIKey: Bool {
+        switch self {
+        case .openAI, .claude, .gemini:
+            return true
+        case .auto, .appleTranslation:
+            return false
+        }
+    }
+
+    /// Supported capabilities for the provider.
+    var capabilities: Set<ProviderCapability> {
+        switch self {
+        case .appleTranslation:
+            return [.translate]
+        case .auto, .openAI, .claude, .gemini:
+            return Provider.fullCapabilities
+        }
+    }
+
+    /// Full set of supported capabilities.
+    static var fullCapabilities: Set<ProviderCapability> {
+        Set(ProviderCapability.allCases)
+    }
+}
+
+/// Capabilities supported by a provider.
+enum ProviderCapability: String, CaseIterable, Identifiable, Sendable {
+    case translate
+    case improve
+    case rephrase
+    case synonyms
+
+    /// Stable identifier for list rendering.
+    var id: String { rawValue }
 }
 
 /// Model tier presets.
