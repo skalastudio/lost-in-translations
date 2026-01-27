@@ -26,8 +26,6 @@ struct TranslateModeView: View {
     /// Input panel for translation.
     private var inputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("translate.input.title")
-                .font(.headline)
             ZStack(alignment: .topLeading) {
                 TextEditor(text: $appModel.translateInputText)
                     .font(.body)
@@ -39,6 +37,16 @@ struct TranslateModeView: View {
                 }
             }
             .frame(minHeight: 200)
+            HStack {
+                fromLanguageControl
+                Spacer()
+                Button("toolbar.translate") {
+                    appModel.performTranslate()
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(!appModel.canTranslate)
+                .keyboardShortcut(.return, modifiers: .command)
+            }
         }
         .padding()
     }
@@ -46,26 +54,27 @@ struct TranslateModeView: View {
     /// Output panel for translation results.
     private var outputPanel: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("translate.output.title")
-                .font(.headline)
-            ScrollView {
-                if appModel.translateOutputs.isEmpty {
-                    emptyOutputState
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 24)
-                } else {
-                    LazyVStack(spacing: 12) {
-                        ForEach(appModel.translateOutputs) { output in
-                            TranslationOutputCard(
-                                output: output,
-                                hasInput: appModel.hasTranslateInput,
-                                onCopy: { copyToPasteboard(output.text) },
-                                onReplace: { appModel.translateInputText = output.text },
-                                onRegenerate: { appModel.performTranslate() }
-                            )
+            translateControls
+            GeometryReader { proxy in
+                ScrollView {
+                    if appModel.translateOutputs.isEmpty {
+                        emptyOutputState
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 24)
+                    } else {
+                        let cardHeight = outputCardHeight(containerHeight: proxy.size.height)
+                        VStack(spacing: 6) {
+                            ForEach(appModel.translateOutputs) { output in
+                                TranslationOutputCard(
+                                    output: output,
+                                    onCopy: { copyToPasteboard(output.text) },
+                                    onReplace: { appModel.translateInputText = output.text }
+                                )
+                                .frame(minHeight: cardHeight)
+                            }
                         }
+                        .padding(.vertical, 2)
                     }
-                    .padding(.vertical, 4)
                 }
             }
         }
@@ -87,6 +96,68 @@ struct TranslateModeView: View {
         NSPasteboard.general.setString(text, forType: .string)
     }
 
+    /// Calculates per-card height based on available space.
+    /// - Parameter containerHeight: Available height for outputs.
+    /// - Returns: Minimum height per output card.
+    private func outputCardHeight(containerHeight: CGFloat) -> CGFloat {
+        let count = max(appModel.translateOutputs.count, 1)
+        let spacing = 6.0 * Double(max(count - 1, 0))
+        let available = max(containerHeight - spacing, 120)
+        return max(120, available / Double(count))
+    }
+
+    /// Source language picker shown above the input editor.
+    private var fromLanguageControl: some View {
+        Picker("translate.sourceLanguage.label", selection: $appModel.translateFromLanguage) {
+            ForEach(Language.allCases) { language in
+                Text(language.title).tag(language)
+            }
+        }
+        .frame(maxWidth: 220, alignment: .leading)
+    }
+
+    /// Translate controls shown above the input editor.
+    private var translateControls: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(spacing: 12) {
+                    Menu {
+                        ForEach(Language.allCases.filter { $0 != .auto }) { language in
+                            Button(language.title) {
+                                appModel.addTargetLanguage(language)
+                            }
+                            .disabled(appModel.translateTargetLanguages.contains(language))
+                        }
+                    } label: {
+                        Text("+ \(String(localized: "toolbar.addLanguage"))")
+                    }
+                    .disabled(appModel.translateTargetLanguages.count >= appModel.maxTargetLanguages)
+
+                    TargetLanguagePillsView(languages: appModel.translateTargetLanguages) { language in
+                        appModel.removeTargetLanguage(language)
+                    }
+                }
+
+                HStack(spacing: 12) {
+                    Picker("toolbar.purpose", selection: $appModel.selectedPurpose) {
+                        ForEach(Purpose.allCases) { purpose in
+                            Text(purpose.title).tag(purpose)
+                        }
+                    }
+                    .pickerStyle(.menu)
+
+                    Picker("toolbar.tone", selection: $appModel.selectedTone) {
+                        ForEach(Tone.allCases) { tone in
+                            Text(tone.localizedName).tag(tone)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                }
+            }
+            .padding(.vertical, 2)
+        }
+    }
+
     @ViewBuilder
     /// Empty state shown when there are no outputs.
     private var emptyOutputState: some View {
@@ -94,6 +165,43 @@ struct TranslateModeView: View {
             Text("translate.output.empty.title")
         } description: {
             Text("translate.output.empty.subtitle")
+        }
+    }
+}
+
+/// Displays selected target languages as removable pills.
+private struct TargetLanguagePillsView: View {
+    /// Target languages to display.
+    let languages: [Language]
+    /// Callback for removal.
+    let onRemove: (Language) -> Void
+
+    /// View body.
+    var body: some View {
+        HStack(spacing: 6) {
+            ForEach(languages) { language in
+                HStack(spacing: 4) {
+                    Text(language.code)
+                    Button {
+                        onRemove(language)
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.caption2)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(
+                        Text(
+                            String(
+                                format: String(localized: "actions.removeLanguage"),
+                                language.title
+                            )
+                        )
+                    )
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Capsule().fill(Color.secondary.opacity(0.2)))
+            }
         }
     }
 }
@@ -125,14 +233,10 @@ struct TranslateModeView: View {
 private struct TranslationOutputCard: View {
     /// Output data for the card.
     let output: TranslationOutput
-    /// Whether there is input text to allow regeneration.
-    let hasInput: Bool
     /// Copy action callback.
     let onCopy: () -> Void
     /// Replace input action callback.
     let onReplace: () -> Void
-    /// Regenerate action callback.
-    let onRegenerate: () -> Void
 
     /// Whether the card has output text.
     private var hasOutput: Bool {
@@ -152,8 +256,6 @@ private struct TranslationOutputCard: View {
                     .disabled(!hasOutput)
                 Button("actions.replaceInput", action: onReplace)
                     .disabled(!hasOutput)
-                Button("actions.regenerate", action: onRegenerate)
-                    .disabled(!hasInput)
             }
             .buttonStyle(.bordered)
 

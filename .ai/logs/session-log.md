@@ -1538,3 +1538,412 @@ Commands run
 
 Permissions/Sync
 - None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T19:55:54Z
+
+**Prompt**
+let's work on "translate" option:
+1. first move the toolbar option, before the input label
+
+**Response**
+Asked for clarification on which toolbar controls to move (languages/purpose/tone/translate button or the hidden copy-all shortcut), and whether to remove them from the window toolbar or duplicate them above the input label.
+
+Files touched
+- None.
+
+Commands run
+- `date -u "+%Y-%m-%dT%H:%M:%SZ"`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T19:58:35Z
+
+**Prompt**
+The Translate toolbar controls (From/Targets/Purpose/Tone/Translate button)
+
+**Response**
+Moved the Translate controls from the window toolbar into TranslateModeView, placing them above the input label. The RootSplitView toolbar now only shows Clear for non-Translate modes. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/RootSplitView.swift`
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T20:01:55Z
+
+**Prompt**
+put the purpose and tune in a second line; add the translate button, to the button of the text input aligned to the right
+
+**Response**
+Split Translate controls into two lines (From/Targets on first, Purpose/Tone on second) and moved the Translate button to the bottom-right of the input panel. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T20:13:49Z
+
+**Prompt**
+add the languages setup and purpose and tone into the right side, before the output
+
+**Response**
+Moved the Translate control row (languages, purpose, tone) to the right/output panel, placed just below the Outputs title and above the results. Input panel now only contains the text editor and the Translate button. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T20:15:12Z
+
+**Prompt**
+the from option must be on left, not on the right
+
+**Response**
+Moved the "From" language picker to the left/input panel above the editor while keeping target languages, purpose, and tone on the right/output panel. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T20:16:44Z
+
+**Prompt**
+on the righ the options language, purpose and tone must be before the output
+
+**Response**
+Moved the right-panel controls above the output title, so language/purpose/tone now appear before the outputs section. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T20:18:22Z
+
+**Prompt**
+the from option on the left, put if on the botton of the input and aligned to left
+
+**Response**
+Moved the From picker to the bottom of the input panel, left-aligned, and kept the Translate button on the right. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T20:21:48Z
+
+**Prompt**
+add the option "+Add Language" before the list of defined languages
+
+**Response**
+Placed a “+ Add Language” menu before the language pills in the right-panel controls while keeping the existing localization key. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T20:22:55Z
+
+**Prompt**
+remove the label input and output
+
+**Response**
+Removed the input/output section labels from TranslateModeView. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T20:25:05Z
+
+**Prompt**
+the input label must be removed, it still is on the left side
+
+**Response**
+Removed the remaining input label text from TranslateModeView. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T20:26:59Z
+
+**Prompt**
+change the label from to "Source language", this label must be aligned to left, and the picker is aligne to left with the label
+
+**Response**
+Replaced the From picker label with a left-aligned "Source language" caption and aligned the picker under it. Added a localized string for the label. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+- `LostInTranslations/Resources/en.lproj/Localizable.strings`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T20:28:51Z
+
+**Prompt**
+how we have to lables for "source language" mantain only the second
+
+**Response**
+Removed the duplicate label by setting the Picker label to an empty string, keeping only the "Source language" caption. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T20:30:15Z
+
+**Prompt**
+no mantain the other label not this one
+
+**Response**
+Kept the Picker’s built-in label (“Source language”) and removed the extra caption above it. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T22:38:51Z
+
+**Prompt**
+remove the action "regenerate"
+
+**Response**
+Removed the Regenerate action from translation output cards and cleaned up the unused parameter. Fixed build error and ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T22:41:44Z
+
+**Prompt**
+for the output destribute the space with height available for the box for each language
+
+**Response**
+Updated Translate outputs to distribute available height across language cards using GeometryReader and a per-card height calculation. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T22:41:44Z
+
+**Prompt**
+no mantain the other label not this one
+
+**Response**
+Swapped the source language control to use the picker label only, removing the separate caption. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
+
+---
+**Model**
+GPT-5
+
+**Timestamp**
+2026-01-27T22:43:35Z
+
+**Prompt**
+give less padding between the boxes, it exists to many empy space between the boxes
+
+**Response**
+Reduced spacing and vertical padding between translation output cards and adjusted the height distribution calculation to match. Ran swift-format, lint, and build.
+
+Files touched
+- `LostInTranslations/Views/TranslateModeView.swift`
+
+Commands run
+- `swift-format --in-place --recursive LostInTranslations`
+- `bash scripts/lint.sh`
+- `bash scripts/build.sh`
+
+Permissions/Sync
+- None.
